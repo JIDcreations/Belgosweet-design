@@ -707,7 +707,182 @@ p:last-child{ margin-bottom:0; }
 .closer .hero-actions{ justify-content:center; }
 
 /* ============================================================
-   Hero (bestaande, lichte variant — over-ons)
+   OVER ONS
+   ------------------------------------------------------------
+   De enige pagina die van de klant uitdrukkelijk een "wow" moest
+   krijgen. Dat kan hier alleen via compositie, typografie en
+   beweging — kleur en fotografie liggen buiten deze fase.
+   Bewust drie bewegingen en niet meer: parallax op het portret,
+   een lijn die zich vult in de tijdlijn, en secties die bij het
+   in beeld komen opklaren.
+   ============================================================ */
+
+/* --- Onthullen bij scrollen ---
+   Alleen verbergen als JavaScript draait (html.js). Zonder script
+   of bij een mislukte observer blijft alles gewoon zichtbaar —
+   een reveal die nooit afvuurt mag geen lege pagina opleveren. */
+@media (prefers-reduced-motion: no-preference){
+  html.js [data-reveal]{
+    opacity:0; transform:translateY(22px);
+    transition:opacity .85s var(--ease-soft), transform .95s var(--ease);
+    transition-delay:var(--rd, 0ms);
+  }
+  html.js [data-reveal].in{ opacity:1; transform:none; }
+}
+
+/* --- Hero met parallax --- */
+.ab-hero{
+  position:relative; overflow:hidden;
+  background:var(--surface);
+  min-height:min(88svh, 760px);
+  display:flex; align-items:flex-end;
+  border-bottom:1px solid var(--rule);
+}
+.ab-hero-media{ position:absolute; inset:-12% 0; z-index:0; will-change:transform; }
+.ab-hero-media .ph{
+  height:100%; border:none; align-items:flex-start; padding-top:14vh;
+  background:linear-gradient(180deg, oklch(0.955 0 0), oklch(0.915 0 0));
+}
+.ab-hero-media .ph::after{
+  content:""; position:absolute; inset:0;
+  background-image:repeating-linear-gradient(
+    -52deg, transparent 0 13px, oklch(0 0 0 / 0.022) 13px 14px);
+}
+.ab-hero-body{ position:relative; z-index:1; padding-bottom:clamp(36px, 5vw, 68px); }
+.ab-hero-body .display{ max-width:15ch; }
+.ab-hero-sub{
+  margin-top:20px; font-size:0.8125rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+
+/* --- Groot statement --- */
+.ab-statement{ padding:var(--section-y) 0; }
+.ab-statement p{
+  margin:0; max-width:24ch;
+  font-size:clamp(1.6rem, 3.6vw, 3rem);
+  font-variation-settings:"wdth" 90;
+  line-height:1.15; letter-spacing:-.03em; color:var(--ink);
+  text-wrap:balance;
+}
+
+/* --- Verhaal in twee kolommen --- */
+.ab-story{
+  display:grid; grid-template-columns:0.8fr 1.2fr;
+  gap:clamp(28px, 5vw, 80px); align-items:start;
+  padding:0 0 var(--section-y);
+}
+.ab-story-col p{ font-size:0.9375rem; color:var(--ink-2); max-width:52ch; }
+
+/* --- Tijdlijn ---
+   De verticale lijn vult zich mee met je scrollpositie: de vorm
+   van het onderdeel ís de boodschap, dus daar mag de beweging
+   zitten. */
+.ab-timeline{ padding:var(--section-y) 0; border-top:1px solid var(--rule); }
+.tl-head{ margin-bottom:clamp(32px, 4vw, 56px); }
+.tl-body{ position:relative; }
+.tl-rail{
+  position:absolute; top:0; bottom:0;
+  left:clamp(76px, 9vw, 148px); width:1px; background:var(--rule);
+}
+.tl-rail span{
+  position:absolute; left:0; top:0; width:1px; height:0;
+  background:var(--ink); transition:height .15s linear;
+}
+.tl-item{
+  position:relative;
+  display:grid; grid-template-columns:clamp(76px, 9vw, 148px) 1fr;
+  gap:clamp(24px, 3.5vw, 56px);
+  padding:clamp(22px, 2.8vw, 38px) 0;
+}
+.tl-year{
+  font-size:clamp(1.2rem, 1.9vw, 1.6rem);
+  font-variation-settings:"wdth" 84; font-weight:500;
+  letter-spacing:-.02em; color:var(--ink);
+  font-variant-numeric:tabular-nums; line-height:1.2;
+}
+.tl-dot{
+  position:absolute; left:clamp(76px, 9vw, 148px); top:clamp(28px, 3vw, 44px);
+  width:7px; height:7px; border-radius:50%;
+  background:var(--paper); border:1px solid var(--rule-2);
+  transform:translateX(-3px);
+  transition:background .4s var(--ease), border-color .4s var(--ease);
+}
+.tl-item.passed .tl-dot{ background:var(--ink); border-color:var(--ink); }
+.tl-text h3{ font-size:clamp(1.05rem, 1.4vw, 1.25rem); margin-bottom:7px; }
+.tl-text p{ font-size:0.9375rem; color:var(--ink-2); max-width:54ch; margin:0; }
+
+/* --- Team ---
+   Vier portretten in een rij. Onder elke naam staat waarvoor je bij
+   die persoon moet zijn: de hele site belooft "één aanspreekpunt",
+   dus dan hoor je hier ook te zien wie dat is. */
+.ab-team{ padding:var(--section-y) 0; border-top:1px solid var(--rule); }
+.team-head{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:24px; flex-wrap:wrap; margin-bottom:clamp(30px, 3.6vw, 52px);
+}
+.team-head .lede{ margin-top:14px; }
+.team-grid{
+  display:grid; grid-template-columns:repeat(4, 1fr);
+  gap:clamp(16px, 2vw, 30px);
+}
+.team-member .ph{
+  aspect-ratio:3/4; min-height:0; border:none; margin-bottom:14px;
+  transition:transform .8s var(--ease);
+}
+.team-member{ overflow:hidden; }
+.team-member:hover .ph{ transform:scale(1.035); }
+.team-name{ font-size:0.9375rem; color:var(--ink); font-weight:500; }
+.team-role{ font-size:0.8125rem; color:var(--ink-3); margin-top:3px; }
+.team-focus{
+  margin-top:12px; padding-top:11px; border-top:1px solid var(--rule);
+  font-size:0.8125rem; color:var(--ink-2);
+}
+
+/* --- Sociaal engagement --- */
+.ab-social{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:clamp(28px, 4vw, 72px); align-items:center;
+  padding:var(--section-y) 0; border-top:1px solid var(--rule);
+}
+.ab-social-media .ph{ aspect-ratio:4/3; min-height:0; border:none; }
+
+/* --- Contact --- */
+.ab-contact{ padding:var(--section-y) 0; border-top:1px solid var(--rule); }
+.ab-contact-grid{
+  display:grid; grid-template-columns:0.8fr 1.2fr;
+  gap:clamp(28px, 5vw, 80px); align-items:start;
+}
+.ab-contact-list{ list-style:none; margin:22px 0 0; padding:0; }
+.ab-contact-list li{
+  display:flex; justify-content:space-between; gap:16px;
+  padding:12px 0; border-top:1px solid var(--rule);
+  font-size:0.9375rem; color:var(--ink-2);
+}
+.ab-contact-list li:last-child{ border-bottom:1px solid var(--rule); }
+.ab-contact-list b{ color:var(--ink); font-weight:500; }
+.ab-map .ph{ aspect-ratio:16/10; min-height:0; border:none; }
+
+/* --- Nieuwsbrief --- */
+.ab-news{
+  border-top:1px solid var(--ink);
+  padding:clamp(40px, 5vw, 72px) 0;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:clamp(24px, 4vw, 64px); align-items:center;
+}
+.ab-news h2{ margin-bottom:8px; }
+
+@media (max-width: 1000px){
+  .ab-story, .ab-social, .ab-contact-grid, .ab-news{ grid-template-columns:1fr; }
+  .ab-hero{ min-height:min(72svh, 560px); }
+  .tl-rail, .tl-dot{ left:clamp(56px, 14vw, 90px); }
+  .tl-item{ grid-template-columns:clamp(56px, 14vw, 90px) 1fr; gap:20px; }
+  /* Twee portretten naast elkaar blijven: één per rij maakt er een
+     eindeloze kolom van. */
+  .team-grid{ grid-template-columns:repeat(2, 1fr); gap:28px 16px; }
+}
+
+/* ============================================================
+   Hero (oude, lichte variant — nog in gebruik elders)
    ============================================================ */
 
 .hero{ padding:48px 0 40px; border-bottom:1px solid var(--line-soft); }

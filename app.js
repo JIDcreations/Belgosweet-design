@@ -14,6 +14,11 @@
 const BS = (() => {
   const D = BS_DATA;
 
+  // Meteen zetten, niet in DOMContentLoaded: de CSS verbergt
+  // reveal-elementen alléén als deze vlag er staat. Draait er geen
+  // JavaScript, dan blijft de pagina gewoon zichtbaar.
+  document.documentElement.classList.add("js");
+
   /* ---------- helpers ---------- */
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => (
@@ -1218,13 +1223,80 @@ ${p.variants.map((v, i) => `
 
   /* ---------- Over ons ---------- */
   pages["over-ons"] = () => {
-    const forms = $$("form[data-demo-form]");
-    forms.forEach((f) => f.addEventListener("submit", (e) => {
+    $$("form[data-demo-form]").forEach((f) => f.addEventListener("submit", (e) => {
       e.preventDefault();
       const ok = $("[data-success]", f.parentElement);
       if (ok) ok.classList.remove("hidden");
       f.reset();
     }));
+
+    const stil = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reveals = $$("[data-reveal]");
+
+    /* --- Opklaren bij in beeld komen ---
+       Valt de observer weg, dan wordt alles meteen getoond. Een reveal
+       die niet afvuurt mag nooit inhoud verbergen. */
+    if (stil || !("IntersectionObserver" in window)) {
+      reveals.forEach((el) => el.classList.add("in"));
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);   // eenmalig: niet opnieuw bij terugscrollen
+        });
+      }, { rootMargin: "0px 0px -12% 0px", threshold: 0.05 });
+      reveals.forEach((el) => io.observe(el));
+
+      // vangnet: wat na 3 s nog verborgen is, tonen we alsnog
+      setTimeout(() => reveals.forEach((el) => el.classList.add("in")), 3000);
+    }
+
+    if (stil) return;
+
+    /* --- Parallax op het portret + tijdlijn die zich vult ---
+       Eén scroll-handler voor beide, via requestAnimationFrame. */
+    const media = $("[data-parallax]");
+    const tl = $("[data-timeline]");
+    const fill = $("[data-tl-fill]");
+    const items = $$(".tl-item");
+    if (!media && !tl) return;
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const vh = window.innerHeight;
+
+      if (media) {
+        const hero = media.parentElement.getBoundingClientRect();
+        if (hero.bottom > 0 && hero.top < vh) {
+          // beeld beweegt trager dan de pagina; de bak is 12% overhoog
+          // gezet zodat er nooit een rand in beeld komt
+          media.style.transform = `translate3d(0, ${(-hero.top * 0.14).toFixed(1)}px, 0)`;
+        }
+      }
+
+      if (tl && fill) {
+        const r = tl.getBoundingClientRect();
+        const anker = vh * 0.55;                       // meetlijn iets onder het midden
+        const done = Math.min(1, Math.max(0, (anker - r.top) / r.height));
+        fill.style.height = (done * 100).toFixed(2) + "%";
+        items.forEach((it) => {
+          const d = it.querySelector(".tl-dot");
+          if (!d) return;
+          it.classList.toggle("passed", d.getBoundingClientRect().top < anker);
+        });
+      }
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
   };
 
   /* ---------- Info-pagina's ---------- */
