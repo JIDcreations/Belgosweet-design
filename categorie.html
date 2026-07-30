@@ -4,100 +4,48 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belgosweet — MidFi — Categorie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-page="categorie">
 
-<div class="midfi-banner">MidFi — structuur &amp; layout — geen kleuren, geen fotografie, geen final copy</div>
-
-<header class="site-header">
-  <div class="wrap">
-    <a class="logo" href="index.html">Belgosweet</a>
-    <nav class="main-nav">
-      <a href="index.html">Home</a>
-      <a href="shop.html" class="active">Shop</a>
-      <a href="over-ons.html">Over ons</a>
-    </nav>
-    <div class="header-right">
-      <span class="lang">FR / NL / EN</span>
-      <span class="icon-btn">Account</span>
-      <a class="cta-btn" href="#">Offerte aanvragen</a>
-    </div>
-    <button class="nav-toggle">Menu</button>
-  </div>
-</header>
+<div id="shell-header"></div>
 
 <main>
   <div class="wrap">
-    <div class="breadcrumb">
-      <a href="index.html">Home</a> / <a href="shop.html">Shop</a> / Chocolade &amp; pralines
-      <span class="tag-note">herzien — max. 1 niveau diep, i.p.v. 3-4 geneste niveaus nu</span>
-    </div>
+    <div class="breadcrumb" id="cat-crumbs"></div>
 
-    <div class="section-head" style="margin-top:8px;">
-      <h1 class="section-title">Chocolade &amp; pralines</h1>
-    </div>
-
-    <div class="shop-layout">
-      <aside class="filters">
-        <button class="filters-toggle cta-btn">Filters (0)</button>
-        <div class="filter-group">
-          <div class="filter-title">Submerk</div>
-          <label class="filter-opt"><input type="checkbox"> Leonidas</label>
-          <label class="filter-opt"><input type="checkbox"> Galler</label>
-          <label class="filter-opt"><input type="checkbox"> Callebaut</label>
+    <!-- CATEGORIE-HERO -->
+    <section class="cat-hero">
+      <div class="cat-hero-media"><div class="ph">categoriebeeld</div></div>
+      <div class="cat-hero-body">
+        <p class="cat-hero-eyebrow">Shop</p>
+        <h1 class="cat-hero-title" id="cat-hero-title">Categorie</h1>
+        <div class="cat-hero-intro">
+          <div class="line w100"></div>
+          <div class="line w100"></div>
+          <div class="line w50"></div>
         </div>
-        <div class="filter-group">
-          <div class="filter-title">Verpakking</div>
-          <label class="filter-opt"><input type="checkbox"> Metalen doos</label>
-          <label class="filter-opt"><input type="checkbox"> Kartonnen doos</label>
-        </div>
-        <div class="filter-group">
-          <div class="filter-title">Beschikbaarheid</div>
-          <label class="filter-opt"><input type="checkbox"> Op voorraad</label>
-        </div>
-      </aside>
-
-      <div>
-        <div class="note">Productgrid <span class="tag-note">herzien</span> — enkel producten van déze categorie; huidige site toont soms onverwante producten tussen resultaten.</div>
-
-        <div class="toolbar">
-          <span>14 producten</span>
-          <select class="sort-select"><option>Sorteer: relevantie</option></select>
-        </div>
-
-        <div class="grid cols-4">
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-          <a class="card" href="product.html"><div class="ph square">product</div><div class="line w80"></div><div class="line w30"></div></a>
-        </div>
-
-        <div class="pagination">
-          <a href="#" class="active">1</a>
-          <a href="#">2</a>
-        </div>
+        <p class="cat-hero-meta" id="cat-hero-meta"></p>
       </div>
+    </section>
+
+    <div class="note">
+      <strong>Max. één niveau diep.</strong> De huidige site nest tot drie à vier niveaus
+      (bv. "Calendriers et agendas" duikt op als tussenlaag die nergens in het menu staat).
+      Submerken en verpakking zijn hier filters binnen deze pagina, geen extra pagina-niveau.
     </div>
+
+    <!-- Quick-filters + balk + filterpaneel + grid worden hier gerenderd -->
+    <div id="cat-catalog"></div>
   </div>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-cols">
-      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="shop.html">Categorieën</a><a href="shop.html">Merken</a></div>
-      <div class="footer-col"><div class="footer-col-title">Info</div><a href="over-ons.html">Over ons</a></div>
-      <div class="footer-col"><div class="footer-col-title">Support</div><a href="over-ons.html">Contact</a><a href="#">Voorwaarden</a></div>
-      <div class="footer-col"><div class="footer-col-title">Nieuwsbrief</div><div class="line w80"></div></div>
-    </div>
-    <div class="footer-bottom"><span>FR / NL / EN</span><span>© Belgosweet</span></div>
-  </div>
-</footer>
+<div id="shell-footer"></div>
 
-<script src="script.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

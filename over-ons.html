@@ -4,52 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belgosweet — MidFi — Over ons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-page="over-ons">
 
-<div class="midfi-banner">MidFi — structuur &amp; layout — geen kleuren, geen fotografie, geen final copy</div>
-
-<header class="site-header">
-  <div class="wrap">
-    <a class="logo" href="index.html">Belgosweet</a>
-    <nav class="main-nav">
-      <a href="index.html">Home</a>
-      <a href="shop.html">Shop</a>
-      <a href="over-ons.html" class="active">Over ons</a>
-    </nav>
-    <div class="header-right">
-      <span class="lang">FR / NL / EN</span>
-      <span class="icon-btn">Account</span>
-      <a class="cta-btn" href="#">Offerte aanvragen</a>
-    </div>
-    <button class="nav-toggle">Menu</button>
-  </div>
-</header>
+<div id="shell-header"></div>
 
 <main>
 
   <div class="wrap">
-    <div class="note" style="margin-top:20px;">Deze pagina mag qua ritme afwijken van de rest — dichter bij een "magazine"-gevoel (grote visual, asymmetrische blokken), met behoud van het principe: geen kleuren, geen echte fotografie in deze fase.</div>
+    <div class="note" style="margin-top:22px;">
+      <strong>Deze pagina mag afwijken.</strong> De klant vroeg hier expliciet een WOW-effect: foto van de eigenaar,
+      patronen, animatie, "hip" gevoel. Het ritme staat dus losser dan op de rest van de site — kleur, patroon en
+      animatie komen pas in de designfase, hier ligt enkel de opbouw vast.
+    </div>
   </div>
 
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <p class="eyebrow" style="text-align:center;">Hero — persoonlijk <span class="tag-note">toegevoegd</span></p>
-      <div class="ph tall" style="margin-top:12px;">foto eigenaar</div>
-      <div class="hero-inner" style="margin-top:20px;">
-        <div class="line w60" style="margin:0 auto;"></div>
+      <div class="hero-inner">
+        <p class="eyebrow">Over ons <span class="tag-note">WOW-sectie toegevoegd</span></p>
+        <div class="line thick w60"></div>
       </div>
+      <div class="ph tall">portret eigenaar — volle breedte</div>
     </div>
   </section>
 
   <!-- VERHAAL -->
   <section class="split">
     <div class="split-text">
-      <p class="eyebrow">Verhaal / geschiedenis <span class="tag-note">samengevoegd</span></p>
+      <p class="eyebrow">Verhaal &amp; geschiedenis <span class="tag-note">samengevoegd</span></p>
       <h2 class="section-title">Ons verhaal</h2>
-      <p class="section-sub">"À propos" en "Notre histoire" worden 1 doorlopend blok.</p>
+      <p class="section-sub">
+        "À propos de nous" en "Notre histoire" waren twee losse pagina's met overlappende inhoud.
+        Ze worden één doorlopend blok.
+      </p>
       <div class="line w100"></div>
       <div class="line w100"></div>
       <div class="line w60"></div>
@@ -58,69 +51,112 @@
   </section>
 
   <!-- SOCIAAL ENGAGEMENT -->
-  <section class="split reverse">
+  <section class="split reverse" id="engagement">
     <div class="split-media"><div class="ph">visual</div></div>
     <div class="split-text">
-      <p class="eyebrow">ASBL Axedis <span class="tag-note">behouden</span></p>
-      <h2 class="section-title">Sociaal engagement</h2>
+      <p class="eyebrow">Sociaal engagement <span class="tag-note">behouden, uitgelicht</span></p>
+      <h2 class="section-title">Samenwerking met Axedis</h2>
+      <p class="section-sub">
+        De samenwerking met de sociale inschakelingsonderneming staat nu weggestopt in een lopende tekst.
+        Sterk verhaal, eigen sectie.
+      </p>
       <div class="line w100"></div>
       <div class="line w60"></div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section class="section">
+  <!-- CIJFERS -->
+  <section class="section tight alt">
     <div class="wrap">
-      <p class="eyebrow">Contactgegevens + kaart <span class="tag-note">verplaatst — was aparte pagina</span></p>
+      <p class="eyebrow">Trust-signalen <span class="tag-note">behouden</span></p>
+      <div class="grid cols-3">
+        <div><h2 class="section-title">27</h2><p class="card-meta">jaar ervaring</p></div>
+        <div><h2 class="section-title">500+</h2><p class="card-meta">bedrijven</p></div>
+        <div><h2 class="section-title">3</h2><p class="card-meta">talen — FR / NL / EN</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Contact <span class="tag-note">verplaatst — was een aparte pagina</span></p>
+          <h2 class="section-title">Contactgegevens</h2>
+          <p class="section-sub">
+            Contact is geen eigen hoofdmenu-item meer. De conversie-actie zelf — "Offerte aanvragen" —
+            staat wél permanent in de header, los van waar iemand zich bevindt.
+          </p>
+        </div>
+      </div>
       <div class="grid cols-2">
         <div>
-          <div class="line w60"></div>
-          <div class="line w40"></div>
-          <div class="line w50"></div>
+          <p><strong>Belgosweet</strong><br>Boulevard de l'Europe 123<br>1300 Waver<br>België</p>
+          <p>+32 2 351 55 55<br>info@belgosweet.be</p>
+          <p class="card-meta">Ma–vr 9:00–17:00</p>
         </div>
         <div class="ph wide">kaart</div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACTFORM -->
-  <section class="section tight alt">
+  <!-- CONTACTFORMULIER -->
+  <section class="section alt">
     <div class="wrap">
-      <p class="eyebrow">Contactformulier <span class="tag-note">toegevoegd — bestond nergens</span></p>
-      <form onsubmit="return false;">
-        <div class="form-row"><label>Naam</label><input type="text" placeholder=""></div>
-        <div class="form-row"><label>E-mail</label><input type="email" placeholder=""></div>
-        <div class="form-row"><label>Bericht</label><textarea></textarea></div>
-        <button class="cta-btn primary" style="background:var(--ink);color:#fff;border:none;">Verzenden</button>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Contactformulier <span class="tag-note">toegevoegd — bestond nergens</span></p>
+          <h2 class="section-title">Stel je vraag</h2>
+          <p class="section-sub">
+            De huidige contactpagina toont enkel gegevens en een kaart. Wie geen offerte wil maar een vraag heeft,
+            moet nu zelf een mail opstellen.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-success hidden" data-success>
+        <strong>Verzonden.</strong> Je vraag is doorgestuurd — je krijgt binnen twee werkdagen antwoord.
+      </div>
+
+      <form class="form-grid" data-demo-form>
+        <div class="form-row"><label for="c-naam">Naam</label><input id="c-naam" type="text" required></div>
+        <div class="form-row"><label for="c-bedrijf">Bedrijf</label><input id="c-bedrijf" type="text"></div>
+        <div class="form-row"><label for="c-mail">E-mail</label><input id="c-mail" type="email" required></div>
+        <div class="form-row"><label for="c-tel">Telefoon</label><input id="c-tel" type="tel"></div>
+        <div class="form-row full"><label for="c-bericht">Bericht</label><textarea id="c-bericht" required></textarea></div>
+        <div class="form-row full">
+          <button class="cta-btn primary" type="submit">Verzenden</button>
+        </div>
       </form>
     </div>
   </section>
 
-  <!-- NEWSLETTER -->
+  <!-- NIEUWSBRIEF -->
   <section class="section tight">
     <div class="wrap">
-      <p class="eyebrow">Nieuwsbrief-inschrijving <span class="tag-note">toegevoegd</span></p>
-      <div style="display:flex; gap:10px; max-width:420px;">
-        <input type="email" style="flex:1; border:1px solid var(--line); padding:10px 12px;">
-        <button class="cta-btn">Inschrijven</button>
+      <p class="eyebrow">Nieuwsbrief <span class="tag-note">toegevoegd</span></p>
+      <h2 class="section-title" style="margin-bottom:14px;">Blijf op de hoogte</h2>
+
+      <div class="form-success hidden" data-success>
+        <strong>Ingeschreven.</strong> Bevestigingsmail onderweg.
+      </div>
+
+      <form class="inline-form" data-demo-form>
+        <input type="email" placeholder="E-mailadres" required aria-label="E-mailadres">
+        <button class="cta-btn" type="submit">Inschrijven</button>
+      </form>
+      <div class="note">
+        De klant vroeg de nieuwsbriefinschrijving expliciet op deze pagina, niet in de footer.
       </div>
     </div>
   </section>
 
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-cols">
-      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="shop.html">Categorieën</a><a href="shop.html">Merken</a></div>
-      <div class="footer-col"><div class="footer-col-title">Info</div><a href="over-ons.html">Over ons</a></div>
-      <div class="footer-col"><div class="footer-col-title">Support</div><a href="over-ons.html">Contact</a><a href="#">Voorwaarden</a></div>
-      <div class="footer-col"><div class="footer-col-title">Nieuwsbrief</div><div class="line w80"></div></div>
-    </div>
-    <div class="footer-bottom"><span>FR / NL / EN</span><span>© Belgosweet</span></div>
-  </div>
-</footer>
+<div id="shell-footer"></div>
 
-<script src="script.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

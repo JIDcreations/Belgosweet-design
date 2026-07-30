@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belgosweet — MidFi — Account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="account">
+
+<div id="shell-header"></div>
+
+<main>
+  <div class="wrap">
+
+    <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><span>Account</span></div>
+    <h1 class="page-title">Account</h1>
+
+    <div class="note">
+      <strong>Niets nieuws te bouwen.</strong> De huidige site heeft al een accountsysteem ("Votre compte", met zelfregistratie).
+      De beslissing is dus herpositioneren, niet herbouwen: login blijft een icoon in de header — geen nav-item — en krijgt
+      hier één duidelijke functie die vandaag ontbreekt: <strong>snel opnieuw aanvragen</strong>.
+      Dat is precies wat de vaste klanten van Belgosweet nodig hebben.
+    </div>
+
+    <div class="account-layout">
+
+      <!-- LOGIN -->
+      <div class="panel">
+        <h2>Inloggen</h2>
+        <p class="panel-sub">Voor bestaande klanten. Inloggen is optioneel — een offerte aanvragen kan ook zonder account.</p>
+
+        <div class="form-success hidden" id="login-state">
+          <strong>Ingelogd (demo).</strong> Rechts staan je vorige aanvragen klaar om opnieuw in te dienen.
+        </div>
+
+        <form id="login-form">
+          <div class="form-row"><label for="l-mail">E-mail</label><input id="l-mail" type="email" required></div>
+          <div class="form-row"><label for="l-pass">Wachtwoord</label><input id="l-pass" type="password" required></div>
+          <button class="cta-btn primary" type="submit">Inloggen</button>
+          <p class="hint" style="margin-top:14px;">
+            <a href="#" style="border-bottom:1px solid var(--line);">Wachtwoord vergeten?</a>
+          </p>
+        </form>
+
+        <div class="note" style="margin-bottom:0;">
+          <strong>"Créer un compte" is geschrapt</strong> als prominente publieke stap. Het account blijft bestaan,
+          maar wordt niet meer gepromoot: een B2B-relatie begint met een offerte of een gesprek, niet met een registratieformulier.
+          Nieuwe klanten komen binnen via de offerte-CTA.
+        </div>
+      </div>
+
+      <!-- SNEL OPNIEUW AANVRAGEN -->
+      <div class="panel">
+        <h2>Snel opnieuw aanvragen</h2>
+        <p class="panel-sub">
+          De klant vroeg een "bestelknop voor terugkerende klanten die gewoon hetzelfde willen herbestellen".
+          Dit is die knop — op basis van vorige aanvragen, niet als apart bestelsysteem.
+        </p>
+        <p class="card-meta" id="account-feedback" style="min-height:20px;"></p>
+        <div id="account-reorder"></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<div id="shell-footer"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

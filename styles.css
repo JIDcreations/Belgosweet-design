@@ -1,241 +1,1332 @@
 /* ============================================================
    Belgosweet — MidFi stylesheet
-   Grayscale wireframe. Geen kleuren, geen fotografie, geen final copy.
+   ------------------------------------------------------------
+   Grayscale wireframe. Bewust GEEN kleur, GEEN fotografie,
+   GEEN typografische signatuur, GEEN finale copy.
+   Alles hier dient enkel om structuur, hiërarchie en
+   interactie leesbaar te maken.
    ============================================================ */
 
 :root{
-  --ink:#161616;
-  --ink-soft:#6f6f6f;
-  --line:#b9b9b9;
-  --line-soft:#e0e0e0;
-  --bg:#ffffff;
-  --bg-alt:#f4f4f4;
-  --ph:#ececec;
-  --radius:0px;
+  /* ---- Grayscale ramp ----------------------------------------
+     Chroma 0 over de hele lijn: de brief laat geen kleur toe.
+     Contrast doet hier het werk dat kleur normaal doet — een
+     bijna-zwart anker tegenover papierwit, niet een veld grijs.
+     Alle tekstwaarden zijn op contrast gecontroleerd (≥4.5:1). */
+  --ink:      oklch(0.19 0 0);   /* koppen, primaire tekst        */
+  --ink-2:    oklch(0.40 0 0);   /* lopende tekst op wit          */
+  --ink-3:    oklch(0.52 0 0);   /* secundair — 5.7:1 op wit      */
+  --ink-4:    oklch(0.68 0 0);   /* enkel lijnen/iconen, geen tekst */
+  --rule:     oklch(0.92 0 0);
+  --rule-2:   oklch(0.85 0 0);
+  --paper:    oklch(1 0 0);
+  --paper-2:  oklch(0.975 0 0);
+  --surface:  oklch(0.94 0 0);   /* beeldvlak-placeholder          */
+  --void:     oklch(0.18 0 0);   /* volvlak donkere secties        */
+  --on-void:  oklch(0.99 0 0);
+  --on-void-2:oklch(0.74 0 0);   /* 7.1:1 op --void                */
+
+  /* legacy-aliassen — de andere pagina's gebruiken deze nog */
+  --ink-soft:var(--ink-3);
+  --ink-faint:var(--ink-4);
+  --line:var(--rule-2);
+  --line-soft:var(--rule);
+  --bg:var(--paper);
+  --bg-alt:var(--paper-2);
+  --ph:var(--surface);
+
+  /* ---- Ruimte ---- */
   --gap:24px;
-  --maxw:1180px;
+  --maxw:1280px;
+  --gutter:clamp(20px, 4vw, 56px);
+  --header-h:76px;
+  --section-y:clamp(96px, 11vw, 190px);
+
+  /* ---- Semantische z-schaal ---- */
+  --z-sticky:100;
+  --z-drawer:200;
+  --z-overlay:300;
+  --z-control:400;
+
+  /* ---- Beweging ---- */
+  --ease:cubic-bezier(0.22, 1, 0.36, 1);      /* ease-out-quint */
+  --ease-soft:cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 *{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+
 body{
   margin:0;
-  font-family:-apple-system, "Helvetica Neue", Arial, sans-serif;
-  color:var(--ink);
-  background:var(--bg);
-  line-height:1.45;
-  font-size:15px;
+  font-family:"Archivo", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-variation-settings:"wdth" 100;
+  color:var(--ink-2);
+  background:var(--paper);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 
 a{ color:inherit; text-decoration:none; }
 img,svg{ display:block; max-width:100%; }
+button{ font-family:inherit; font-size:inherit; color:inherit; cursor:pointer; }
+input,select,textarea{ font-family:inherit; }
 
-.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+/* Zichtbare focus is niet onderhandelbaar — B2B-gebruikers
+   tabben door filters en formulieren. */
+:focus-visible{
+  outline:2px solid var(--ink);
+  outline-offset:3px;
+  border-radius:1px;
+}
 
-/* ---------- meta banner: identifies this as MidFi, not final ---------- */
+/* ---- Typografische schaal ----------------------------------
+   Eén familie, contrast via de breedte-as (wdth) in plaats van
+   een serif/sans-paar. Zo blijft de MidFi eerlijk: dit legt geen
+   merktypografie vast, het legt hiërarchie vast. */
+
+h1,h2,h3{
+  color:var(--ink);
+  font-weight:500;
+  line-height:1.05;
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+  margin:0;
+}
+
+.display{
+  font-size:clamp(2.6rem, 6.4vw, 5.25rem);
+  font-variation-settings:"wdth" 88;
+  font-weight:500;
+  line-height:0.98;
+  letter-spacing:-0.038em;
+}
+.h-lg{ font-size:clamp(1.9rem, 3.4vw, 3rem); letter-spacing:-0.03em; }
+.h-md{ font-size:clamp(1.4rem, 2vw, 1.9rem); letter-spacing:-0.02em; }
+
+.lede{
+  font-size:clamp(1rem, 1.25vw, 1.15rem);
+  line-height:1.6;
+  color:var(--ink-2);
+  max-width:56ch;
+  text-wrap:pretty;
+}
+.meta{ font-size:0.8125rem; color:var(--ink-3); letter-spacing:0.005em; }
+
+/* Sparingly. Niet boven elke sectie — dat is precies het
+   sjabloon-signaal dat we hier wegwerken. */
+.label{
+  font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.14em;
+  font-weight:500; color:var(--ink-3);
+}
+
+p{ margin:0 0 1em; }
+p:last-child{ margin-bottom:0; }
+
+/* width:100% is nodig omdat deze wrappers ook binnen flex-kolommen
+   staan (de hero). Daar zorgt `margin:0 auto` anders voor
+   shrink-to-fit in plaats van volle breedte. */
+.wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter); }
+.wrap-wide{ width:100%; max-width:1600px; margin:0 auto; padding:0 var(--gutter); }
+.hidden{ display:none !important; }
+
+/* Onderstreping die van links uitgroeit — gebruikt voor tekstlinks
+   die als actie lezen zonder knop te worden. */
+.ulink{
+  display:inline-block; position:relative; color:var(--ink);
+  font-size:0.875rem; padding-bottom:3px;
+}
+.ulink::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background:currentColor; transform-origin:left;
+  transition:transform .5s var(--ease);
+}
+.ulink:hover::after{ transform:scaleX(0); transform-origin:right; }
+
+/* ============================================================
+   MidFi-balk + annotatiesysteem
+   ============================================================ */
+
+/* Zwevende MidFi-schakelaar in plaats van een balk bovenaan.
+   Een zwarte banner over de volle breedte vecht met de hero en
+   maakt van elke pagina meteen "een wireframe". Dit blijft
+   beschikbaar zonder de compositie te breken. */
 .midfi-banner{
-  background:var(--ink); color:#fff;
-  font-size:11px; letter-spacing:.06em; text-transform:uppercase;
-  text-align:center; padding:6px 12px;
+  position:fixed; left:var(--gutter); bottom:20px; z-index:var(--z-control);
+  display:flex; align-items:center; gap:10px;
+  background:var(--void); color:var(--on-void);
+  padding:7px 8px 7px 14px; border-radius:100px;
+  box-shadow:0 6px 24px rgb(0 0 0 / 0.18);
+  font-size:11px; letter-spacing:0.04em;
+  /* Het is een werkinstrument, geen paginaonderdeel: het wijkt terug
+     tot je het nodig hebt, zodat het de compositie niet meebepaalt. */
+  opacity:.42;
+  transition:opacity .35s var(--ease);
+}
+.midfi-banner:hover,
+.midfi-banner:focus-within{ opacity:1; }
+.midfi-banner .midfi-dot{
+  width:6px; height:6px; border-radius:50%; background:var(--on-void-2); flex:0 0 auto;
+}
+.midfi-banner span{ white-space:nowrap; }
+.midfi-banner button{
+  background:var(--on-void); border:none; color:var(--void);
+  font-size:11px; letter-spacing:0.02em; font-weight:500;
+  padding:5px 12px; border-radius:100px;
+  transition:opacity .3s var(--ease);
+}
+.midfi-banner button:hover{ opacity:.72; }
+@media (max-width:640px){
+  .midfi-banner .midfi-label{ display:none; }
 }
 
-/* ---------- header ---------- */
+/* Annotaties: uitleg bij structuurbeslissingen, aan/uit te zetten
+   zodat de klant de wireframe ook "kaal" kan bekijken. */
+.tag-note{
+  display:inline-block; font-size:10px; text-transform:uppercase; letter-spacing:.08em;
+  border:1px solid var(--rule-2); color:var(--ink-3); padding:2px 8px;
+  margin-left:8px; vertical-align:middle; white-space:nowrap; border-radius:100px;
+}
+.note{
+  border-top:1px solid var(--ink); background:none;
+  padding:12px 0 0; font-size:0.8125rem; line-height:1.6;
+  color:var(--ink-3); margin:22px 0; max-width:74ch;
+}
+.note strong{ color:var(--ink); font-weight:600; }
+/* Standaard staan de toelichtingen uit: de klant moet eerst de
+   pagina zien, niet de argumentatie. De schakelaar zet ze aan. */
+body.no-notes .tag-note,
+body.no-notes .note{ display:none; }
+
+/* ============================================================
+   Header
+   ============================================================ */
+
+/* De shell wordt door JavaScript in deze container gerenderd. Zonder
+   `display:contents` blijft de header een sticky kind van een doosje
+   dat exact even hoog is als hijzelf — dan heeft sticky geen ruimte om
+   te blijven plakken en scrolt de balk gewoon mee weg. Zo wordt de
+   header voor de layout een direct kind van <body>. */
+#shell-header{ display:contents; }
+
+/* Drie zones: navigatie links, woordmerk gecentreerd, hulpmiddelen
+   rechts. "Home" is geen navigatie-item — het woordmerk is de weg
+   terug, zoals op vrijwel elke site die deze indeling gebruikt. */
 .site-header{
-  border-bottom:1px solid var(--line);
-  background:#fff;
-  position:sticky; top:0; z-index:40;
+  position:sticky; top:0; z-index:var(--z-sticky);
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  transition:background .45s var(--ease), border-color .45s var(--ease), color .45s var(--ease);
 }
-.site-header .wrap{
-  display:flex; align-items:center; justify-content:space-between;
-  padding-top:16px; padding-bottom:16px; gap:20px;
+.header-grid{
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+  gap:24px; min-height:var(--header-h);
 }
-.logo{ font-weight:700; font-size:16px; letter-spacing:.02em; }
-.main-nav{ display:flex; gap:28px; font-size:13px; }
-.main-nav a{ padding-bottom:4px; border-bottom:1px solid transparent; color:var(--ink-soft); }
-.main-nav a.active,
-.main-nav a:hover{ color:var(--ink); border-bottom-color:var(--ink); }
-.header-right{ display:flex; align-items:center; gap:18px; font-size:12px; }
-.lang{ color:var(--ink-soft); }
-.icon-btn{ color:var(--ink-soft); font-size:12px; }
-.cta-btn{
-  display:inline-block;
-  border:1px solid var(--ink);
-  padding:9px 16px;
-  font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+
+.wordmark{
+  grid-column:2; justify-self:center;
+  font-size:clamp(1.05rem, 1.5vw, 1.3rem);
+  font-variation-settings:"wdth" 82;
+  font-weight:600; letter-spacing:0.02em; color:var(--ink);
   white-space:nowrap;
 }
-.cta-btn:hover{ background:var(--ink); color:#fff; }
-.nav-toggle{ display:none; }
 
-/* ---------- breadcrumb ---------- */
-.breadcrumb{
-  font-size:12px; color:var(--ink-soft); padding:16px 0;
+.nav-left{ grid-column:1; display:flex; align-items:center; gap:clamp(16px, 2.2vw, 32px); }
+.nav-left a{
+  position:relative; font-size:0.8125rem; font-weight:500;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--ink);
+  padding:4px 0;
 }
-.breadcrumb a{ color:var(--ink-soft); }
-.breadcrumb a:hover{ color:var(--ink); }
+.nav-left a::after{
+  content:""; position:absolute; left:0; bottom:0; width:100%; height:1px;
+  background:currentColor; transform:scaleX(0); transform-origin:left;
+  transition:transform .45s var(--ease);
+}
+.nav-left a:hover::after,
+.nav-left a.active::after{ transform:scaleX(1); }
 
-/* ---------- section shell ---------- */
-.section{ padding:48px 0; }
-.section.tight{ padding:28px 0; }
+.nav-right{
+  grid-column:3; justify-self:end;
+  display:flex; align-items:center; gap:clamp(12px, 1.6vw, 22px);
+}
+.lang-switch{ display:flex; align-items:center; gap:5px; font-size:0.75rem; letter-spacing:0.06em; color:var(--ink-3); }
+.lang-switch a{ padding:2px; }
+.lang-switch a.active{ color:var(--ink); font-weight:600; }
+.lang-switch .div{ color:var(--ink-4); }
+
+.icon-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  position:relative; width:34px; height:34px; margin:-6px;
+  background:none; border:none; color:var(--ink);
+  transition:opacity .3s var(--ease);
+}
+.icon-btn:hover{ opacity:.6; }
+.icon-btn svg{ width:19px; height:19px; }
+.icon-btn .count{
+  position:absolute; top:1px; right:1px;
+  min-width:15px; height:15px; padding:0 3px;
+  background:var(--ink); color:var(--paper);
+  font-size:9px; font-weight:600; line-height:15px; text-align:center;
+  border-radius:100px;
+}
+.icon-btn .count[data-empty="true"]{ display:none; }
+
+/* ---------- Shop-dropdown ----------
+   De header groeit uit tot een wit paneel met de volledige
+   catalogus. Ligt óver de pagina in plaats van de inhoud naar
+   beneden te duwen — anders springt alles bij elke hover. */
+.mega{
+  position:absolute; top:100%; left:0; right:0;
+  background:var(--paper);
+  border-bottom:1px solid transparent;
+  display:grid; grid-template-rows:0fr;
+  opacity:0; pointer-events:none;
+  transition:grid-template-rows .45s var(--ease), opacity .3s var(--ease),
+             border-color .45s var(--ease);
+}
+.mega.open{
+  grid-template-rows:1fr; opacity:1; pointer-events:auto;
+  border-bottom-color:var(--rule);
+}
+.mega > div{ overflow:hidden; }
+
+.mega-inner{
+  display:grid; grid-template-columns:repeat(4, 1fr);
+  gap:clamp(20px, 2.4vw, 44px);
+  padding:clamp(28px, 3vw, 44px) 0 clamp(24px, 2.6vw, 36px);
+}
+.mega-col-title{
+  display:block; padding-bottom:12px; margin-bottom:6px;
+  border-bottom:1px solid var(--rule);
+  font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.13em;
+  font-weight:600; color:var(--ink);
+}
+.mega-col a:not(.mega-col-title){
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  padding:8px 0; font-size:0.9375rem; color:var(--ink-2);
+  transition:padding-left .4s var(--ease), color .3s var(--ease);
+}
+.mega-col a:not(.mega-col-title):hover{ color:var(--ink); padding-left:7px; }
+.mega-col a span{ font-size:0.75rem; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+
+.mega-foot{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:20px; flex-wrap:wrap;
+  border-top:1px solid var(--rule);
+  padding:16px 0 clamp(26px, 2.8vw, 38px);
+  font-size:0.8125rem; color:var(--ink-3);
+}
+
+/* Zoeken schuift open onder de header i.p.v. permanent een veld
+   in de balk te zetten. */
+.search-panel{
+  display:grid; grid-template-rows:0fr;
+  border-bottom:1px solid transparent;
+  transition:grid-template-rows .5s var(--ease), border-color .5s var(--ease);
+  background:var(--paper);
+}
+.search-panel.open{ grid-template-rows:1fr; border-bottom-color:var(--rule); }
+.search-panel > div{ overflow:hidden; }
+.search-panel form{ display:flex; align-items:center; gap:14px; padding:22px 0 26px; }
+.search-panel input{
+  flex:1 1 auto; border:none; border-bottom:1px solid var(--rule-2); background:none;
+  font-size:clamp(1.25rem, 2.6vw, 1.9rem); font-variation-settings:"wdth" 92;
+  padding:8px 0; color:var(--ink); letter-spacing:-0.02em;
+}
+.search-panel input::placeholder{ color:var(--ink-3); }
+.search-panel input:focus{ outline:none; border-bottom-color:var(--ink); }
+.search-panel .hint{ font-size:0.8125rem; color:var(--ink-3); white-space:nowrap; }
+
+/* Vaste offerte-CTA. Blijft altijd actief ogen, ook bij lege lijst —
+   dit was expliciet een UX-probleem op de huidige site. */
+.cta-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  border:1px solid var(--ink); background:transparent; color:var(--ink);
+  padding:14px 26px; font-size:0.8125rem; font-weight:500;
+  letter-spacing:0.05em; text-transform:uppercase;
+  white-space:nowrap; text-align:center; border-radius:100px;
+  transition:background .4s var(--ease), color .4s var(--ease),
+             border-color .4s var(--ease), opacity .3s var(--ease);
+}
+.cta-btn:hover{ background:var(--ink); color:var(--paper); }
+.cta-btn.primary{ background:var(--ink); color:var(--paper); }
+.cta-btn.primary:hover{ opacity:.82; }
+.cta-btn.small{ padding:9px 18px; font-size:0.75rem; }
+.cta-btn[disabled]{ opacity:.45; pointer-events:none; }
+
+.quote-count{
+  display:inline-block; min-width:18px; padding:0 5px; margin-left:7px;
+  border:1px solid currentColor; font-size:10px; line-height:15px; text-align:center;
+  border-radius:100px;
+}
+
+.nav-toggle{
+  display:none; background:none; border:none; color:var(--ink);
+  width:34px; height:34px; margin:-6px; align-items:center; justify-content:center;
+}
+.nav-toggle svg{ width:20px; height:20px; }
+
+/* mobiel uitschuifmenu */
+.mobile-drawer{
+  position:fixed; inset:var(--header-h) 0 0; z-index:var(--z-drawer);
+  background:var(--paper); padding:0 var(--gutter);
+  transform:translateY(-8px); opacity:0; visibility:hidden;
+  transition:opacity .4s var(--ease), transform .5s var(--ease), visibility .4s;
+  overflow-y:auto;
+}
+.mobile-drawer.open{ transform:none; opacity:1; visibility:visible; }
+.mobile-drawer a{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:20px 0; border-bottom:1px solid var(--rule);
+  font-size:1.35rem; font-variation-settings:"wdth" 90; color:var(--ink);
+  letter-spacing:-0.02em;
+}
+.mobile-drawer .drawer-foot{ padding:28px 0; display:flex; flex-direction:column; gap:16px; }
+.mobile-drawer .cta-btn{ width:100%; }
+
+/* ============================================================
+   Breadcrumb — bestond nergens op de huidige site
+   ============================================================ */
+
+.breadcrumb{ font-size:12px; color:var(--ink-soft); padding:16px 0 0; }
+.breadcrumb a:hover{ color:var(--ink); text-decoration:underline; }
+.breadcrumb .sep{ padding:0 6px; color:var(--ink-faint); }
+
+/* ============================================================
+   Sectie-skelet
+   ============================================================ */
+
+.section{ padding:44px 0; }
+.section.tight{ padding:26px 0; }
 .section.alt{ background:var(--bg-alt); }
-.section-head{ margin-bottom:24px; }
+.section-head{ margin-bottom:22px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; }
 .eyebrow{
   font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft);
   margin:0 0 6px;
 }
-.section-title{ font-size:24px; font-weight:600; margin:0; letter-spacing:-.01em; }
-.section-sub{ font-size:13px; color:var(--ink-soft); margin-top:6px; max-width:520px; }
+.section-title{ font-size:23px; font-weight:600; margin:0; letter-spacing:-.01em; }
+.page-title{ font-size:28px; font-weight:600; margin:6px 0 0; letter-spacing:-.01em; }
+.section-sub{ font-size:13px; color:var(--ink-soft); margin:6px 0 0; max-width:560px; }
+.link-more{ font-size:12px; text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid var(--ink); padding-bottom:2px; }
 
-/* ---------- placeholders ---------- */
+/* ============================================================
+   Placeholders — beeld dat er nog niet is
+   ============================================================ */
+
 .ph{
   background:var(--ph);
   border:1px solid var(--line-soft);
   display:flex; align-items:center; justify-content:center;
-  color:var(--ink-soft); font-size:11px; text-transform:uppercase; letter-spacing:.05em;
-  min-height:100px;
+  color:var(--ink-faint); font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  min-height:100px; text-align:center; padding:8px;
 }
 .ph.tall{ min-height:340px; }
 .ph.short{ min-height:60px; }
 .ph.square{ aspect-ratio:1/1; min-height:0; }
 .ph.wide{ aspect-ratio:16/9; min-height:0; }
+.ph.fill{ height:100%; min-height:300px; border:none; }
 
 .line{ height:9px; background:var(--line-soft); margin:8px 0; }
-.line.w30{ width:30%; } .line.w40{ width:40%; } .line.w50{ width:50%; }
-.line.w60{ width:60%; } .line.w80{ width:80%; } .line.w100{ width:100%; }
-.line.thin{ height:6px; }
-.line.thick{ height:14px; }
+.line.w20{ width:20%; } .line.w30{ width:30%; } .line.w40{ width:40%; }
+.line.w50{ width:50%; } .line.w60{ width:60%; } .line.w80{ width:80%; }
+.line.w100{ width:100%; }
+.line.thin{ height:6px; } .line.thick{ height:14px; }
 
-/* ---------- hero ---------- */
-.hero{ padding:60px 0 48px; }
-.hero-inner{ text-align:center; max-width:640px; margin:0 auto 28px; }
+/* ============================================================
+   HOME — full-bleed hero
+   ------------------------------------------------------------
+   De hero is de stelling, niet een opwarmer. Volvlak donker,
+   header eroverheen, één zin die zegt wat Belgosweet verkoopt
+   en aan wie. Het beeldvlak is een placeholder — in deze fase
+   is er geen fotografie, dus draagt schaal en compositie het.
+   ============================================================ */
+
+.hero-full{
+  position:relative;
+  min-height:min(94svh, 900px);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  background:var(--surface); color:var(--ink-2);
+  overflow:hidden;
+  isolation:isolate;
+  border-bottom:1px solid var(--rule-2);
+}
+/* Het hele hero-vlak ís de beeldplaats. Lichte wireframe-grijs, geen
+   ingekleurd vlak: in deze fase bestaat de fotografie nog niet. */
+.hero-canvas{
+  position:absolute; inset:0; z-index:-2;
+  background:linear-gradient(180deg, oklch(0.955 0 0) 0%, oklch(0.925 0 0) 100%);
+}
+/* Fijne diagonale rasterlijnen: markeert het vlak als placeholder
+   zonder te doen alsof er een foto staat. */
+.hero-canvas::after{
+  content:""; position:absolute; inset:0;
+  background-image:repeating-linear-gradient(
+    -52deg, transparent 0 13px, oklch(0 0 0 / 0.022) 13px 14px);
+}
+.hero-vignette{ display:none; }
+.hero-tag{
+  position:absolute; top:28px; left:var(--gutter);
+  font-size:0.6875rem; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--ink-3);
+}
+.hero-ph-note{
+  position:absolute; top:28px; right:var(--gutter);
+  font-size:0.6875rem; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--ink-3);
+}
+.hero-inner-full{ padding-bottom:clamp(40px, 6vw, 76px); }
+.hero-full .display{ max-width:16ch; color:var(--ink); }
+.hero-full .lede{ color:var(--ink-2); max-width:46ch; margin-top:26px; }
+.hero-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-top:38px; }
+
+.hero-bar{
+  display:flex; justify-content:space-between; align-items:center; gap:20px;
+  border-top:1px solid var(--rule-2);
+  padding:20px 0 26px; flex-wrap:wrap;
+  font-size:0.8125rem; color:var(--ink-3);
+}
+.hero-facts{ display:flex; gap:clamp(20px, 3.5vw, 52px); flex-wrap:wrap; }
+.hero-facts b{ color:var(--ink); font-weight:500; }
+.scroll-cue{ display:inline-flex; align-items:center; gap:10px; color:var(--ink-3); }
+.scroll-cue .rule{
+  display:block; width:46px; height:1px; background:currentColor;
+  transform-origin:left; animation:cue 2.6s var(--ease) infinite;
+}
+@keyframes cue{
+  0%,100%{ transform:scaleX(0.35); opacity:.5; }
+  50%    { transform:scaleX(1);    opacity:1;  }
+}
+
+/* Openingsbeweging: één moment, niet elk blok apart.
+   Bewust een CSS-animatie en géén klasse die JavaScript toevoegt:
+   een reveal die afhangt van requestAnimationFrame vuurt niet in een
+   verborgen tab of een headless render, en dan is de hero leeg.
+   Zonder animatiedekking staat de tekst hier gewoon meteen goed. */
+.reveal{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: no-preference){
+  .reveal{ animation:reveal-rise .85s var(--ease) both; animation-delay:var(--d, 0ms); }
+}
+@keyframes reveal-rise{
+  from{ opacity:0; transform:translateY(16px); }
+  to  { opacity:1; transform:none; }
+}
+
+/* ============================================================
+   HOME — catalogusindex (signatuur)
+   ------------------------------------------------------------
+   Zestien categorieën als leesbare index met tellers, naast één
+   groot voorbeeldvlak dat meebeweegt. Sneller te scannen dan
+   zestien gelijke tegels, en het antwoord op de angst van de
+   klant: niemand raakt zijn weg kwijt in een lijst.
+   ============================================================ */
+
+.section-lead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:32px; flex-wrap:wrap; margin-bottom:clamp(32px, 4vw, 56px);
+}
+.section-lead .lede{ margin-top:14px; }
+
+.catalog-index{ padding:var(--section-y) 0; }
+
+.fam-head{
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  border-top:1px solid var(--ink);
+  padding-top:14px; margin:16px 0 6px;
+}
+.fam-name{
+  font-size:clamp(0.95rem, 1.2vw, 1.1rem);
+  font-variation-settings:"wdth" 88; font-weight:600;
+  letter-spacing:-0.01em; color:var(--ink);
+}
+.fam-total{
+  font-size:0.75rem; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.fam-list{ list-style:none; margin:0; padding:0; }
+.fam-list a{
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  padding:12px 0; border-bottom:1px solid var(--rule);
+  transition:padding-left .45s var(--ease);
+}
+.fam-list a:hover,
+.fam-list a:focus-visible{ padding-left:9px; }
+.fam-cat{
+  font-size:0.9375rem; color:var(--ink-2); line-height:1.35;
+  transition:color .3s var(--ease);
+}
+.fam-list a:hover .fam-cat,
+.fam-list a:focus-visible .fam-cat{ color:var(--ink); }
+.fam-n{
+  font-size:0.75rem; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+
+.fam-head:hover .fam-name{ text-decoration:underline; text-underline-offset:3px; }
+
+/* ============================================================
+   Catalogus — carrousel met hoge familieblokken
+   ------------------------------------------------------------
+   Vier blokken in plaats van zestien: de hele catalogus zit in
+   vier families, dus je bent na één veeg rond. Elk blok draagt
+   zijn eigen categorieën, zodat het overzicht compleet blijft
+   zonder dat er zestien keer gescrold moet worden.
+   ============================================================ */
+
+/* Ook bovenaan ruimte: zonder padding-top plakt deze sectie tegen
+   de hero zodra de toelichtingen uitstaan. */
+.catalog-carousel{ padding:var(--section-y) 0; }
+.carousel-head{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:24px; flex-wrap:wrap; margin-bottom:clamp(22px, 2.6vw, 34px);
+}
+.carousel-viewport{ position:relative; }
+.carousel-track{
+  display:flex; gap:clamp(10px, 1.2vw, 18px);
+  overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory; scroll-behavior:smooth;
+  padding-inline:var(--gutter);
+  /* Zonder scroll-padding snapt een blok tégen de rand van de viewport
+     in plaats van tegen de marge, en staat het eerste blok half buiten. */
+  scroll-padding-inline:var(--gutter);
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.carousel-track::-webkit-scrollbar{ display:none; }
+/* Compacter blok: er staan er ruim vier in beeld, zodat zestien
+   categorieën in drie schermen doorlopen zijn i.p.v. vijftien keer
+   klikken. Staand formaat blijft — het blok moet hoog ogen. */
+.cc-slide{
+  flex:0 0 clamp(200px, 22vw, 320px);
+  scroll-snap-align:start;
+  display:block; overflow:hidden;
+}
+.cc-slide .ph{
+  aspect-ratio:3/4; min-height:0; border:none;
+  transition:transform .8s var(--ease);
+}
+.cc-slide:hover .ph,
+.cc-slide:focus-visible .ph{ transform:scale(1.045); }
+.cc-body{
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  padding-top:12px; margin-top:12px; border-top:1px solid var(--rule);
+}
+.cc-name{
+  font-size:0.9375rem; color:var(--ink);
+  font-variation-settings:"wdth" 92; letter-spacing:-0.01em; line-height:1.3;
+}
+.cc-n{ font-size:0.75rem; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.cc-slide:hover .cc-name{ text-decoration:underline; text-underline-offset:3px; }
+
+.cc-nav{
+  position:absolute; top:32%; z-index:2;
+  width:46px; height:46px; border-radius:50%;
+  background:var(--paper); border:1px solid var(--rule-2); color:var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 14px rgb(0 0 0 / 0.08);
+  transition:opacity .35s var(--ease), background .35s var(--ease);
+}
+.cc-nav svg{ width:17px; height:17px; }
+.cc-nav:hover{ background:var(--paper-2); }
+.cc-nav[disabled]{ opacity:0; pointer-events:none; }
+.cc-prev{ left:calc(var(--gutter) - 23px); }
+.cc-next{ right:calc(var(--gutter) - 23px); }
+
+@media (prefers-reduced-motion: reduce){
+  .carousel-track{ scroll-behavior:auto; }
+}
+
+/* ============================================================
+   HOME — editorial feature (seizoen / promo)
+   ============================================================ */
+
+/* ============================================================
+   Seizoenssectie
+   ------------------------------------------------------------
+   Het beeld loopt links van de pagina af en de tekstkolom lijnt
+   uit op de ónderrand van dat beeld: dat geeft één sterke
+   basislijn in plaats van een tekstblok dat in het midden zweeft.
+   De producten staan op volle breedte eronder — in de tekstkolom
+   werden ze te smal om nog iets te tonen.
+   ============================================================ */
+.season{ padding:var(--section-y) 0; }
+
+/* Eén blok, geen twee: beeld links, en rechts alles wat erbij hoort —
+   tekst, de deadline, vier voorbeelden en de weg naar de rest.
+   Het beeld rekt mee met de hoogte van die kolom, zodat boven- en
+   onderrand samenvallen. */
+.season-top{
+  display:grid; grid-template-columns:minmax(0, 1.25fr) minmax(320px, 1fr);
+  gap:clamp(28px, 4vw, 72px); align-items:stretch;
+}
+/* linkerrand van de pagina af */
+.season-media{ margin-left:calc(-1 * var(--gutter)); }
+.season-media .ph{ height:100%; min-height:460px; border:none; }
+
+.season-text{ display:flex; flex-direction:column; }
+.season-text .h-lg{ margin-bottom:14px; }
+
+/* De deadline op één regel: bij seizoensgebonden gifting is niet het
+   product het nieuws maar wanneer je moet beslissen. */
+.season-facts{
+  display:flex; flex-wrap:wrap; gap:6px 22px; margin:22px 0 0; padding:16px 0 0;
+  border-top:1px solid var(--rule);
+  font-size:0.8125rem; color:var(--ink-3);
+}
+.season-facts b{ color:var(--ink); font-weight:500; }
+
+.season-cards{
+  display:grid; grid-template-columns:repeat(2, 1fr);
+  gap:clamp(14px, 1.4vw, 22px);
+  margin-top:clamp(24px, 2.6vw, 34px);
+}
+.season-foot{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:16px; flex-wrap:wrap; margin-top:clamp(22px, 2.4vw, 30px);
+}
+.season-foot span{ font-size:0.8125rem; color:var(--ink-3); }
+
+/* ============================================================
+   HOME — donker citaat
+   ============================================================ */
+
+/* ============================================================
+   USP-banner + één testimonial
+   ------------------------------------------------------------
+   Eén zin die zegt wat Belgosweet doet, en daaronder één klant
+   die het bevestigt. Verder niets.
+   ============================================================ */
+.usp-banner{
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  background:var(--paper-2);
+  padding:clamp(60px, 7vw, 120px) 0;
+}
+.usp-banner p{
+  margin:0; text-align:center;
+  font-size:clamp(1.5rem, 3.2vw, 2.75rem);
+  font-variation-settings:"wdth" 90;
+  line-height:1.22; letter-spacing:-0.028em; color:var(--ink);
+  text-wrap:balance; max-width:22ch; margin-inline:auto;
+}
+
+.testimonial-simple{ padding:var(--section-y) 0; }
+.ts-inner{
+  display:flex; align-items:center; gap:clamp(20px, 3vw, 40px);
+  max-width:780px; margin:0 auto;
+}
+.ts-photo{
+  flex:0 0 auto; width:clamp(72px, 8vw, 104px); aspect-ratio:1;
+  border-radius:50%; background:var(--surface);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.5625rem; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--ink-3); text-align:center;
+}
+.ts-body blockquote{
+  margin:0; font-size:clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height:1.45; letter-spacing:-0.012em; color:var(--ink); text-wrap:pretty;
+}
+.ts-attr{ margin-top:14px; font-size:0.8125rem; color:var(--ink-3); }
+.ts-attr b{ color:var(--ink); font-weight:500; }
+
+/* ============================================================
+   HOME — argumentatie + bewijs
+   ============================================================ */
+
+/* ============================================================
+   HOME — merkenband & afsluiter
+   ============================================================ */
+
+.brand-band{ border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+.brand-band-inner{
+  display:grid; grid-template-columns:repeat(7,1fr);
+  align-items:stretch;
+}
+.brand-band-inner a{
+  display:flex; align-items:center; justify-content:center;
+  padding:clamp(24px, 3vw, 40px) 10px;
+  border-left:1px solid var(--rule);
+  font-size:0.75rem; letter-spacing:0.06em; color:var(--ink-3);
+  text-align:center;
+  transition:background .4s var(--ease), color .4s var(--ease);
+}
+.brand-band-inner a:first-child{ border-left:none; }
+.brand-band-inner a:hover{ background:var(--paper-2); color:var(--ink); }
+
+.closer{
+  border-top:1px solid var(--ink);
+  padding:clamp(80px, 11vw, 168px) 0; text-align:center;
+}
+.closer .display{ color:var(--ink); margin:0 auto; max-width:14ch; }
+.closer .lede{ color:var(--ink-2); margin:24px auto 0; text-align:center; }
+.closer .hero-actions{ justify-content:center; }
+
+/* ============================================================
+   Hero (bestaande, lichte variant — over-ons)
+   ============================================================ */
+
+.hero{ padding:48px 0 40px; border-bottom:1px solid var(--line-soft); }
+.hero-inner{ text-align:center; max-width:640px; margin:0 auto 26px; }
 .hero-inner .line{ margin-left:auto; margin-right:auto; }
-.hero-ctas{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
+.hero-ctas{ display:flex; gap:12px; justify-content:center; margin-top:20px; flex-wrap:wrap; }
+.hero-usps{ display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); }
+.hero-usps span{ border:1px solid var(--line-soft); padding:6px 12px; }
 
-/* ---------- grid ---------- */
+/* ============================================================
+   Grids & kaarten
+   ============================================================ */
+
 .grid{ display:grid; gap:var(--gap); }
-.grid.cols-4{ grid-template-columns:repeat(4,1fr); }
-.grid.cols-3{ grid-template-columns:repeat(3,1fr); }
 .grid.cols-2{ grid-template-columns:repeat(2,1fr); }
+.grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+.grid.cols-4{ grid-template-columns:repeat(4,1fr); }
+.grid.cols-5{ grid-template-columns:repeat(5,1fr); }
+.grid.cols-6{ grid-template-columns:repeat(6,1fr); }
 
 .card{ display:block; }
 .card .ph{ margin-bottom:10px; }
-.card .line{ margin:6px 0; }
+.card:hover .ph{ border-color:var(--ink); }
 
-/* ---------- split (editorial block) ---------- */
+.card-title{ font-size:13px; font-weight:600; margin:0 0 2px; }
+.card-meta{ font-size:12px; color:var(--ink-soft); }
+.card-price{ font-size:12px; color:var(--ink); margin-top:4px; }
+.card-min{ font-size:11px; color:var(--ink-faint); margin-top:2px; }
+
+/* Rustige producttegel voor de catalogus-grids: enkel beeld + naam.
+   Naam in kleine caps met letterspacing i.p.v. lopende tekst. */
+.card.quiet .ph{ margin-bottom:14px; }
+.card.quiet .card-title{
+  font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.12em;
+  line-height:1.5; margin:0;
+}
+
+/* Badges op productkaarten: enkel structureel (welke statussen bestaan),
+   geen visuele styling-intentie. */
+.badges{ display:flex; gap:5px; flex-wrap:wrap; margin-bottom:6px; min-height:0; }
+.badge{
+  font-size:9px; text-transform:uppercase; letter-spacing:.06em;
+  border:1px solid var(--line); color:var(--ink-soft); padding:2px 6px;
+}
+.badge.solid{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+/* categorie-tegel */
+.tile{ display:block; border:1px solid var(--line-soft); }
+.tile:hover{ border-color:var(--ink); }
+.tile .ph{ margin:0; border:none; border-bottom:1px solid var(--line-soft); }
+.tile-body{ padding:11px 13px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.tile-name{ font-size:13px; font-weight:600; }
+.tile-count{ font-size:11px; color:var(--ink-faint); white-space:nowrap; }
+
+/* ============================================================
+   Editorial split (porta-nyc ritme)
+   ============================================================ */
+
 .split{
   display:grid; grid-template-columns:1fr 1fr; gap:0;
   border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft);
 }
 .split.reverse .split-media{ order:2; }
-.split-text{ padding:56px; display:flex; flex-direction:column; justify-content:center; }
+.split-text{ padding:52px; display:flex; flex-direction:column; justify-content:center; }
 .split-media{ min-height:100%; }
 .split-media .ph{ height:100%; min-height:320px; border:none; }
 
-/* ---------- brand row ---------- */
-.brand-row{ display:flex; gap:16px; flex-wrap:wrap; }
-.brand-row .ph{ flex:1 1 140px; min-height:56px; }
+.usp-list{ margin:16px 0 0; padding:0; list-style:none; }
+.usp-list li{ padding:11px 0; border-top:1px solid var(--line-soft); font-size:13px; }
+.usp-list li:last-child{ border-bottom:1px solid var(--line-soft); }
 
-/* ---------- testimonials ---------- */
-.testimonial{ margin-bottom:20px; }
-.testimonial .line{ }
-.testimonial .attr{ font-size:12px; color:var(--ink-soft); margin-top:4px; }
+.testimonial{ padding:14px 0; border-top:1px solid var(--line-soft); }
+.testimonial:last-child{ border-bottom:1px solid var(--line-soft); }
+.testimonial .attr{ font-size:12px; color:var(--ink-soft); margin-top:6px; }
 
-/* ---------- shop layout ---------- */
-.shop-layout{ display:grid; grid-template-columns:240px 1fr; gap:36px; align-items:start; }
-.filters{ border:1px solid var(--line-soft); padding:20px; position:sticky; top:88px; }
-.filter-group{ margin-bottom:22px; }
+/* logo-rij */
+.brand-row{ display:grid; grid-template-columns:repeat(8,1fr); gap:12px; }
+.brand-row .ph{ min-height:58px; font-size:10px; }
+.brand-row a:hover .ph{ border-color:var(--ink); }
+
+/* ============================================================
+   Categorie-hero
+   ------------------------------------------------------------
+   Vervangt de kale "breadcrumb + h1"-kop. Split layout: beeld
+   links, tekstkolom rechts die onderaan uitlijnt zodat titel en
+   intro op de onderrand van het beeld rusten.
+   Herbruikbaar op shop.html (variant .compact) en categorie.html.
+   ============================================================ */
+
+.cat-hero{
+  display:grid; grid-template-columns:1fr 1fr; gap:0;
+  border-bottom:1px solid var(--line-soft);
+}
+.cat-hero-media .ph{ height:100%; min-height:480px; border:none; }
+.cat-hero-body{
+  padding:56px 0 52px 56px;
+  display:flex; flex-direction:column; justify-content:flex-end;
+}
+.cat-hero-eyebrow{
+  font-size:11px; text-transform:uppercase; letter-spacing:.16em;
+  color:var(--ink-soft); margin:0 0 20px;
+}
+.cat-hero-title{
+  font-size:46px; line-height:1.04; font-weight:400; letter-spacing:-.025em;
+  margin:0 0 24px;
+}
+.cat-hero-intro{ max-width:440px; }
+.cat-hero-intro .line{ height:8px; }
+.cat-hero-meta{
+  margin-top:26px; font-size:11px; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--ink-faint);
+}
+
+/* lichtere variant: minder hoog beeld, kleinere titel — voor het
+   overzichtsniveau, waar de hero niet mag concurreren met de tegels */
+.cat-hero.compact .cat-hero-media .ph{ min-height:340px; }
+.cat-hero.compact .cat-hero-title{ font-size:36px; }
+.cat-hero.compact .cat-hero-body{ padding:44px 0 40px 48px; }
+
+/* ============================================================
+   Quick-filters — tekstlinks, geen knoppen
+   ------------------------------------------------------------
+   Snelfilters op categorieniveau. Bewust een ander mechanisme
+   (en een andere visuele orde) dan het uitgebreide filterpaneel,
+   zodat beide niet als hetzelfde ding lezen.
+   ============================================================ */
+
+.quick-filters{
+  display:flex; flex-wrap:wrap; align-items:center;
+  padding:26px 0 22px;
+}
+.quick-filters a,
+.quick-filters button{
+  font-size:11px; text-transform:uppercase; letter-spacing:.11em;
+  color:var(--ink-soft); background:none; border:none;
+  border-left:1px solid var(--line-soft);
+  padding:2px 18px; line-height:1.6;
+}
+.quick-filters > :first-child{ padding-left:0; border-left:none; }
+.quick-filters a:hover,
+.quick-filters button:hover{ color:var(--ink); }
+.quick-filters a span,
+.quick-filters button span{ border-bottom:1px solid transparent; padding-bottom:3px; }
+.quick-filters a.active{ color:var(--ink); }
+.quick-filters a.active span{ border-bottom-color:var(--ink); }
+.quick-filters .more{ color:var(--ink); }
+
+/* ============================================================
+   Catalogus-balk: filter tonen/verbergen + telling + sortering
+   ============================================================ */
+
+.catalog-bar{
+  display:flex; justify-content:space-between; align-items:center; gap:20px;
+  padding:6px 0 22px; border-top:1px solid var(--line-soft); flex-wrap:wrap;
+}
+.catalog-bar-right{ display:flex; align-items:center; gap:20px; font-size:12px; color:var(--ink-soft); flex-wrap:wrap; }
+
+.filter-toggle{
+  display:inline-flex; align-items:center; gap:10px;
+  background:none; border:none; padding:14px 0 0;
+  font-size:11px; text-transform:uppercase; letter-spacing:.11em; color:var(--ink);
+}
+.filter-toggle .ico{ display:block; width:13px; height:13px; }
+.filter-toggle:hover .label{ border-bottom-color:var(--ink); }
+.filter-toggle .label{ border-bottom:1px solid transparent; padding-bottom:2px; }
+
+/* ============================================================
+   Shop / categorie layout
+   ============================================================ */
+
+.shop-layout{ display:grid; grid-template-columns:250px 1fr; gap:36px; align-items:start; }
+/* filterpaneel ingeklapt: het grid neemt de volle breedte over */
+.shop-layout.filters-hidden{ grid-template-columns:1fr; }
+.shop-layout.filters-hidden .filters{ display:none; }
+
+.filters{ border:1px solid var(--line-soft); position:sticky; top:calc(var(--header-h) + 20px); }
+.filters-head{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:13px 16px; border-bottom:1px solid var(--line-soft);
+}
+.filters-head strong{ font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
+.filters-body{ padding:16px; max-height:calc(100vh - 200px); overflow-y:auto; }
+.filter-group{ margin-bottom:20px; }
 .filter-group:last-child{ margin-bottom:0; }
-.filter-title{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:10px; }
-.filter-opt{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); padding:4px 0; }
-.filter-opt input{ accent-color:var(--ink); }
-.filters-toggle{ display:none; }
+.filter-title{
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  margin-bottom:9px; display:flex; justify-content:space-between; align-items:center;
+}
+.filter-opt{
+  display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft);
+  padding:3px 0; cursor:pointer;
+}
+.filter-opt:hover{ color:var(--ink); }
+.filter-opt input{ accent-color:var(--ink); flex:0 0 auto; margin:0; }
+.filter-opt .n{ margin-left:auto; font-size:11px; color:var(--ink-faint); }
+.filter-opt.is-empty{ opacity:.4; }
+.filter-sub{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin:10px 0 4px; }
+.filter-more{ font-size:12px; color:var(--ink-soft); border-bottom:1px solid var(--line); margin-top:6px; display:inline-block; background:none; border-top:none; border-left:none; border-right:none; padding:2px 0; }
+.filters-toggle{ display:none; width:100%; margin-bottom:16px; }
+.filters-clear{ font-size:11px; color:var(--ink-soft); background:none; border:none; border-bottom:1px solid var(--line); padding:1px 0; }
+.filters-clear:hover{ color:var(--ink); }
 
-.toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-size:12px; color:var(--ink-soft); }
-.sort-select{ border:1px solid var(--line); background:#fff; padding:6px 10px; font-size:12px; color:var(--ink); }
+.toolbar{
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  margin-bottom:16px; font-size:12px; color:var(--ink-soft); flex-wrap:wrap;
+}
+.sort-select{ border:1px solid var(--line); background:#fff; padding:7px 10px; font-size:12px; color:var(--ink); }
 
-.pagination{ display:flex; gap:8px; justify-content:center; margin-top:32px; font-size:13px; }
-.pagination a{ border:1px solid var(--line-soft); padding:6px 12px; color:var(--ink-soft); }
-.pagination a.active{ border-color:var(--ink); color:var(--ink); }
+.chips{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.chip{
+  display:inline-flex; align-items:center; gap:7px;
+  border:1px solid var(--line); padding:4px 9px; font-size:11px; color:var(--ink);
+  background:#fff;
+}
+.chip b{ font-weight:400; color:var(--ink-faint); }
+.chip .x{ font-size:13px; line-height:1; color:var(--ink-soft); }
+.chip:hover .x{ color:var(--ink); }
 
-/* ---------- product detail ---------- */
-.pdp{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
-.pdp-gallery .ph.tall{ min-height:420px; }
+.empty-state{ border:1px solid var(--line-soft); padding:40px 24px; text-align:center; color:var(--ink-soft); font-size:13px; }
+.empty-state strong{ display:block; color:var(--ink); font-size:15px; margin-bottom:6px; }
+
+/* ============================================================
+   Asymmetrisch catalogus-grid
+   ------------------------------------------------------------
+   Niet elke cel is gelijk: tussen de producttegels staan
+   editorial-tegels die 2 kolommen en/of 2 rijen beslaan.
+   Zo krijgt het overzicht ritme in plaats van de vlakke
+   "webshop-rasterlap" die de huidige site heeft.
+   `dense` vult de gaten die de grote tegels achterlaten.
+   ============================================================ */
+
+.grid-editorial{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:44px 24px;
+  grid-auto-flow:dense;
+  align-items:start;
+}
+.grid-editorial.wide{ grid-template-columns:repeat(4,1fr); }
+
+.ed-tile{
+  border:1px solid var(--line-soft);
+  padding:28px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  min-height:260px;
+  /* het grid lijnt tegels bovenaan uit zodat producttegels niet uitrekken;
+     de editorial-tegel moet zijn volledige span wél vullen */
+  align-self:stretch;
+}
+.ed-tile:hover{ border-color:var(--ink); }
+.ed-tile .ed-eyebrow{
+  font-size:10px; text-transform:uppercase; letter-spacing:.14em; color:var(--ink-faint);
+  margin:0 0 14px;
+}
+.ed-tile .ed-title{
+  font-size:24px; line-height:1.15; font-weight:400; letter-spacing:-.015em; margin:0 0 16px;
+}
+.ed-tile .ed-body{ max-width:340px; }
+.ed-tile .ed-link{
+  margin-top:22px; font-size:11px; text-transform:uppercase; letter-spacing:.11em;
+  border-bottom:1px solid var(--ink); align-self:flex-start; padding-bottom:3px;
+}
+
+/* spanvarianten — bepalen het ritme van de pagina */
+.ed-tile.span-2x2{ grid-column:span 2; grid-row:span 2; }
+.ed-tile.span-1x2{ grid-row:span 2; }
+.ed-tile.span-2x1{ grid-column:span 2; }
+
+/* editorial-tegel met beeld i.p.v. tekstblok */
+.ed-tile.media{ padding:0; border:none; }
+.ed-tile.media .ph{ height:100%; min-height:100%; }
+
+/* Eén paginering-methode — de huidige site heeft er twee door elkaar. */
+.pagination{ display:flex; gap:7px; justify-content:center; align-items:center; margin-top:32px; font-size:13px; flex-wrap:wrap; }
+.pagination button{
+  border:1px solid var(--line-soft); background:#fff; padding:7px 13px; color:var(--ink-soft);
+}
+.pagination button.active{ border-color:var(--ink); color:var(--ink); font-weight:600; }
+.pagination button:hover:not([disabled]){ border-color:var(--ink); color:var(--ink); }
+.pagination button[disabled]{ opacity:.35; cursor:default; }
+.pagination .dots{ color:var(--ink-faint); padding:0 2px; }
+
+/* ============================================================
+   Productdetail
+   ============================================================ */
+
+.pdp{ display:grid; grid-template-columns:1fr 1fr; gap:52px; margin-top:20px; }
+.pdp-gallery .ph.tall{ min-height:440px; }
 .pdp-thumbs{ display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:10px; }
-.pdp-thumbs .ph{ min-height:64px; }
+.pdp-thumbs .ph{ min-height:66px; cursor:pointer; }
+.pdp-thumbs .ph.active{ border-color:var(--ink); }
 
-.pdp-info .eyebrow{ margin-bottom:8px; }
-.pdp-title{ font-size:26px; font-weight:600; margin:0 0 6px; }
-.pdp-num{ font-size:12px; color:var(--ink-soft); margin-bottom:18px; }
-.pdp-price{ font-size:14px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line-soft); }
+.pdp-title{ font-size:26px; font-weight:600; margin:0 0 6px; letter-spacing:-.01em; }
+.pdp-sku{ font-size:12px; color:var(--ink-soft); margin-bottom:16px; }
+.pdp-price{
+  font-size:14px; margin-bottom:20px; padding-bottom:20px;
+  border-bottom:1px solid var(--line-soft);
+}
+.pdp-price strong{ font-weight:700; }
+.pdp-price .hint{ display:block; font-size:12px; color:var(--ink-soft); margin-top:4px; }
 
 .variant-block{ margin-bottom:20px; }
-.variant-label{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px; }
+.variant-label{
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  margin-bottom:9px; display:flex; gap:8px; align-items:baseline;
+}
+.variant-label .chosen{ font-weight:400; text-transform:none; letter-spacing:0; color:var(--ink-soft); font-size:12px; }
 .variant-options{ display:flex; gap:8px; flex-wrap:wrap; }
-.variant-opt{
-  border:1px solid var(--line); padding:8px 14px; font-size:13px; cursor:pointer; background:#fff;
-}
+.variant-opt{ border:1px solid var(--line); padding:8px 14px; font-size:13px; background:#fff; }
 .variant-opt:hover{ border-color:var(--ink); }
-.variant-opt.active{ border:1px solid var(--ink); font-weight:600; background:var(--bg-alt); }
+.variant-opt.active{ border-color:var(--ink); background:var(--bg-alt); font-weight:600; }
 
-.warn-box{
-  border:1px solid var(--ink); padding:12px 14px; font-size:13px; margin:18px 0;
-}
-.warn-box strong{ font-weight:700; }
+.qty-row{ display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; margin:20px 0 6px; }
+.qty-field label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:6px; }
+.qty-input{ display:flex; border:1px solid var(--line); width:130px; }
+.qty-input button{ width:34px; border:none; background:var(--bg-alt); color:var(--ink); font-size:15px; }
+.qty-input input{ width:100%; border:none; text-align:center; font-size:14px; padding:8px 0; -moz-appearance:textfield; }
+.qty-input input::-webkit-outer-spin-button,
+.qty-input input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
-.stock-table{ width:100%; border-collapse:collapse; font-size:13px; margin-bottom:22px; }
+.warn-box{ border:1px solid var(--ink); padding:11px 14px; font-size:13px; margin:16px 0; }
+.warn-box.soft{ border-color:var(--line); color:var(--ink-soft); }
+.field-error{ font-size:12px; color:var(--ink); border-left:2px solid var(--ink); padding-left:9px; margin-top:8px; }
+
+.stock-table{ width:100%; border-collapse:collapse; font-size:13px; margin:18px 0 22px; }
 .stock-table th, .stock-table td{ border:1px solid var(--line-soft); padding:8px 12px; text-align:left; }
-.stock-table th{ background:var(--bg-alt); font-weight:600; font-size:11px; text-transform:uppercase; }
+.stock-table th{ background:var(--bg-alt); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
 
-.cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
-.cta-row .cta-btn.primary{ background:var(--ink); color:#fff; }
-.cta-row .cta-btn.primary:hover{ background:#fff; color:var(--ink); }
+.cta-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+.cta-feedback{ font-size:12px; color:var(--ink-soft); }
 
-.pdp-desc{ font-size:14px; color:var(--ink-soft); max-width:640px; }
-.pdp-desc .line{ margin:10px 0; }
+.trust-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; padding-top:18px; border-top:1px solid var(--line-soft); }
+.trust-row span{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); border:1px solid var(--line-soft); padding:6px 10px; }
 
-.tag-note{
-  display:inline-block; font-size:10px; text-transform:uppercase; letter-spacing:.05em;
-  border:1px solid var(--line); color:var(--ink-soft); padding:2px 7px; margin-left:8px; vertical-align:middle;
+/* accordion — productinfo gebundeld i.p.v. één lange lap tekst */
+.acc{ border-top:1px solid var(--line-soft); }
+.acc-item{ border-bottom:1px solid var(--line-soft); }
+.acc-head{
+  width:100%; display:flex; justify-content:space-between; align-items:center; gap:12px;
+  background:none; border:none; padding:15px 0; text-align:left;
+  font-size:13px; font-weight:600; color:var(--ink);
 }
+.acc-head .sign{ font-size:16px; color:var(--ink-soft); font-weight:400; }
+.acc-body{ display:none; padding:0 0 18px; font-size:13px; color:var(--ink-soft); max-width:680px; }
+.acc-item.open .acc-body{ display:block; }
 
-/* ---------- forms ---------- */
-.form-row{ margin-bottom:16px; max-width:420px; }
-.form-row label{ display:block; font-size:12px; margin-bottom:6px; color:var(--ink-soft); }
-.form-row input, .form-row textarea{
-  width:100%; border:1px solid var(--line); padding:10px 12px; font-size:14px; font-family:inherit; background:#fff;
+/* ============================================================
+   Offertelijst
+   ============================================================ */
+
+.quote-layout{ display:grid; grid-template-columns:1fr 340px; gap:36px; align-items:start; margin-top:20px; }
+.quote-table{ width:100%; border-collapse:collapse; font-size:13px; }
+.quote-table th{
+  font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);
+  text-align:left; padding:0 12px 10px; border-bottom:1px solid var(--line);
 }
-.form-row textarea{ min-height:100px; resize:vertical; }
+.quote-table td{ padding:14px 12px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
+.quote-table .thumb{ width:70px; }
+.quote-table .thumb .ph{ min-height:64px; margin:0; }
+.quote-item-name{ font-size:13px; font-weight:600; }
+.quote-item-meta{ font-size:12px; color:var(--ink-soft); margin-top:3px; }
+.quote-remove{ background:none; border:none; border-bottom:1px solid var(--line); font-size:11px; color:var(--ink-soft); padding:1px 0; }
+.quote-remove:hover{ color:var(--ink); }
 
-/* ---------- footer ---------- */
-.site-footer{ border-top:1px solid var(--line); padding:44px 0 24px; margin-top:40px; }
-.footer-cols{ display:grid; grid-template-columns:repeat(4,1fr); gap:32px; margin-bottom:32px; }
-.footer-col-title{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:14px; }
-.footer-col a{ display:block; font-size:13px; color:var(--ink-soft); margin-bottom:8px; }
+.quote-side{ border:1px solid var(--line-soft); padding:20px; position:sticky; top:calc(var(--header-h) + 20px); }
+.quote-side h3{ font-size:13px; text-transform:uppercase; letter-spacing:.05em; margin:0 0 14px; }
+.quote-side .row{ display:flex; justify-content:space-between; font-size:13px; padding:7px 0; border-bottom:1px solid var(--line-soft); }
+.quote-side .cta-btn{ width:100%; margin-top:16px; }
+
+.steps{ display:flex; gap:0; margin:20px 0 8px; border:1px solid var(--line-soft); }
+.step{ flex:1; padding:11px 14px; font-size:12px; color:var(--ink-faint); border-right:1px solid var(--line-soft); }
+.step:last-child{ border-right:none; }
+.step.active{ color:var(--ink); font-weight:600; background:var(--bg-alt); }
+.step b{ display:block; font-size:10px; text-transform:uppercase; letter-spacing:.06em; font-weight:400; color:var(--ink-faint); margin-bottom:2px; }
+
+/* ============================================================
+   Formulieren
+   ============================================================ */
+
+.form-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 20px; max-width:640px; }
+.form-row{ margin-bottom:16px; }
+.form-row.full{ grid-column:1/-1; }
+.form-row label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; color:var(--ink-soft); }
+.form-row input, .form-row textarea, .form-row select{
+  width:100%; border:1px solid var(--line); padding:10px 12px; font-size:14px;
+  font-family:inherit; background:#fff; color:var(--ink);
+}
+.form-row textarea{ min-height:110px; resize:vertical; }
+.form-row .hint{ font-size:11px; color:var(--ink-faint); margin-top:5px; }
+.form-check{ display:flex; gap:9px; align-items:flex-start; font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+.form-check input{ accent-color:var(--ink); margin-top:2px; }
+.form-success{ border:1px solid var(--ink); padding:16px 18px; font-size:13px; margin-bottom:20px; }
+
+.inline-form{ display:flex; gap:10px; max-width:440px; flex-wrap:wrap; }
+.inline-form input{ flex:1 1 220px; border:1px solid var(--line); padding:10px 12px; font-size:14px; }
+
+/* ============================================================
+   Info-pagina (voorwaarden / privacy / cookies / print)
+   ============================================================ */
+
+.doc-layout{ display:grid; grid-template-columns:220px 1fr; gap:44px; align-items:start; margin-top:20px; }
+.doc-nav{ position:sticky; top:calc(var(--header-h) + 20px); border-left:1px solid var(--line-soft); }
+.doc-nav a{ display:block; font-size:13px; color:var(--ink-soft); padding:8px 14px; border-left:2px solid transparent; margin-left:-1px; }
+.doc-nav a.active{ color:var(--ink); border-left-color:var(--ink); font-weight:600; }
+.doc-body{ max-width:680px; }
+.doc-body h2{ font-size:18px; font-weight:600; margin:28px 0 10px; }
+.doc-body h2:first-child{ margin-top:0; }
+
+/* ============================================================
+   Account
+   ============================================================ */
+
+.account-layout{ display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:start; margin-top:24px; }
+.panel{ border:1px solid var(--line-soft); padding:24px; }
+.panel h2{ font-size:16px; font-weight:600; margin:0 0 4px; }
+.panel .panel-sub{ font-size:13px; color:var(--ink-soft); margin:0 0 18px; }
+
+.reorder-item{ display:flex; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line-soft); }
+.reorder-item .ph{ width:56px; min-height:56px; flex:0 0 56px; margin:0; }
+.reorder-item .meta{ flex:1 1 auto; min-width:0; }
+.reorder-item .meta strong{ display:block; font-size:13px; font-weight:600; }
+.reorder-item .meta span{ font-size:12px; color:var(--ink-soft); }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+/* extra ruimte onderaan zodat de zwevende MidFi-schakelaar
+   nooit op de footerinhoud komt te liggen */
+.site-footer{ border-top:1px solid var(--rule); padding:clamp(48px, 6vw, 84px) 0 76px; }
+.footer-cols{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:clamp(24px, 3vw, 48px); margin-bottom:clamp(40px, 5vw, 68px);
+}
+.footer-col-title{
+  font-size:0.6875rem; font-weight:500; text-transform:uppercase;
+  letter-spacing:0.14em; color:var(--ink-3); margin-bottom:18px;
+}
+.footer-col a{ display:block; font-size:0.9375rem; color:var(--ink-2); margin-bottom:11px; }
 .footer-col a:hover{ color:var(--ink); }
+.footer-col p{ font-size:0.9375rem; color:var(--ink-2); margin:0 0 12px; line-height:1.7; }
 .footer-bottom{
-  border-top:1px solid var(--line-soft); padding-top:18px;
-  display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-soft);
+  border-top:1px solid var(--rule); padding-top:22px;
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  font-size:0.8125rem; color:var(--ink-3); flex-wrap:wrap;
 }
 
-/* ---------- structure notes (dev annotations) ---------- */
-.note{
-  border:1px dashed var(--line); background:var(--bg-alt);
-  padding:14px 16px; font-size:12px; color:var(--ink-soft); margin:20px 0;
-}
-.note strong{ color:var(--ink); }
+/* ============================================================
+   Responsive — home
+   ============================================================ */
 
-/* ---------- responsive ---------- */
+@media (max-width: 1000px){
+  .cc-slide{ flex-basis:30vw; }
+  /* Gestapeld loopt het beeld langs beide randen weg. */
+  .season-top{ grid-template-columns:1fr; gap:28px; }
+  .season-media{ margin-inline:calc(-1 * var(--gutter)); }
+  .season-media .ph{ height:auto; min-height:0; aspect-ratio:16/9; }
+  .proof{ grid-template-columns:repeat(2,1fr); gap:32px 24px; }
+  .brand-band-inner{ grid-template-columns:repeat(4,1fr); }
+  .brand-band-inner a:nth-child(4n+1){ border-left:none; }
+  .brand-band-inner a:nth-child(n+5){ border-top:1px solid var(--rule); }
+}
+
+@media (max-width: 620px){
+  /* Op telefoon veegt de bezoeker zelf — pijlen zijn dan overbodig. */
+  .cc-nav{ display:none; }
+  .cc-slide{ flex-basis:52vw; }
+  .hero-full{ min-height:min(88svh, 720px); }
+  .hero-facts{ gap:18px; font-size:0.75rem; }
+  .scroll-cue{ display:none; }
+  .season-media .ph{ aspect-ratio:4/3; }
+  .brand-band-inner{ grid-template-columns:repeat(2,1fr); }
+  .brand-band-inner a:nth-child(2n+1){ border-left:none; }
+  .brand-band-inner a:nth-child(n+3){ border-top:1px solid var(--rule); }
+  .promo-strip a{ gap:12px; }
+}
+
+/* ============================================================
+   Responsive — algemeen
+   ============================================================ */
+
+@media (max-width: 1080px){
+  .header-search{ display:none; }
+  .brand-row{ grid-template-columns:repeat(4,1fr); }
+  .cat-hero-title{ font-size:36px; }
+  .cat-hero-body{ padding:40px 0 36px 36px; }
+}
+
 @media (max-width: 900px){
-  .main-nav{ display:none; }
-  .nav-toggle{ display:block; }
-  .split, .pdp{ grid-template-columns:1fr; }
+  /* Menuknop links, woordmerk in het midden, offertetas rechts.
+     Taal en zoeken verhuizen naar de lade. */
+  .nav-left a{ display:none; }
+  .nav-toggle{ display:inline-flex; }
+  /* Geen hover op touch: de lade neemt het over. */
+  .mega{ display:none; }
+  .nav-right .lang-switch,
+  .nav-right .icon-btn.search-toggle,
+  .nav-right .icon-btn.account{ display:none; }
+
+  .split, .pdp, .quote-layout, .doc-layout, .account-layout{ grid-template-columns:1fr; }
   .split-text{ padding:32px 24px; order:2 !important; }
   .split-media{ order:1 !important; }
+  .split-media .ph{ min-height:220px; }
+
+  /* Eén control stuurt het filterpaneel op elk formaat: op mobiel
+     staat het gewoon standaard dicht (zie app.js), niet via een
+     tweede, aparte knop. */
   .shop-layout{ grid-template-columns:1fr; }
-  .filters{ display:none; position:static; }
-  .filters.open{ display:block; }
-  .filters-toggle{ display:inline-block; }
-  .grid.cols-4{ grid-template-columns:repeat(2,1fr); }
+  .filters{ position:static; }
+  .filters-body{ max-height:none; }
+
+  .quote-side, .doc-nav{ position:static; }
+  .doc-nav{ border-left:none; border-bottom:1px solid var(--line-soft); display:flex; flex-wrap:wrap; }
+  .doc-nav a{ border-left:none; border-bottom:2px solid transparent; }
+  .doc-nav a.active{ border-left-color:transparent; border-bottom-color:var(--ink); }
+
+  .grid.cols-4, .grid.cols-5, .grid.cols-6{ grid-template-columns:repeat(2,1fr); }
   .grid.cols-3{ grid-template-columns:repeat(2,1fr); }
   .footer-cols{ grid-template-columns:repeat(2,1fr); }
+  .form-grid{ grid-template-columns:1fr; }
+  /* Foto boven de quote i.p.v. ernaast, zodat de tekst breed blijft. */
+  .ts-inner{ flex-direction:column; align-items:flex-start; gap:20px; }
+
+  /* hero stapelt: beeld boven, tekst eronder */
+  .cat-hero{ grid-template-columns:1fr; }
+  .cat-hero-media .ph,
+  .cat-hero.compact .cat-hero-media .ph{ min-height:260px; }
+  .cat-hero-body,
+  .cat-hero.compact .cat-hero-body{ padding:32px 0 8px; }
+  .cat-hero-title, .cat-hero.compact .cat-hero-title{ font-size:30px; }
+
+  /* editorial-tegels blijven bestaan, maar spannen minder ver */
+  .grid-editorial, .grid-editorial.wide{ grid-template-columns:repeat(2,1fr); gap:32px 20px; }
+  .ed-tile.span-2x2, .ed-tile.span-2x1{ grid-column:span 2; }
+  .ed-tile.span-2x2, .ed-tile.span-1x2{ grid-row:span 1; }
+  .ed-tile{ min-height:200px; }
+}
+
+@media (max-width: 560px){
+  .grid.cols-2, .grid.cols-3, .grid.cols-4, .grid.cols-5, .grid.cols-6{ grid-template-columns:1fr; }
+  .brand-row{ grid-template-columns:repeat(3,1fr); }
+  /* op telefoon blijft het grid 2-koloms: 1 kolom maakt de lijst eindeloos */
+  .grid-editorial, .grid-editorial.wide{ grid-template-columns:repeat(2,1fr); }
+  .quick-filters{ padding:20px 0 16px; }
+  .quick-filters a, .quick-filters button{ padding:2px 12px; }
+  .ed-tile{ padding:22px; }
+  .ed-tile .ed-title{ font-size:19px; }
+}
+
+/* ============================================================
+   Verminderde beweging — niet optioneel.
+   Alles blijft zichtbaar; enkel de beweging vervalt.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *, *::before, *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  .reveal{ opacity:1; transform:none; animation:none; }
+  .scroll-cue .rule{ animation:none; transform:scaleX(1); }
+  .steps{ flex-direction:column; }
+  .step{ border-right:none; border-bottom:1px solid var(--line-soft); }
+  .quote-table .thumb{ display:none; }
 }

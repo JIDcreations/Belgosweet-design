@@ -4,131 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belgosweet — MidFi — Productdetail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-page="product">
 
-<div class="midfi-banner">MidFi — structuur &amp; layout — geen kleuren, geen fotografie, geen final copy</div>
-
-<header class="site-header">
-  <div class="wrap">
-    <a class="logo" href="index.html">Belgosweet</a>
-    <nav class="main-nav">
-      <a href="index.html">Home</a>
-      <a href="shop.html" class="active">Shop</a>
-      <a href="over-ons.html">Over ons</a>
-    </nav>
-    <div class="header-right">
-      <span class="lang">FR / NL / EN</span>
-      <span class="icon-btn">Account</span>
-      <a class="cta-btn" href="#">Offerte aanvragen</a>
-    </div>
-    <button class="nav-toggle">Menu</button>
-  </div>
-</header>
+<div id="shell-header"></div>
 
 <main>
   <div class="wrap">
-    <div class="breadcrumb">
-      <a href="index.html">Home</a> / <a href="shop.html">Shop</a> / <a href="categorie.html">Chocolade &amp; pralines</a> / Productnaam
+    <div class="breadcrumb" id="pdp-crumbs"></div>
+
+    <div class="pdp">
+      <div class="pdp-gallery" id="pdp-gallery"></div>
+      <div class="pdp-info" id="pdp-info"></div>
     </div>
 
-    <div class="pdp" style="margin-top:8px;">
-
-      <!-- GALLERY -->
-      <div class="pdp-gallery">
-        <div class="ph tall">hoofdfoto</div>
-        <div class="pdp-thumbs">
-          <div class="ph">1</div>
-          <div class="ph">2</div>
-          <div class="ph">3</div>
-          <div class="ph">4</div>
-          <div class="ph">5</div>
-        </div>
-        <div class="note">Bij klik op een variant wisselt deze visual inline mee, zonder page reload <span class="tag-note">klik, geen hover</span></div>
-      </div>
-
-      <!-- INFO -->
-      <div class="pdp-info">
-        <p class="eyebrow">Chocolade &amp; pralines / Leonidas</p>
-        <h1 class="pdp-title">Productnaam — placeholder</h1>
-        <div class="pdp-num">Productnummer: PP00000</div>
-        <div class="pdp-price">Prijs: <strong>op aanvraag</strong></div>
-
-        <div class="variant-block">
-          <div class="variant-label">Variant — inhoud / smaak</div>
-          <div class="variant-options">
-            <div class="variant-opt active">Optie 1</div>
-            <div class="variant-opt">Optie 2</div>
-            <div class="variant-opt">Optie 3</div>
-          </div>
-        </div>
-
-        <div class="variant-block">
-          <div class="variant-label">Variant — verpakking / kleur</div>
-          <div class="variant-options">
-            <div class="variant-opt active">Wit</div>
-            <div class="variant-opt">Zilver</div>
-            <div class="variant-opt">Mat-zilver</div>
-          </div>
-        </div>
-
-        <div class="warn-box"><strong>Minimumaantal:</strong> [ x ] stuks — veelvoud van [ y ]</div>
-
-        <table class="stock-table">
-          <tr><th>Status</th><th>Beschikbaarheid</th></tr>
-          <tr><td>Op bestelling</td><td>Op aanvraag</td></tr>
-        </table>
-
-        <div class="cta-row">
-          <a class="cta-btn primary" href="#">Toevoegen aan offertelijst</a>
-          <a class="cta-btn" href="over-ons.html">Contacteer ons</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- DESCRIPTION -->
-    <section class="section tight">
-      <p class="eyebrow">Beschrijving <span class="tag-note">herzien — verplicht veld, was soms leeg</span></p>
-      <div class="pdp-desc">
-        <div class="line w100"></div>
-        <div class="line w100"></div>
-        <div class="line w60"></div>
-      </div>
-    </section>
-
-    <!-- DOWNLOADS -->
-    <section class="section tight">
-      <div class="note"><strong>Downloads</strong> — fiche produit (PDF), indien beschikbaar <span class="tag-note">behouden</span></div>
-    </section>
-
-    <!-- RELATED -->
+    <!-- PRODUCTINFO -->
     <section class="section">
-      <p class="eyebrow">Gerelateerde producten <span class="tag-note">herzien — écht gerelateerd</span></p>
-      <div class="grid cols-4">
-        <a class="card" href="product.html"><div class="ph square">product</div><div class="line w60"></div></a>
-        <a class="card" href="product.html"><div class="ph square">product</div><div class="line w60"></div></a>
-        <a class="card" href="product.html"><div class="ph square">product</div><div class="line w60"></div></a>
-        <a class="card" href="product.html"><div class="ph square">product</div><div class="line w60"></div></a>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Productinfo</p>
+          <h2 class="section-title">Details</h2>
+          <p class="section-sub">
+            Gebundeld in accordions in plaats van één lange lap tekst — de klant hoeft niet te scrollen
+            langs info die hem niet aanbelangt.
+          </p>
+        </div>
       </div>
+      <div id="pdp-accordion"></div>
     </section>
 
-    <div class="note">Personalisatie/configurator — bewust geschrapt uit deze structuurronde (dev-scope, latere fase).</div>
+    <!-- GERELATEERD -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Gerelateerd <span class="tag-note">herzien — écht gerelateerd</span></p>
+          <h2 class="section-title">Uit dezelfde categorie</h2>
+        </div>
+      </div>
+      <div id="pdp-related"></div>
+      <div class="note">
+        De huidige site zet onderaan élke categoriepagina hetzelfde ongelabelde blok van drie
+        niet-verwante producten. Hier komt dit blok uit dezelfde categorie en heeft het een kop.
+      </div>
+    </section>
   </div>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-cols">
-      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="shop.html">Categorieën</a><a href="shop.html">Merken</a></div>
-      <div class="footer-col"><div class="footer-col-title">Info</div><a href="over-ons.html">Over ons</a></div>
-      <div class="footer-col"><div class="footer-col-title">Support</div><a href="over-ons.html">Contact</a><a href="#">Voorwaarden</a></div>
-      <div class="footer-col"><div class="footer-col-title">Nieuwsbrief</div><div class="line w80"></div></div>
-    </div>
-    <div class="footer-bottom"><span>FR / NL / EN</span><span>© Belgosweet</span></div>
-  </div>
-</footer>
+<div id="shell-footer"></div>
 
-<script src="script.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
