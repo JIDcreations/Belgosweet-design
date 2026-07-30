@@ -6,7 +6,6 @@
    - offertelijst-state (er is geen webshop: enkel een offertelijst)
    - werkende filters, sortering, paginering, zoek
    - variantkeuze via klik (geen hover — zie overdracht §6.3)
-   - annotaties aan/uit voor klantpresentatie
 
    Bewust geen framework, geen build. Open de map met een
    statische server en het werkt.
@@ -124,12 +123,6 @@ const BS = (() => {
     const active = NAV_PARENT[page] || page;
 
     return `
-<div class="midfi-banner">
-  <span class="midfi-dot"></span>
-  <span class="midfi-label">MidFi — structuur &amp; layout, geen kleur of fotografie</span>
-  <button type="button" data-toggle-notes>Toon toelichting</button>
-</div>
-
 <header class="site-header" data-header>
   <div class="wrap-wide header-grid">
     <nav class="nav-left" aria-label="Hoofdnavigatie">
@@ -229,7 +222,6 @@ const BS = (() => {
       <div class="footer-col">
         <div class="footer-col-title">Contact</div>
         <p>Boulevard de l'Europe 123<br>1300 Waver<br>+32 2 351 55 55<br>info@belgosweet.be</p>
-        <div class="note" style="margin:0;">Spelling <strong>Waver / Wavre</strong> wisselt op de huidige site — overal gelijktrekken.</div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -326,24 +318,6 @@ const BS = (() => {
           sTog.innerHTML = ICON.search;
           sTog.focus();
         }
-      });
-    }
-
-    // Toelichtingen staan standaard uit: de klant moet eerst de pagina
-    // zien, niet de argumentatie erbij.
-    const notesOff = store.get("bs-midfi-notes-off", true);
-    document.body.classList.toggle("no-notes", !!notesOff);
-    const notesBtn = $("[data-toggle-notes]");
-    if (notesBtn) {
-      const label = () => {
-        notesBtn.textContent = document.body.classList.contains("no-notes")
-          ? "Toon toelichting" : "Verberg toelichting";
-      };
-      label();
-      notesBtn.addEventListener("click", () => {
-        const off = document.body.classList.toggle("no-notes");
-        store.set("bs-midfi-notes-off", off);
-        label();
       });
     }
 
@@ -573,7 +547,7 @@ const BS = (() => {
 
         return `
 <div class="filter-group">
-  <div class="filter-title"><span>${f.title}${f.note ? ` <span class="tag-note" style="margin-left:0;">${f.note}</span>` : ""}</span></div>
+  <div class="filter-title"><span>${f.title}</span></div>
   ${body}${more}
 </div>`;
       }).join("");
@@ -582,7 +556,7 @@ const BS = (() => {
 <aside class="filters" data-filters>
   <div class="filters-head">
     <strong>Verfijnen</strong>
-    ${activeCount ? '<button type="button" class="filters-clear" data-clear>Wis alles</button>' : '<span class="tag-note" style="margin:0;">consistent op elke pagina</span>'}
+    ${activeCount ? '<button type="button" class="filters-clear" data-clear>Wis alles</button>' : ''}
   </div>
   <div class="filters-body">${groups}</div>
 </aside>`;
@@ -902,8 +876,7 @@ ${renderBar(list.length, from, to)}
 <div class="ph tall" data-main>hoofdbeeld — ${esc(p.variants.length ? p.variants[0].options[0] : "standaard")}</div>
 <div class="pdp-thumbs">
   ${[1, 2, 3, 4, 5].map((n) => `<div class="ph${n === 1 ? " active" : ""}" data-thumb="${n}">${n}</div>`).join("")}
-</div>
-<div class="note">Klik op een variant of thumbnail: het hoofdbeeld wisselt inline, zonder page reload. <strong>Klik, geen hover</strong> — hover werkt niet op tablet, en op de referentiesite heeft hover ook geen functie.</div>`;
+</div>`;
 
     const info = $("#pdp-info");
     if (info) info.innerHTML = `
@@ -954,19 +927,18 @@ ${p.variants.map((v, i) => `
 
 <div class="trust-row">
   <span>Belgisch product</span><span>Eigen logo mogelijk</span><span>B2B-levering</span><span>Offerte binnen 48 u</span>
-  <span class="tag-note" style="margin:0;">B2B-equivalent van de trust-iconen op de referentiesite</span>
 </div>`;
 
     const acc = $("#pdp-accordion");
     if (acc) acc.innerHTML = `
 <div class="acc">
   ${[
-    ["Beschrijving", '<div class="line w100"></div><div class="line w100"></div><div class="line w60"></div><p class="note" style="margin-top:14px;"><strong>Verplicht veld.</strong> Op de huidige site is dit soms leeg of staat er enkel "x". Structureel afdwingen dat elk product een beschrijving heeft.</p>', true],
+    ["Beschrijving", '<div class="line w100"></div><div class="line w100"></div><div class="line w60"></div>', true],
     ["Specificaties", '<table class="stock-table" style="margin:0;"><tr><th>Categorie</th><td>' + esc(D.catName(p.cat)) + "</td></tr><tr><th>Merk</th><td>" + esc(D.brandName(p.brand)) + "</td></tr><tr><th>Minimumafname</th><td>" + p.minQty + " st. (veelvoud " + p.multiple + ")</td></tr></table>", false],
     ["Personalisatie", '<p>Logo, sleeve of doosbedrukking — <strong>bewust nog geen configurator</strong> in deze ronde. De huidige site belooft personalisatie in de tekst maar heeft er geen functioneel veld voor; dat van nul bouwen is dev-scope voor een latere fase.</p>', false],
     ["Downloads", p.hasFiche
       ? '<p><a href="#" style="border-bottom:1px solid var(--ink);">Fiche produit (PDF)</a></p>'
-      : '<p>Geen fiche beschikbaar voor dit artikel. <span class="tag-note" style="margin-left:0;">contentwerk</span></p>', false]
+      : '<p>Geen fiche beschikbaar voor dit artikel.</p>', false]
   ].map(([title, body, open]) => `
   <div class="acc-item${open ? " open" : ""}">
     <button type="button" class="acc-head">${title}<span class="sign">${open ? "−" : "+"}</span></button>
@@ -1106,7 +1078,6 @@ ${p.variants.map((v, i) => `
   <div class="row"><span>Artikelen</span><span>${items.length}</span></div>
   <div class="row"><span>Totaal stuks</span><span>${quote.units()}</span></div>
   <div class="row"><span>Prijs</span><span>op aanvraag</span></div>
-  <p class="note" style="margin-top:14px;">Geen totaalbedrag, geen betaling, geen checkout. De lijst gaat als aanvraag naar Belgosweet.</p>
   <a class="cta-btn primary" href="offerte-gegevens.html">Verder naar je gegevens</a>
   <button class="filters-clear" type="button" data-clear-all style="margin-top:14px;">Lijst leegmaken</button>
 </div>`;
@@ -1274,14 +1245,12 @@ ${p.variants.map((v, i) => `
       },
       cookies: {
         title: "Cookiebeleid",
-        body: `<div class="note"><strong>Audit-bevinding.</strong> De huidige site heeft een uitgebreide cookiepagina maar toont <strong>geen enkele consentbanner</strong>. De pagina zonder banner is juridisch waardeloos — banner en beleid horen samen.</div>
-               <h2>Welke cookies</h2><div class="line w100"></div><div class="line w80"></div>
+        body: `<h2>Welke cookies</h2><div class="line w100"></div><div class="line w80"></div>
                <h2>Beheer je voorkeuren</h2><div class="line w60"></div>`
       },
       printtechnologie: {
         title: "Printtechnologie",
-        body: `<div class="note"><strong>Structuur blijft, content niet.</strong> De huidige pagina is een generiek, Engelstalig sjabloon zonder één verwijzing naar chocolade of snoep. De pagina heeft bestaansrecht (personalisatie is een verkoopargument), de tekst moet volledig herschreven worden.</div>
-               <h2>Zeefdruk</h2><div class="line w100"></div><div class="line w70"></div>
+        body: `<h2>Zeefdruk</h2><div class="line w100"></div><div class="line w70"></div>
                <h2>Digitale druk</h2><div class="line w100"></div><div class="line w60"></div>
                <h2>Reliëfdruk</h2><div class="line w80"></div>`
       }

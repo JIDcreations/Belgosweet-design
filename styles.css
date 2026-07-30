@@ -145,61 +145,6 @@ p:last-child{ margin-bottom:0; }
 .ulink:hover::after{ transform:scaleX(0); transform-origin:right; }
 
 /* ============================================================
-   MidFi-balk + annotatiesysteem
-   ============================================================ */
-
-/* Zwevende MidFi-schakelaar in plaats van een balk bovenaan.
-   Een zwarte banner over de volle breedte vecht met de hero en
-   maakt van elke pagina meteen "een wireframe". Dit blijft
-   beschikbaar zonder de compositie te breken. */
-.midfi-banner{
-  position:fixed; left:var(--gutter); bottom:20px; z-index:var(--z-control);
-  display:flex; align-items:center; gap:10px;
-  background:var(--void); color:var(--on-void);
-  padding:7px 8px 7px 14px; border-radius:100px;
-  box-shadow:0 6px 24px rgb(0 0 0 / 0.18);
-  font-size:11px; letter-spacing:0.04em;
-  /* Het is een werkinstrument, geen paginaonderdeel: het wijkt terug
-     tot je het nodig hebt, zodat het de compositie niet meebepaalt. */
-  opacity:.42;
-  transition:opacity .35s var(--ease);
-}
-.midfi-banner:hover,
-.midfi-banner:focus-within{ opacity:1; }
-.midfi-banner .midfi-dot{
-  width:6px; height:6px; border-radius:50%; background:var(--on-void-2); flex:0 0 auto;
-}
-.midfi-banner span{ white-space:nowrap; }
-.midfi-banner button{
-  background:var(--on-void); border:none; color:var(--void);
-  font-size:11px; letter-spacing:0.02em; font-weight:500;
-  padding:5px 12px; border-radius:100px;
-  transition:opacity .3s var(--ease);
-}
-.midfi-banner button:hover{ opacity:.72; }
-@media (max-width:640px){
-  .midfi-banner .midfi-label{ display:none; }
-}
-
-/* Annotaties: uitleg bij structuurbeslissingen, aan/uit te zetten
-   zodat de klant de wireframe ook "kaal" kan bekijken. */
-.tag-note{
-  display:inline-block; font-size:10px; text-transform:uppercase; letter-spacing:.08em;
-  border:1px solid var(--rule-2); color:var(--ink-3); padding:2px 8px;
-  margin-left:8px; vertical-align:middle; white-space:nowrap; border-radius:100px;
-}
-.note{
-  border-top:1px solid var(--ink); background:none;
-  padding:12px 0 0; font-size:0.8125rem; line-height:1.6;
-  color:var(--ink-3); margin:22px 0; max-width:74ch;
-}
-.note strong{ color:var(--ink); font-weight:600; }
-/* Standaard staan de toelichtingen uit: de klant moet eerst de
-   pagina zien, niet de argumentatie. De schakelaar zet ze aan. */
-body.no-notes .tag-note,
-body.no-notes .note{ display:none; }
-
-/* ============================================================
    Header
    ============================================================ */
 
@@ -574,8 +519,8 @@ body.no-notes .note{ display:none; }
    zonder dat er zestien keer gescrold moet worden.
    ============================================================ */
 
-/* Ook bovenaan ruimte: zonder padding-top plakt deze sectie tegen
-   de hero zodra de toelichtingen uitstaan. */
+/* Ook bovenaan ruimte: zonder padding-top plakt deze sectie
+   tegen de hero. */
 .catalog-carousel{ padding:var(--section-y) 0; }
 .carousel-head{
   display:flex; justify-content:space-between; align-items:flex-end;
@@ -1197,9 +1142,7 @@ body.no-notes .note{ display:none; }
    Footer
    ============================================================ */
 
-/* extra ruimte onderaan zodat de zwevende MidFi-schakelaar
-   nooit op de footerinhoud komt te liggen */
-.site-footer{ border-top:1px solid var(--rule); padding:clamp(48px, 6vw, 84px) 0 76px; }
+.site-footer{ border-top:1px solid var(--rule); padding:clamp(48px, 6vw, 84px) 0 30px; }
 .footer-cols{
   display:grid; grid-template-columns:repeat(4,1fr);
   gap:clamp(24px, 3vw, 48px); margin-bottom:clamp(40px, 5vw, 68px);
