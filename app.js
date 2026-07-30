@@ -834,7 +834,11 @@ ${renderBar(list.length, from, to)}
     if (el) el.innerHTML = crumbs([{ label: "Home", href: "index.html" }, { label: "Shop" }]);
 
     const meta = $("#shop-hero-meta");
-    if (meta) meta.textContent = `${D.PRODUCTS.length} producten · ${D.CATEGORIES.length} categorieën · ${D.BRANDS.length - 1} merken`;
+    if (meta) meta.innerHTML = `
+<span><b>${D.PRODUCTS.length}</b> producten</span>
+<span><b>${D.CATEGORIES.length}</b> categorieën</span>
+<span><b>${D.BRANDS.length - 1}</b> merken</span>
+<span>Prijs steeds <b>op aanvraag</b></span>`;
 
     makeCatalog({ root: "#shop-catalog" });
   };
@@ -853,10 +857,23 @@ ${renderBar(list.length, from, to)}
       { label: cat.name }
     ]);
 
-    // Hero: beeld links, eyebrow + titel + intro rechts
+    // Hero: beeld links, kop + feiten rechts. De feiten komen uit de
+    // catalogus zelf — geen copy die nog geschreven moet worden.
     const t = $("#cat-hero-title"); if (t) t.textContent = cat.name;
-    const m = $("#cat-hero-meta");
-    if (m) m.textContent = `${cat.count} producten · prijs steeds op aanvraag`;
+
+    const m = $("#cat-hero-facts");
+    if (m) {
+      const inCat = D.PRODUCTS.filter((p) => p.cat === cat.slug);
+      const mins = inCat.map((p) => p.minQty);
+      const lo = Math.min.apply(null, mins);
+      const hi = Math.max.apply(null, mins);
+      const opVoorraad = inCat.filter((p) => p.availability === "voorraad").length;
+      m.innerHTML = `
+<span><b>${cat.count}</b> producten</span>
+<span>Minimumafname <b>${lo === hi ? lo : lo + "–" + hi}</b> st.</span>
+<span><b>${opVoorraad}</b> uit voorraad</span>
+<span>Prijs steeds <b>op aanvraag</b></span>`;
+    }
 
     makeCatalog({ root: "#cat-catalog", lockedCat: cat.slug });
   };

@@ -852,35 +852,47 @@ body.no-notes .note{ display:none; }
    Herbruikbaar op shop.html (variant .compact) en categorie.html.
    ============================================================ */
 
+/* Gehalveerd t.o.v. de eerste versie: een band van ~280px in plaats
+   van een staande split van 480px, zodat de eerste productrij boven
+   de vouw valt. De placeholder-paragraaf is eruit — die bleef toch
+   leeg — en vervangen door feiten die uit de data komen. */
 .cat-hero{
-  display:grid; grid-template-columns:1fr 1fr; gap:0;
-  border-bottom:1px solid var(--line-soft);
+  /* tekstkolom iets ruimer dan het beeld, zodat de feitenregel
+     op één lijn past in plaats van te breken */
+  display:grid; grid-template-columns:1fr 1.15fr; gap:0;
+  border-bottom:1px solid var(--rule);
+  margin-top:10px;
 }
-.cat-hero-media .ph{ height:100%; min-height:480px; border:none; }
+.cat-hero-media .ph{ height:100%; min-height:280px; border:none; }
 .cat-hero-body{
-  padding:56px 0 52px 56px;
-  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:26px 0 30px 48px;
+  display:flex; flex-direction:column; justify-content:center;
 }
 .cat-hero-eyebrow{
-  font-size:11px; text-transform:uppercase; letter-spacing:.16em;
-  color:var(--ink-soft); margin:0 0 20px;
+  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.14em;
+  color:var(--ink-3); margin:0 0 12px;
 }
 .cat-hero-title{
-  font-size:46px; line-height:1.04; font-weight:400; letter-spacing:-.025em;
-  margin:0 0 24px;
-}
-.cat-hero-intro{ max-width:440px; }
-.cat-hero-intro .line{ height:8px; }
-.cat-hero-meta{
-  margin-top:26px; font-size:11px; text-transform:uppercase; letter-spacing:.1em;
-  color:var(--ink-faint);
+  font-size:clamp(1.9rem, 3.2vw, 2.6rem); line-height:1.05;
+  font-weight:500; letter-spacing:-.03em; margin:0;
+  font-variation-settings:"wdth" 92; color:var(--ink);
 }
 
-/* lichtere variant: minder hoog beeld, kleinere titel — voor het
-   overzichtsniveau, waar de hero niet mag concurreren met de tegels */
-.cat-hero.compact .cat-hero-media .ph{ min-height:340px; }
-.cat-hero.compact .cat-hero-title{ font-size:36px; }
-.cat-hero.compact .cat-hero-body{ padding:44px 0 40px 48px; }
+/* Wat een aankoper als eerste wil weten. De minimumafname verschilt
+   per categorie van 1 tot 1000 stuks — dat hoort hier, niet pas op
+   de productpagina. */
+.cat-hero-facts{
+  display:flex; flex-wrap:wrap; gap:6px 22px;
+  margin:18px 0 0; padding-top:14px; border-top:1px solid var(--rule);
+  font-size:0.8125rem; color:var(--ink-3);
+}
+.cat-hero-facts b{ color:var(--ink); font-weight:500; }
+
+/* Tekstvariant zonder beeld — voor "Alle producten". Dat is een index,
+   geen bestemming, dus daar is een beeldband pure vertraging. */
+.cat-hero.plain{ grid-template-columns:1fr; }
+.cat-hero.plain .cat-hero-media{ display:none; }
+.cat-hero.plain .cat-hero-body{ padding:0 0 24px; }
 
 
 /* ============================================================
@@ -1242,8 +1254,7 @@ body.no-notes .note{ display:none; }
 @media (max-width: 1080px){
   .header-search{ display:none; }
   .brand-row{ grid-template-columns:repeat(4,1fr); }
-  .cat-hero-title{ font-size:36px; }
-  .cat-hero-body{ padding:40px 0 36px 36px; }
+  .cat-hero-body{ padding:22px 0 26px 32px; }
 }
 
 @media (max-width: 900px){
@@ -1287,12 +1298,11 @@ body.no-notes .note{ display:none; }
   .ts-inner{ flex-direction:column; align-items:flex-start; gap:20px; }
 
   /* hero stapelt: beeld boven, tekst eronder */
+  /* Gestapeld: beeld boven, kop eronder. Nog lager, want op mobiel
+     telt elke pixel voor het eerste product. */
   .cat-hero{ grid-template-columns:1fr; }
-  .cat-hero-media .ph,
-  .cat-hero.compact .cat-hero-media .ph{ min-height:260px; }
-  .cat-hero-body,
-  .cat-hero.compact .cat-hero-body{ padding:32px 0 8px; }
-  .cat-hero-title, .cat-hero.compact .cat-hero-title{ font-size:30px; }
+  .cat-hero-media .ph{ min-height:0; aspect-ratio:16/9; }
+  .cat-hero-body{ padding:20px 0 22px; }
 
   .grid-editorial, .grid-editorial.wide,
   .catalog-grid, .catalog-grid.wide{ grid-template-columns:repeat(2,1fr); gap:32px 20px; }
