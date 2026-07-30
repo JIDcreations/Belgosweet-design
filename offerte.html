@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Belgosweet — MidFi — Offertelijst</title>
+<title>Belgosweet — MidFi — Offerte, stap 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&display=swap">
@@ -14,74 +14,24 @@
 <div id="shell-header"></div>
 
 <main>
-  <div class="wrap">
+  <div class="wrap-wide">
 
     <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><span>Offerte aanvragen</span></div>
-    <h1 class="page-title">Offerte aanvragen</h1>
+    <h1 class="page-title">Je offertelijst</h1>
 
-    <div class="steps">
-      <div class="step active"><b>Stap 1</b>Je lijst samenstellen</div>
-      <div class="step active"><b>Stap 2</b>Gegevens invullen</div>
-      <div class="step"><b>Stap 3</b>Offerte van Belgosweet</div>
-    </div>
+    <div id="quote-steps"></div>
 
     <div class="note">
-      <strong>Dit vervangt het winkelmandje.</strong> Geen prijzen, geen totaalbedrag, geen betaalstap.
-      De offertelijst bestond al op de huidige site ("Ajouter à la liste") maar heeft er geen eigen,
-      benoemde pagina met een duidelijke afsluiting.
+      <strong>Eén pagina per stap.</strong> Lijst, gegevens en bevestiging stonden onder elkaar op
+      één scherm — dan is niet duidelijk waar de aanvraag begint of eindigt. Nu is elke stap een
+      eigen pagina met een eigen adres, zodat je kunt terugkeren zonder je lijst te verliezen.
+      Dit vervangt het winkelmandje: geen prijzen, geen totaalbedrag, geen betaalstap.
     </div>
 
     <div class="quote-layout">
       <div id="quote-list"></div>
       <div id="quote-side"></div>
     </div>
-
-    <!-- AANVRAAGFORMULIER -->
-    <section class="section" id="quote-form-anchor">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Stap 2</p>
-          <h2 class="section-title">Je gegevens</h2>
-          <p class="section-sub">
-            Zo kort mogelijk gehouden: alles wat niet nodig is om een offerte te maken, is weggelaten.
-            Er wordt geen account gevraagd — B2B-relaties starten via een aanvraag, niet via registratie.
-          </p>
-        </div>
-      </div>
-
-      <div class="form-success hidden" id="quote-done">
-        <strong>Aanvraag verstuurd.</strong>
-        Je krijgt binnen twee werkdagen een offerte op maat. Referentie: OFF-2026-0517.
-        <div style="margin-top:14px;"><a class="cta-btn" href="shop.html">Verder bekijken</a></div>
-      </div>
-
-      <form class="form-grid" id="quote-form">
-        <div class="form-row"><label for="q-bedrijf">Bedrijf</label><input id="q-bedrijf" type="text" required></div>
-        <div class="form-row"><label for="q-btw">Btw-nummer</label><input id="q-btw" type="text" placeholder="BE0000.000.000"></div>
-        <div class="form-row"><label for="q-naam">Contactpersoon</label><input id="q-naam" type="text" required></div>
-        <div class="form-row"><label for="q-mail">E-mail</label><input id="q-mail" type="email" required></div>
-        <div class="form-row"><label for="q-tel">Telefoon</label><input id="q-tel" type="tel"></div>
-        <div class="form-row">
-          <label for="q-datum">Gewenste leverdatum</label>
-          <input id="q-datum" type="date">
-          <span class="hint">Bepaalt mee of iets uit voorraad kan of besteld moet worden.</span>
-        </div>
-        <div class="form-row full">
-          <label for="q-perso">Personalisatie of opmerkingen</label>
-          <textarea id="q-perso" placeholder="Logo, kleuren, sleeve, aantal per doos…"></textarea>
-          <span class="hint">
-            Voorlopig een vrij tekstveld. Een echte configurator is bewust uit deze ronde gehouden —
-            de huidige site belooft personalisatie maar heeft er geen enkel functioneel veld voor,
-            dus dat moet van nul komen en is dev-scope voor een latere fase.
-          </span>
-        </div>
-        <div class="form-row full">
-          <label class="form-check"><input type="checkbox" required> Ik ga akkoord met de <a href="info.html?p=voorwaarden" style="border-bottom:1px solid var(--line);">algemene voorwaarden</a>.</label>
-          <label class="form-check"><input type="checkbox"> Houd me op de hoogte van seizoensacties.</label>
-          <button class="cta-btn primary" type="submit">Aanvraag versturen</button>
-        </div>
-      </form>
-    </section>
 
   </div>
 </main>

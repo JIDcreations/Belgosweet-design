@@ -46,6 +46,7 @@ const BS = (() => {
      Enkel een lijst die uiteindelijk een offerte-aanvraag wordt. */
 
   const QUOTE_KEY = "bs-midfi-quote";
+  const QUOTE_SENT_KEY = "bs-midfi-quote-sent";
 
   const quote = {
     items() { return store.get(QUOTE_KEY, []); },
@@ -410,6 +411,26 @@ const BS = (() => {
     <span class="tile-count">${c.count}</span>
   </div>
 </a>`;
+  }
+
+  /* Offerteflow: één pagina per stap. Afgelegde stappen blijven
+     klikbaar zodat je je lijst kunt bijstellen zonder opnieuw te
+     beginnen; de stap die nog moet komen is dat niet. */
+  const QUOTE_STEPS = [
+    { n: 1, label: "Je lijst samenstellen", href: "offerte.html" },
+    { n: 2, label: "Je gegevens",           href: "offerte-gegevens.html" },
+    { n: 3, label: "Bevestiging",           href: null }
+  ];
+
+  function renderSteps(active) {
+    return `<nav class="steps" aria-label="Voortgang offerteaanvraag">${
+      QUOTE_STEPS.map((s) => {
+        const inner = `<b>Stap ${s.n}</b>${esc(s.label)}`;
+        if (s.n === active) return `<span class="step active" aria-current="step">${inner}</span>`;
+        if (s.n < active && s.href) return `<a class="step done" href="${s.href}">${inner}</a>`;
+        return `<span class="step">${inner}</span>`;
+      }).join("")
+    }</nav>`;
   }
 
   function crumbs(parts) {
@@ -1010,12 +1031,13 @@ ${p.variants.map((v, i) => `
     });
   };
 
-  /* ---------- Offertelijst ---------- */
+  /* ---------- Offerte, stap 1: je lijst ---------- */
   pages.offerte = () => {
+    const stepsEl = $("#quote-steps");
+    if (stepsEl) stepsEl.innerHTML = renderSteps(1);
+
     const list = $("#quote-list");
     const side = $("#quote-side");
-    const form = $("#quote-form");
-    const done = $("#quote-done");
 
     function render() {
       const items = quote.items();
@@ -1068,7 +1090,7 @@ ${p.variants.map((v, i) => `
   <div class="row"><span>Totaal stuks</span><span>${quote.units()}</span></div>
   <div class="row"><span>Prijs</span><span>op aanvraag</span></div>
   <p class="note" style="margin-top:14px;">Geen totaalbedrag, geen betaling, geen checkout. De lijst gaat als aanvraag naar Belgosweet.</p>
-  <a class="cta-btn primary" href="#quote-form-anchor">Naar de aanvraag</a>
+  <a class="cta-btn primary" href="offerte-gegevens.html">Verder naar je gegevens</a>
   <button class="filters-clear" type="button" data-clear-all style="margin-top:14px;">Lijst leegmaken</button>
 </div>`;
 
@@ -1096,14 +1118,67 @@ ${p.variants.map((v, i) => `
       if (clr) clr.addEventListener("click", () => { quote.clear(); render(); });
     }
 
+    render();
+  };
+
+  /* ---------- Offerte, stap 2: je gegevens ---------- */
+  pages["offerte-gegevens"] = () => {
+    const stepsEl = $("#quote-steps");
+    if (stepsEl) stepsEl.innerHTML = renderSteps(2);
+
+    const items = quote.items();
+    const recap = $("#quote-recap");
+    const form = $("#quote-form");
+
+    // Zonder lijst valt er niets aan te vragen: dan stuurt deze stap
+    // terug in plaats van een leeg formulier te tonen.
+    if (!items.length) {
+      if (recap) recap.innerHTML = `
+<div class="empty-state">
+  <strong>Je lijst is nog leeg</strong>
+  Zet eerst producten op je offertelijst; daarna vragen we je gegevens.
+  <div style="margin-top:18px;"><a class="cta-btn primary" href="shop.html">Naar de shop</a></div>
+</div>`;
+      if (form) form.classList.add("hidden");
+      return;
+    }
+
+    if (recap) recap.innerHTML = `
+<div class="quote-recap">
+  <div>
+    <strong>${items.length} artikelen · ${quote.units()} stuks</strong>
+    <span>${items.map((it) => esc((D.byId(it.id) || {}).name || "")).filter(Boolean).slice(0, 3).join(" · ")}${items.length > 3 ? " …" : ""}</span>
+  </div>
+  <a class="ulink" href="offerte.html">Lijst aanpassen</a>
+</div>`;
+
     if (form) form.addEventListener("submit", (e) => {
       e.preventDefault();
-      form.classList.add("hidden");
-      done.classList.remove("hidden");
-      done.scrollIntoView({ behavior: "smooth", block: "center" });
+      store.set(QUOTE_SENT_KEY, {
+        items: items.length,
+        units: quote.units(),
+        bedrijf: (($("#q-bedrijf") || {}).value || "").trim()
+      });
+      quote.clear();
+      location.href = "offerte-verzonden.html";
     });
+  };
 
-    render();
+  /* ---------- Offerte, stap 3: bevestiging ---------- */
+  pages["offerte-verzonden"] = () => {
+    const stepsEl = $("#quote-steps");
+    if (stepsEl) stepsEl.innerHTML = renderSteps(3);
+
+    const sent = store.get(QUOTE_SENT_KEY, null);
+    const sum = $("#quote-sent-summary");
+    if (sum) {
+      sum.innerHTML = sent
+        ? `<div class="row"><span>Artikelen</span><span>${sent.items}</span></div>
+           <div class="row"><span>Totaal stuks</span><span>${sent.units}</span></div>
+           ${sent.bedrijf ? `<div class="row"><span>Bedrijf</span><span>${esc(sent.bedrijf)}</span></div>` : ""}
+           <div class="row"><span>Referentie</span><span>OFF-2026-0517</span></div>`
+        : `<div class="row"><span>Referentie</span><span>OFF-2026-0517</span></div>`;
+    }
   };
 
   /* ---------- Account ---------- */
