@@ -882,33 +882,6 @@ body.no-notes .note{ display:none; }
 .cat-hero.compact .cat-hero-title{ font-size:36px; }
 .cat-hero.compact .cat-hero-body{ padding:44px 0 40px 48px; }
 
-/* ============================================================
-   Quick-filters — tekstlinks, geen knoppen
-   ------------------------------------------------------------
-   Snelfilters op categorieniveau. Bewust een ander mechanisme
-   (en een andere visuele orde) dan het uitgebreide filterpaneel,
-   zodat beide niet als hetzelfde ding lezen.
-   ============================================================ */
-
-.quick-filters{
-  display:flex; flex-wrap:wrap; align-items:center;
-  padding:26px 0 22px;
-}
-.quick-filters a,
-.quick-filters button{
-  font-size:11px; text-transform:uppercase; letter-spacing:.11em;
-  color:var(--ink-soft); background:none; border:none;
-  border-left:1px solid var(--line-soft);
-  padding:2px 18px; line-height:1.6;
-}
-.quick-filters > :first-child{ padding-left:0; border-left:none; }
-.quick-filters a:hover,
-.quick-filters button:hover{ color:var(--ink); }
-.quick-filters a span,
-.quick-filters button span{ border-bottom:1px solid transparent; padding-bottom:3px; }
-.quick-filters a.active{ color:var(--ink); }
-.quick-filters a.active span{ border-bottom-color:var(--ink); }
-.quick-filters .more{ color:var(--ink); }
 
 /* ============================================================
    Catalogus-balk: filter tonen/verbergen + telling + sortering
@@ -938,22 +911,24 @@ body.no-notes .note{ display:none; }
 .shop-layout.filters-hidden{ grid-template-columns:1fr; }
 .shop-layout.filters-hidden .filters{ display:none; }
 
-.filters{ border:1px solid var(--line-soft); position:sticky; top:calc(var(--header-h) + 20px); }
+/* Geen omkaderd blok maar haarlijnen: het paneel hoort bij de pagina
+   en leest niet als een tweede doos naast het raster. */
+.filters{ position:sticky; top:calc(var(--header-h) + 20px); }
 .filters-head{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:13px 16px; border-bottom:1px solid var(--line-soft);
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:0 0 12px; border-bottom:1px solid var(--ink);
 }
-.filters-head strong{ font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
-.filters-body{ padding:16px; max-height:calc(100vh - 200px); overflow-y:auto; }
-.filter-group{ margin-bottom:20px; }
-.filter-group:last-child{ margin-bottom:0; }
+.filters-head strong{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+.filters-body{ max-height:calc(100svh - 220px); overflow-y:auto; }
+.filter-group{ padding:18px 0; border-bottom:1px solid var(--rule); }
+.filter-group:last-child{ border-bottom:none; padding-bottom:0; }
 .filter-title{
-  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
-  margin-bottom:9px; display:flex; justify-content:space-between; align-items:center;
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em;
+  margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;
 }
 .filter-opt{
-  display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft);
-  padding:3px 0; cursor:pointer;
+  display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink-2);
+  padding:4px 0; cursor:pointer;
 }
 .filter-opt:hover{ color:var(--ink); }
 .filter-opt input{ accent-color:var(--ink); flex:0 0 auto; margin:0; }
@@ -994,46 +969,15 @@ body.no-notes .note{ display:none; }
    `dense` vult de gaten die de grote tegels achterlaten.
    ============================================================ */
 
-.grid-editorial{
+.grid-editorial,
+.catalog-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:44px 24px;
-  grid-auto-flow:dense;
+  gap:clamp(32px, 3.4vw, 52px) clamp(16px, 1.8vw, 28px);
   align-items:start;
 }
-.grid-editorial.wide{ grid-template-columns:repeat(4,1fr); }
-
-.ed-tile{
-  border:1px solid var(--line-soft);
-  padding:28px;
-  display:flex; flex-direction:column; justify-content:space-between;
-  min-height:260px;
-  /* het grid lijnt tegels bovenaan uit zodat producttegels niet uitrekken;
-     de editorial-tegel moet zijn volledige span wél vullen */
-  align-self:stretch;
-}
-.ed-tile:hover{ border-color:var(--ink); }
-.ed-tile .ed-eyebrow{
-  font-size:10px; text-transform:uppercase; letter-spacing:.14em; color:var(--ink-faint);
-  margin:0 0 14px;
-}
-.ed-tile .ed-title{
-  font-size:24px; line-height:1.15; font-weight:400; letter-spacing:-.015em; margin:0 0 16px;
-}
-.ed-tile .ed-body{ max-width:340px; }
-.ed-tile .ed-link{
-  margin-top:22px; font-size:11px; text-transform:uppercase; letter-spacing:.11em;
-  border-bottom:1px solid var(--ink); align-self:flex-start; padding-bottom:3px;
-}
-
-/* spanvarianten — bepalen het ritme van de pagina */
-.ed-tile.span-2x2{ grid-column:span 2; grid-row:span 2; }
-.ed-tile.span-1x2{ grid-row:span 2; }
-.ed-tile.span-2x1{ grid-column:span 2; }
-
-/* editorial-tegel met beeld i.p.v. tekstblok */
-.ed-tile.media{ padding:0; border:none; }
-.ed-tile.media .ph{ height:100%; min-height:100%; }
+.grid-editorial.wide,
+.catalog-grid.wide{ grid-template-columns:repeat(4,1fr); }
 
 /* Eén paginering-methode — de huidige site heeft er twee door elkaar. */
 .pagination{ display:flex; gap:7px; justify-content:center; align-items:center; margin-top:32px; font-size:13px; flex-wrap:wrap; }
@@ -1294,22 +1238,16 @@ body.no-notes .note{ display:none; }
   .cat-hero.compact .cat-hero-body{ padding:32px 0 8px; }
   .cat-hero-title, .cat-hero.compact .cat-hero-title{ font-size:30px; }
 
-  /* editorial-tegels blijven bestaan, maar spannen minder ver */
-  .grid-editorial, .grid-editorial.wide{ grid-template-columns:repeat(2,1fr); gap:32px 20px; }
-  .ed-tile.span-2x2, .ed-tile.span-2x1{ grid-column:span 2; }
-  .ed-tile.span-2x2, .ed-tile.span-1x2{ grid-row:span 1; }
-  .ed-tile{ min-height:200px; }
+  .grid-editorial, .grid-editorial.wide,
+  .catalog-grid, .catalog-grid.wide{ grid-template-columns:repeat(2,1fr); gap:32px 20px; }
 }
 
 @media (max-width: 560px){
   .grid.cols-2, .grid.cols-3, .grid.cols-4, .grid.cols-5, .grid.cols-6{ grid-template-columns:1fr; }
   .brand-row{ grid-template-columns:repeat(3,1fr); }
   /* op telefoon blijft het grid 2-koloms: 1 kolom maakt de lijst eindeloos */
-  .grid-editorial, .grid-editorial.wide{ grid-template-columns:repeat(2,1fr); }
-  .quick-filters{ padding:20px 0 16px; }
-  .quick-filters a, .quick-filters button{ padding:2px 12px; }
-  .ed-tile{ padding:22px; }
-  .ed-tile .ed-title{ font-size:19px; }
+  .grid-editorial, .grid-editorial.wide,
+  .catalog-grid, .catalog-grid.wide{ grid-template-columns:repeat(2,1fr); }
 }
 
 /* ============================================================

@@ -392,34 +392,13 @@ const BS = (() => {
     return `<div class="grid cols-${cols || 4}">${list.map(productCard).join("")}</div>`;
   }
 
-  /* Editorial-tegel: onderbreekt het productraster. Geen product,
-     maar een uitstap (collectie, brochure, contact). */
-  function editorialTile(ed) {
-    if (ed.media) {
-      return `<a class="ed-tile media ${ed.span || "span-1x2"}" href="${ed.href}"><div class="ph">${esc(ed.title)}</div></a>`;
-    }
-    return `
-<a class="ed-tile ${ed.span || "span-2x2"}" href="${ed.href}">
-  <div>
-    <p class="ed-eyebrow">${esc(ed.eyebrow)}</p>
-    <h3 class="ed-title">${esc(ed.title)}</h3>
-    <div class="ed-body"><div class="line w100"></div><div class="line w80"></div></div>
-  </div>
-  <span class="ed-link">${esc(ed.link)}</span>
-</a>`;
-  }
-
-  /* Voegt de editorial-tegels op vaste posities tussen de producten.
-     `dense` in het CSS-grid vult de gaten die de grote tegels slaan. */
-  function editorialGrid(list, editorials, wide) {
-    const cells = list.map(productCardQuiet);
-    (editorials || [])
-      .slice()
-      .sort((a, b) => b.at - a.at)
-      .forEach((ed) => {
-        if (ed.at <= cells.length) cells.splice(ed.at, 0, editorialTile(ed));
-      });
-    return `<div class="grid-editorial${wide ? " wide" : ""}">${cells.join("")}</div>`;
+  /* Eén gelijkmatig raster. Eerder stonden hier grote editorial-tegels
+     tussen de producten; in een lijst waarin je vergelijkt en filtert
+     breken die het scanritme — elke rij begint dan op een andere hoogte. */
+  function catalogGrid(list, wide) {
+    return `<div class="catalog-grid${wide ? " wide" : ""}">${
+      list.map(productCardQuiet).join("")
+    }</div>`;
   }
 
   function categoryTile(c) {
@@ -447,10 +426,13 @@ const BS = (() => {
      Catalogus-engine — gedeeld door shop.html en categorie.html
      ============================================================ */
 
+  // Elk facet toont standaard zes waarden; de rest komt achter
+  // "toon alle". Vijf volledig uitgeklapte lijsten maken van het
+  // paneel een muur van vinkjes.
   const FACETS = [
-    { key: "cat",   title: "Categorie",                 list: () => D.CATEGORIES,   field: "cat",          limit: 8 },
-    { key: "brand", title: "Merk",                      list: () => D.BRANDS,       field: "brand" },
-    { key: "occ",   title: "Gelegenheid &amp; toepassing", list: () => D.OCCASIONS, field: "occasions",    grouped: true, note: "incl. HoReCa" },
+    { key: "cat",   title: "Categorie",                 list: () => D.CATEGORIES,   field: "cat",          limit: 6 },
+    { key: "brand", title: "Merk",                      list: () => D.BRANDS,       field: "brand",        limit: 6 },
+    { key: "occ",   title: "Gelegenheid &amp; toepassing", list: () => D.OCCASIONS, field: "occasions",    grouped: true, note: "incl. HoReCa", limit: 6 },
     { key: "pack",  title: "Verpakking",                list: () => D.PACKAGING,    field: "packaging" },
     { key: "avail", title: "Beschikbaarheid",           list: () => D.AVAILABILITY, field: "availability" }
   ];
@@ -487,12 +469,8 @@ const BS = (() => {
     const root      = $(opts.root);
     const lockedCat = opts.lockedCat || null;      // categoriepagina: categorie ligt vast
     const hideCat   = !!lockedCat;
-    const quickMode = opts.quickMode || "filter";  // "filter" of "navigate"
-    const editorials = opts.editorials || [];
-
     const state = {
       sel: {}, sort: "relevantie", page: 1, expanded: {},
-      quickExpanded: false,
       // filterpaneel staat standaard open op desktop, dicht op smal scherm
       filtersOpen: store.get(FILTERS_KEY, window.innerWidth > 900)
     };
@@ -589,31 +567,6 @@ const BS = (() => {
 </aside>`;
     }
 
-    /* --- quick-filters: snelle sprong tussen categorieën --- */
-    function renderQuickFilters() {
-      const cats = D.CATEGORIES;
-      const shown = state.quickExpanded ? cats : cats.slice(0, 5);
-      const activeSlug = quickMode === "navigate"
-        ? lockedCat
-        : ((state.sel.cat || []).length === 1 ? state.sel.cat[0] : null);
-
-      const item = (label, slug, isActive) => {
-        const cls = isActive ? ' class="active"' : "";
-        return quickMode === "navigate"
-          ? `<a href="${slug ? "categorie.html?cat=" + slug : "shop.html"}"${cls}><span>${esc(label)}</span></a>`
-          : `<a href="#" data-quick="${slug || ""}"${cls}><span>${esc(label)}</span></a>`;
-      };
-
-      const parts = [item("Alle", null, !activeSlug)]
-        .concat(shown.map((c) => item(c.name, c.slug, c.slug === activeSlug)));
-
-      if (cats.length > shown.length || state.quickExpanded) {
-        parts.push(`<button type="button" class="more" data-quick-more><span>${state.quickExpanded ? "Toon minder −" : "Toon meer +"}</span></button>`);
-      }
-
-      return `<nav class="quick-filters">${parts.join("")}</nav>`;
-    }
-
     /* --- balk met filter-toggle, telling en sortering --- */
     function renderBar(total, from, to) {
       const icon = `<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
@@ -684,14 +637,13 @@ const BS = (() => {
       const wide = !state.filtersOpen;
 
       root.innerHTML = `
-${renderQuickFilters()}
 ${renderBar(list.length, from, to)}
 <div class="shop-layout${state.filtersOpen ? "" : " filters-hidden"}">
   ${renderFilters(list)}
   <div>
     ${renderChips()}
     ${slice.length
-      ? editorialGrid(slice, editorials, wide)
+      ? catalogGrid(slice, wide)
       : `<div class="empty-state"><strong>Geen producten binnen deze selectie</strong>Verfijn of wis een filter. <button type="button" class="filters-clear" data-clear>Wis alle filters</button></div>`}
     ${renderPagination(list.length)}
   </div>
@@ -741,22 +693,6 @@ ${renderBar(list.length, from, to)}
         render();
         window.scrollTo({ top: root.offsetTop - 90, behavior: "smooth" });
       }));
-
-      // quick-filters (enkel in "filter"-modus; in "navigate"-modus zijn
-      // het gewone links naar de categoriepagina's)
-      $$("[data-quick]", root).forEach((a) => a.addEventListener("click", (e) => {
-        e.preventDefault();
-        const slug = a.dataset.quick;
-        state.sel.cat = slug ? [slug] : [];
-        state.page = 1;
-        render();
-      }));
-
-      const qm = $("[data-quick-more]", root);
-      if (qm) qm.addEventListener("click", () => {
-        state.quickExpanded = !state.quickExpanded;
-        render();
-      });
 
       const ft = $("[data-filters-toggle]", root);
       if (ft) ft.addEventListener("click", () => {
@@ -879,22 +815,7 @@ ${renderBar(list.length, from, to)}
     const meta = $("#shop-hero-meta");
     if (meta) meta.textContent = `${D.PRODUCTS.length} producten · ${D.CATEGORIES.length} categorieën · ${D.BRANDS.length - 1} merken`;
 
-    const brands = $("#shop-brands");
-    if (brands) brands.innerHTML = D.BRANDS.filter((b) => b.slug !== "huismerk").map((b) =>
-      `<a href="shop.html?brand=${b.slug}"><div class="ph">${esc(b.name)}</div></a>`).join("");
-
-    const occ = $("#shop-occasions");
-    if (occ) occ.innerHTML = D.OCCASIONS.map((o) =>
-      `<a class="chip" href="shop.html?occ=${o.slug}">${esc(o.name)} <b>${o.count}</b></a>`).join("");
-
-    makeCatalog({
-      root: "#shop-catalog",
-      quickMode: "filter",
-      editorials: [
-        { at: 2, span: "span-2x2", eyebrow: "Collectie", title: "Ontdek de gourmet geschenkmanden", link: "Bekijk de collectie", href: "categorie.html?cat=gourmet-geschenkmand" },
-        { at: 9, span: "span-1x2", eyebrow: "Service", title: "Download de brochure", link: "Download PDF", href: "#" }
-      ]
-    });
+    makeCatalog({ root: "#shop-catalog" });
   };
 
   /* ---------- Categoriepagina ---------- */
@@ -916,15 +837,7 @@ ${renderBar(list.length, from, to)}
     const m = $("#cat-hero-meta");
     if (m) m.textContent = `${cat.count} producten · prijs steeds op aanvraag`;
 
-    makeCatalog({
-      root: "#cat-catalog",
-      lockedCat: cat.slug,
-      quickMode: "navigate",
-      editorials: [
-        { at: 3, span: "span-2x2", eyebrow: "Seizoen", title: "Bekijk de kerstcollectie", link: "Naar de selectie", href: "shop.html?occ=kerst" },
-        { at: 10, span: "span-1x2", eyebrow: "Hulp nodig?", title: "Samen een pakket samenstellen", link: "Contacteer ons", href: "over-ons.html#contact" }
-      ]
-    });
+    makeCatalog({ root: "#cat-catalog", lockedCat: cat.slug });
   };
 
   /* ---------- Productdetail ---------- */
