@@ -836,7 +836,110 @@ ${renderBar(list.length, from, to)}
     } else if (recSection) {
       recSection.classList.add("hidden");
     }
+
+    heroWordmarkDock();
   };
+
+  /* ---------- Woordmerk dat in de header dokt ----------
+     Twee exemplaren van hetzelfde woordmerk, niet één element dat
+     verhuist:
+
+       1. het grote exemplaar staat onderaan de hero vastgeprikt
+          (bottom:30px, left/right:5%) en krimpt met transform:scale(),
+          transform-origin onder-midden. Er zit geen verticale translate
+          in — de pagina zelf voert het omhoog;
+       2. het exemplaar in de header staat gecentreerd op vaste breedte
+          en begint op opacity:0.
+
+     Op het moment dat de schaal zo ver is dat het grote exemplaar exact
+     even breed is als het kleine, staan ze op dezelfde plek. In datzelfde
+     frame gaat de een naar 0 en de ander naar 1. De knip is niet te zien,
+     dus het leest als één logo dat de balk in schuift. Terugscrollen
+     draait het gewoon om.
+
+     De eindmaat wordt GEMETEN, niet aangenomen: als de header ooit een
+     ander formaat logo krijgt, klopt de landing nog steeds. */
+  function heroWordmarkDock() {
+    const big = $("[data-hero-wordmark]");
+    const img = big && $("img", big);
+    const small = $(".site-header .wordmark img");
+    if (!big || !img || !small) return;
+
+    // Zonder animatie is de hero gewoon een hoge sectie met een groot
+    // woordmerk erin, en staat het headerlogo er van meet af aan.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let end = 0;        // scrollpositie waarop het gedokt is
+    let scale = 1;      // schaal op dat punt
+    let shift = 0;      // horizontale correctie (normaal 0, zie hieronder)
+    let live = false;
+    let last = -1;
+    let docked = null;
+
+    /* Meten gebeurt met transform uitgezet. Het herstel staat in hetzelfde
+       synchrone blok, dus de browser krijgt de ongeschaalde staat nooit te
+       zien. */
+    const measure = () => {
+      big.style.transform = "none";
+
+      const b = big.getBoundingClientRect();
+      const s = small.getBoundingClientRect();
+
+      // Beide zijn in het document gecentreerd, dus dit is in de praktijk 0.
+      // Het staat er voor het geval een scrollbalk of een gutter de twee
+      // middens uit elkaar duwt: dan blijft de wissel alsnog naadloos.
+      shift = (s.left + s.width / 2) - (b.left + b.width / 2);
+
+      scale = s.width / b.width;
+      // Onderrand van het grote exemplaar in documentcoördinaten, minus de
+      // onderrand van het kleine in schermcoördinaten (de header plakt op
+      // top:0, dus die tweede waarde is constant).
+      end = (b.bottom + window.scrollY) - s.bottom;
+
+      live = end > 40 && b.width > 0 && s.width > 0 && scale < 1;
+      document.body.classList.toggle("wm-dock", live);
+      if (!live) {
+        big.style.transform = "";
+        document.body.classList.remove("wm-docked");
+        docked = null;
+        return;
+      }
+      last = -1;
+      apply();
+    };
+
+    const apply = () => {
+      const p = Math.min(1, Math.max(0, window.scrollY / end));
+      if (p === last) return;
+      last = p;
+
+      const k = 1 + p * (scale - 1);
+      big.style.transform = `translateX(${(shift * p).toFixed(3)}px) scale(${k.toFixed(6)})`;
+
+      // De wissel valt in hetzelfde frame als het bereiken van p = 1.
+      const now = p >= 1;
+      if (now !== docked) {
+        docked = now;
+        document.body.classList.toggle("wm-docked", now);
+      }
+    };
+
+    // Elke frame kijken, niet per scroll-event: op momentum-scroll en bij
+    // smooth-scroll lopen die events achter, en dan valt de wissel een paar
+    // pixels naast het punt waarop de twee elkaar dekken.
+    const frame = () => {
+      if (live) apply();
+      requestAnimationFrame(frame);
+    };
+
+    measure();
+    requestAnimationFrame(frame);
+
+    window.addEventListener("resize", measure);
+    if (!img.complete) img.addEventListener("load", measure, { once: true });
+    if (!small.complete) small.addEventListener("load", measure, { once: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  }
 
   /* ---------- Shop ---------- */
   pages.shop = () => {

@@ -183,10 +183,16 @@ p:last-child{ margin-bottom:0; }
   white-space:nowrap;
 }
 /* Minimum 120px breed (BRANDING.md §4.2) — daaronder lopen de dunne
-   verbindingen in de script dicht. */
+   verbindingen in de script dicht.
+
+   De maat wordt op de BREEDTE gezet, niet op de hoogte. Met een hoogte
+   plus `min-width` won de min-width op smalle schermen van de `width:auto`
+   en werd het logo uitgerekt. Belangrijker nog: het woordmerk in de hero
+   krimpt naar precies deze maat (zie .hero-wordmark) — dat werkt alleen
+   als beide exemplaren dezelfde verhouding houden. */
 .wordmark img{
-  height:clamp(21px, 2.1vw, 27px);
-  width:auto; min-width:120px;
+  width:clamp(118px, 8.8vw, 126px);
+  height:auto;
 }
 
 /* Woordmerk in de footer — iets ruimer, met de vrije ruimte eronder. */
@@ -434,13 +440,30 @@ p:last-child{ margin-bottom:0; }
    is er geen fotografie, dus draagt schaal en compositie het.
    ============================================================ */
 
+/* De hero is met opzet HOGER dan het scherm. Onderaan staat het woordmerk
+   op ware grootte; bij het laden zie je daar alleen de bovenrand van
+   (--wm-peek). De rest verdien je door te scrollen — en onderweg krimpt
+   het woordmerk tot de headermaat.
+
+   Rekenwerk voor de hoogte: het stuk eerste scherm dat de hero krijgt
+   (100svh min de header, die in de flow staat) + de hoogte van het
+   woordmerk + zijn afstand tot de onderrand, min het stukje dat al boven
+   de vouw mag uitsteken.
+
+   Geen `overflow:hidden` en geen `isolation:isolate` meer: allebei zetten
+   een stacking context op de hero, en dan kan het woordmerk er nooit
+   overheen komen — niet over de sticky header, en niet buiten de hero. */
 .hero-full{
   position:relative;
-  min-height:min(94svh, 900px);
-  display:flex; flex-direction:column; justify-content:flex-end;
-  background:var(--surface); color:var(--ink-2);
-  overflow:hidden;
-  isolation:isolate;
+  --wm-ratio:0.21321;                        /* 62.73 / 294.22 uit de SVG */
+  --wm-side:5%;                              /* zij-inspringing            */
+  --wm-bottom:30px;                          /* afstand tot de onderrand   */
+  --wm-h:calc(90vw * var(--wm-ratio));       /* hoogte op ware grootte     */
+  --wm-peek:clamp(26px, 4.2vw, 64px);        /* wat er boven de vouw staat */
+  --hero-fold:calc(100svh - var(--header-h) - 1px);   /* 1px = headerrand   */
+  min-height:calc(var(--hero-fold) + var(--wm-h) + var(--wm-bottom) - var(--wm-peek));
+  display:flex; flex-direction:column; justify-content:flex-start;
+  color:var(--ink-2);
   border-bottom:1px solid var(--rule-2);
 }
 /* Het hele hero-vlak ís de beeldplaats — tot de fotografie er is, draagt
@@ -455,7 +478,7 @@ p:last-child{ margin-bottom:0; }
    blijft var(--green): de dekking zit op de LAAG, niet in de kleurwaarde.
    Zo komt er nog steeds geen zevende kleur in het systeem. */
 .hero-canvas{
-  position:absolute; inset:0; z-index:-2;
+  position:absolute; inset:0; z-index:0;
   background:var(--cream);
 }
 .hero-canvas::before{
@@ -473,7 +496,59 @@ p:last-child{ margin-bottom:0; }
   color:var(--on-void); background:var(--burgundy); padding:6px 12px;
 }
 
-.hero-inner-full{ padding-bottom:clamp(40px, 6vw, 76px); }
+/* De tekst blijft binnen het eerste scherm staan; de extra hoogte van de
+   sectie is er alleen voor het woordmerk. De onderrand houdt afstand tot
+   het stukje woordmerk dat al boven de vouw uitkomt. */
+.hero-inner-full{
+  position:relative; z-index:1;
+  flex:0 0 auto;
+  min-height:var(--hero-fold);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding-bottom:calc(var(--wm-peek) + clamp(28px, 3vw, 56px));
+}
+
+/* --- Het woordmerk dat in de header dokt ---
+   Twee exemplaren, niet één bewegend element: dit grote exemplaar krimpt
+   met transform-origin op ONDER-MIDDEN (dus zonder translate — de pagina
+   zelf voert het omhoog), en op het moment dat het exact even breed is als
+   het exemplaar in de header wisselt app.js de dekking van beide om. Omdat
+   ze op dat moment dezelfde breedte én dezelfde x hebben, is de knip niet
+   te zien.
+
+   z-index boven --z-sticky: de laatste procenten van de krimp spelen zich
+   áf op de headerbalk. Zonder deze laag zou het woordmerk erachter
+   verdwijnen en het headerlogo eruit poppen. */
+.hero-wordmark{
+  position:absolute; z-index:120;
+  left:var(--wm-side); right:var(--wm-side); bottom:var(--wm-bottom);
+  transform-origin:bottom center;
+  pointer-events:none;
+  line-height:0;
+  will-change:transform;
+}
+.hero-wordmark img{ display:block; width:100%; height:auto; }
+
+/* Uitschuifpanelen horen bóven het woordmerk te liggen. Ze zitten in de
+   header en kunnen dus niet zelf hoger dan die stacking context; het
+   woordmerk zakt hier in plaats daarvan. */
+body:has(.mega.open) .hero-wordmark,
+body:has(.search-panel.open) .hero-wordmark,
+body:has(.mobile-drawer.open) .hero-wordmark{ z-index:1; }
+
+/* Zolang app.js niet draait (geen JS, of prefers-reduced-motion) blijft het
+   headerlogo gewoon staan en het hero-woordmerk op ware grootte: een
+   reveal die niet afvuurt mag nooit inhoud verbergen. De klassen hieronder
+   worden alleen door de scroll-controller gezet. */
+body.wm-dock .site-header .wordmark{ opacity:0; transition:none; }
+body.wm-dock.wm-docked .site-header .wordmark{ opacity:1; }
+body.wm-dock.wm-docked .hero-wordmark{ opacity:0; }
+
+/* Staat een paneel open, dan is het woordmerk niet in beeld en moet het
+   headerlogo er wél zijn. */
+body.wm-dock .site-header:has(.mega.open) .wordmark,
+body.wm-dock .site-header:has(.search-panel.open) .wordmark,
+body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
+
 .hero-panel{
   background:var(--pink);
   padding:clamp(30px, 3.6vw, 58px) clamp(28px, 3.4vw, 56px) clamp(32px, 3.8vw, 60px);
@@ -1548,7 +1623,8 @@ p:last-child{ margin-bottom:0; }
   /* Op telefoon veegt de bezoeker zelf — pijlen zijn dan overbodig. */
   .cc-nav{ display:none; }
   .cc-slide{ flex-basis:52vw; }
-  .hero-full{ min-height:min(88svh, 720px); }
+  /* Zelfde rekensom, maar het woordmerk staat dichter op de onderrand. */
+  .hero-full{ --wm-bottom:18px; --wm-peek:clamp(20px, 5vw, 34px); }
   .hero-facts{ gap:18px; font-size:0.75rem; }
   .scroll-cue{ display:none; }
   .season-media .ph{ aspect-ratio:4/3; }

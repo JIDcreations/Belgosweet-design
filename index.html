@@ -18,8 +18,6 @@
   <!-- ============ HERO ============ -->
   <section class="hero-full">
     <div class="hero-canvas"></div>
-    <p class="hero-tag">Sinds 1998 — Waver, België</p>
-
     <div class="wrap-wide hero-inner-full">
       <!-- Het streeppatroon draagt geen tekst (BRANDING.md §5): de kop staat
            op een vol crèmevlak dat op het patroon ligt. -->
@@ -36,7 +34,14 @@
       </div>
     </div>
 
-    
+    <!-- Het woordmerk op ware grootte, onderaan de hero vastgezet. De hero is
+         hoger dan het scherm, dus bij het laden zie je hier alleen de bovenrand
+         van staan. Bij het scrollen krimpt dit exemplaar tot exact de maat van
+         het exemplaar in de header, waarna app.js de twee wisselt. Decoratief:
+         de leesbare naam staat in de header-link. -->
+    <div class="hero-wordmark" data-hero-wordmark aria-hidden="true">
+      <img src="assets/logo/Logo-Dark.svg" alt="" width="294" height="63">
+    </div>
   </section>
 
   <!-- ============ MERKEN ============ -->
