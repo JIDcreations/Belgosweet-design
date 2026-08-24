@@ -75,3 +75,4 @@ inline styling):
 - `app.js` — gedeelde header/footer, offertelijst-state, catalogus-engine
   (filters/sortering/paginering) en de pagina-controllers
 - `styles.css` — grayscale wireframe-stylesheet
+# Belgosweet-design
