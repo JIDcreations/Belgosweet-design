@@ -271,3 +271,51 @@ Verwijderd
 - `belgosweet_midfi_structuur.md` — eerdere tekstuele MidFi-structuur (voorloper van dit document, per pagina uitgeschreven met layout-blokken)
 - `belgosweet_midfi.html` — eerste, verkennende single-page wireframe-versie (verouderd, vervangen door onderstaande gecodeerde versie)
 - `belgosweet-midfi/` — definitieve gecodeerde MidFi: `index.html`, `shop.html`, `categorie.html`, `product.html`, `over-ons.html`, gedeelde `styles.css` en `script.js`. Grayscale, geen fotografie/kleur, functionele navigatie en variant-klikinteractie op productdetail, responsive filterpaneel op mobiel
+
+---
+
+## 10. HiFi-fase — scope (afgesproken 24 augustus 2026)
+
+De MidFi wordt gekopieerd naar een aparte repo (`Belgosweet-Design`) en daar uitgewerkt tot HiFi. Wat die fase wél en niet is, ligt hiermee vast.
+
+### 10.1 Dit is een prototype, geen bouw
+
+De HiFi is uitsluitend een **klikbaar frontend-prototype voor klantpresentatie**. De eigenlijke site wordt elders gebouwd, op een andere stack. Deze fase levert dus geen productiecode — ze levert het ontwerp, en dient tegelijk als referentie voor het externe ontwikkelteam dat de echte site maakt.
+
+Gevolg: prototype-compromissen moeten als compromis leesbaar zijn, niet als bedoeling. Wie dit later openslaat, moet kunnen zien wat een ontwerpkeuze was en wat een beperking van de demo.
+
+### 10.2 Focus ligt volledig op design
+
+Alles wat niet visueel is, valt buiten scope:
+
+- **Talen** — de NL/FR/EN-schakelaar blijft bewust niet-werkend. Ze toont enkel wáár de taalkeuze komt te staan. Geen vertaallaag, geen dubbele pagina's per taal. De vertaalinconsistentie uit §3.4 blijft een aandachtspunt voor de echte bouw, niet voor deze fase.
+- **Backend** — geen CMS, geen database, geen echte productdata. De catalogus blijft draaien op de gegenereerde dummydata uit `data.js`.
+- **Formulieren** — contact, nieuwsbrief en offerteaanvraag blijven demo-bevestigingen. Er wordt niets echt verstuurd, er komt niets in een echte mailbox terecht.
+- **Techniek** — blijft statische HTML/CSS/JS, zonder framework of buildstap. URL's blijven op `.html`. Geen SEO-, performance- of hostingoptimalisatie: dat hoort bij de echte bouw.
+
+Wat er **wel** gebeurt: kleur, logo, typografie, fotografie en de visuele afwerking van de structuur die in dit document is vastgelegd. De structuur zelf ligt vast en gaat niet opnieuw open — dat was het hele doel van de MidFi-fase.
+
+### 10.3 Fotografie
+
+Het merendeel van de producten blijft grijs, simpelweg omdat er niet genoeg fotografie is om de volledige catalogus te vullen. Dat is een **praktische beperking van het prototype, geen ontwerpkeuze** — bij de echte bouw hoort elk product zijn eigen beeld te krijgen. Een beperkt aantal producten wordt in deze fase wel volledig uitgewerkt met echt beeld, zodat te zien is waar het naartoe gaat.
+
+- **Advies:** één categorie van begin tot eind afwerken (categoriehero → productraster → productdetail → offertelijst) in plaats van losse foto's over de hele catalogus te verspreiden. Verspreide foto's maken elk raster vlekkerig en de klant beoordeelt de hele catalogus dan op twee tegels. `chocolade-pralines` is de logische keuze: vlaggenschipcategorie, en één van slechts twee categorieën met twee variantassen, dus de klik-interactie uit §6.3 valt er echt te tonen.
+- Omdat die grijze vlakken er in de demo nu eenmaal staan, moeten ze er wel verzorgd uitzien: het beeldvlak (`.ph`) wordt heropgetekend als **gebrand leeg element** — een mark of monogram in een merkgebonden neutrale toon. Zuiver grijs naast echte fotografie leest als kapot in plaats van als nog-niet-ingevuld.
+- **Let op:** bij grijze producten is het bijschrift van het beeldvlak het enige zichtbare bewijs dat de variantkeuze werkt. Wordt dat bijschrift stil gezet, dan doet een swatch zichtbaar niets — precies het probleem dat in §3.3 op de huidige site is vastgesteld bij de M&M's-kleurcirkels.
+- Als er geen echte productfotografie komt, wordt met stockbeeld gewerkt. Geen beeld van leveranciers- of concurrentmerken (Leonidas, Galler, Jules Destrooper): generiek beeld wel.
+
+### 10.4 Annotaties
+
+De onderbouwing blijft in de **code staan als commentaar**, zoals nu al het geval is in `styles.css` en `app.js`. Er komt géén annotatielaag terug in de pagina zelf — die knop is er in commit `07fafed` bewust uitgehaald, zodat de wireframe kaal aan de klant getoond kan worden. Voor het externe ontwikkelteam vormen de code-commentaar en dit document samen de overdracht.
+
+### 10.5 Wat nodig is om te starten
+
+Blokkerend voor de gebrande ronde:
+
+1. **Kleuren** — hexwaarden. Hieruit worden de dertien tokens in `styles.css` afgeleid (ink ×4, rules ×2, paper ×2, surface, void, on-void ×2), met contrast gecontroleerd op ≥4.5:1.
+2. **Logo als SVG** — woordmerk in een lichte en een donkere versie (er zijn volvlak donkere secties), plus een mark of monogram voor het beeldvlak en de favicon.
+3. **Typografie** — fontbestanden of naam + licentie, en of het één familie is of twee. Dat bepaalt of de huidige hiërarchie via de breedte-as (`wdth`) blijft of vervangen wordt.
+
+Daarna, zonder tijdsdruk: keuze van de uit te werken categorie, fotografie, finale NL-copy, en minstens één echte testimonial (§8 — nog steeds open).
+
+De openstaande punten uit §8 blijven open. Deze fase lost ze niet op: de personalisatie-configurator blijft geschrapt, de HoReCa-landingspagina blijft een marketingbeslissing, en de content-consistentie blijft contentwerk voor de echte bouw.
