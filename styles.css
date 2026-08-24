@@ -440,29 +440,33 @@ p:last-child{ margin-bottom:0; }
    is er geen fotografie, dus draagt schaal en compositie het.
    ============================================================ */
 
-/* De hero is met opzet HOGER dan het scherm. Onderaan staat het woordmerk
-   op ware grootte; bij het laden zie je daar alleen de bovenrand van
-   (--wm-peek). De rest verdien je door te scrollen — en onderweg krimpt
-   het woordmerk tot de headermaat.
+/* De hero is precies één scherm hoog en wordt in twee registers gelezen:
+   de belofte in het roze vlak bovenin, het woordmerk op ware grootte
+   onderin. Allebei staan ze volledig in beeld bij het laden — het
+   woordmerk is geen beloning voor scrollen, het IS de hero.
 
-   Rekenwerk voor de hoogte: het stuk eerste scherm dat de hero krijgt
-   (100svh min de header, die in de flow staat) + de hoogte van het
-   woordmerk + zijn afstand tot de onderrand, min het stukje dat al boven
-   de vouw mag uitsteken.
+   De maat van het woordmerk is dus een onderhandeling met de schermhoogte:
+   zo breed mogelijk (90vw), maar nooit hoger dan ~40% van het scherm, want
+   anders blijft er niets over voor de tekst. Op een lage laptop wint de
+   hoogtegrens, op een gewoon scherm de breedte.
 
-   Geen `overflow:hidden` en geen `isolation:isolate` meer: allebei zetten
-   een stacking context op de hero, en dan kan het woordmerk er nooit
-   overheen komen — niet over de sticky header, en niet buiten de hero. */
+   Bij het scrollen krimpt het woordmerk naar de headermaat (app.js). De
+   aanloop daarvoor is de scrollafstand van de hero zelf — die is ruim
+   genoeg; er is geen extra hoogte voor nodig.
+
+   Geen `overflow:hidden` en geen `isolation:isolate`: allebei zetten een
+   stacking context op de hero, en dan kan het woordmerk er nooit overheen
+   komen — niet over de sticky header, en niet buiten de hero. */
 .hero-full{
   position:relative;
-  --wm-ratio:0.21321;                        /* 62.73 / 294.22 uit de SVG */
-  --wm-side:5%;                              /* zij-inspringing            */
-  --wm-bottom:30px;                          /* afstand tot de onderrand   */
-  --wm-h:calc(90vw * var(--wm-ratio));       /* hoogte op ware grootte     */
-  --wm-peek:clamp(26px, 4.2vw, 64px);        /* wat er boven de vouw staat */
-  --hero-fold:calc(100svh - var(--header-h) - 1px);   /* 1px = headerrand   */
-  min-height:calc(var(--hero-fold) + var(--wm-h) + var(--wm-bottom) - var(--wm-peek));
-  display:flex; flex-direction:column; justify-content:flex-start;
+  --wm-ratio:0.21321;                        /* 62.73 / 294.22 uit de SVG  */
+  --hero-fold:calc(100svh - var(--header-h) - 1px);  /* 1px = headerrand   */
+  --wm-w:min(90vw, calc(var(--hero-fold) * 1.876));  /* 1.876 = .4 / ratio */
+  --wm-h:calc(var(--wm-w) * var(--wm-ratio));
+  --wm-bottom:clamp(20px, 2.4vw, 34px);      /* afstand tot de onderrand   */
+  --wm-gap:clamp(14px, 1.6vw, 24px);         /* extra lucht onder het vlak */
+  min-height:var(--hero-fold);
+  display:flex; flex-direction:column;
   color:var(--ink-2);
   border-bottom:1px solid var(--rule-2);
 }
@@ -496,15 +500,16 @@ p:last-child{ margin-bottom:0; }
   color:var(--on-void); background:var(--burgundy); padding:6px 12px;
 }
 
-/* De tekst blijft binnen het eerste scherm staan; de extra hoogte van de
-   sectie is er alleen voor het woordmerk. De onderrand houdt afstand tot
-   het stukje woordmerk dat al boven de vouw uitkomt. */
+/* De onderrand houdt de hele strook vrij waar het woordmerk in staat, dus
+   de twee kunnen elkaar niet raken — ook niet als de kop naar vier regels
+   uitloopt. In wat overblijft staat de kop gecentreerd, op één as met het
+   woordmerk eronder. */
 .hero-inner-full{
   position:relative; z-index:1;
-  flex:0 0 auto;
-  min-height:var(--hero-fold);
-  display:flex; flex-direction:column; justify-content:flex-end;
-  padding-bottom:calc(var(--wm-peek) + clamp(28px, 3vw, 56px));
+  flex:1 0 auto;
+  display:flex; flex-direction:column; justify-content:center;
+  text-align:center;
+  padding-bottom:calc(var(--wm-h) + var(--wm-bottom) + var(--wm-gap));
 }
 
 /* --- Het woordmerk dat in de header dokt ---
@@ -520,7 +525,9 @@ p:last-child{ margin-bottom:0; }
    verdwijnen en het headerlogo eruit poppen. */
 .hero-wordmark{
   position:absolute; z-index:120;
-  left:var(--wm-side); right:var(--wm-side); bottom:var(--wm-bottom);
+  left:0; right:0; margin-inline:auto;       /* gecentreerd in de hero     */
+  width:var(--wm-w);
+  bottom:var(--wm-bottom);
   transform-origin:bottom center;
   pointer-events:none;
   line-height:0;
@@ -549,13 +556,20 @@ body.wm-dock .site-header:has(.mega.open) .wordmark,
 body.wm-dock .site-header:has(.search-panel.open) .wordmark,
 body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
-.hero-panel{
-  background:var(--pink);
-  padding:clamp(30px, 3.6vw, 58px) clamp(28px, 3.4vw, 56px) clamp(32px, 3.8vw, 60px);
-  max-width:min(660px, 100%);
+/* Geen vlak meer achter de kop: de tekst staat rechtstreeks op het
+   streeppatroon. Iets onder de volle display-maat, want het woordmerk
+   eronder eist tot 40% van de schermhoogte op — en de kop mag daar niet
+   mee concurreren. Alleen binnen .hero-full; elders blijft de schaal
+   ongemoeid. */
+.hero-full .display{
+  max-width:16ch; margin-inline:auto; color:var(--ink);
+  font-size:clamp(2.5rem, 5.4vw, 5rem);
+  line-height:0.98;
 }
-.hero-full .display{ max-width:16ch; color:var(--ink); }
-.hero-full .lede{ color:var(--ink-2); max-width:46ch; margin-top:26px; }
+.hero-full .lede{
+  color:var(--ink-2); max-width:52ch; margin-inline:auto; margin-top:24px;
+  font-size:clamp(1.1rem, 1.35vw, 1.3rem);
+}
 .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-top:38px; }
 
 .hero-bar{
@@ -1623,8 +1637,14 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   /* Op telefoon veegt de bezoeker zelf — pijlen zijn dan overbodig. */
   .cc-nav{ display:none; }
   .cc-slide{ flex-basis:52vw; }
-  /* Zelfde rekensom, maar het woordmerk staat dichter op de onderrand. */
-  .hero-full{ --wm-bottom:18px; --wm-peek:clamp(20px, 5vw, 34px); }
+  /* Staand scherm: het woordmerk is er door zijn verhouding sowieso laag,
+     dus het mag breder en dichter op de onderrand. De hoogtegrens blijft
+     staan voor het liggende geval. */
+  .hero-full{
+    --wm-w:min(92vw, calc(var(--hero-fold) * 1.876));
+    --wm-bottom:16px;
+    --wm-gap:clamp(22px, 6vw, 40px);
+  }
   .hero-facts{ gap:18px; font-size:0.75rem; }
   .scroll-cue{ display:none; }
   .season-media .ph{ aspect-ratio:4/3; }
