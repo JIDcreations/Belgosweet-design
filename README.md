@@ -1,11 +1,16 @@
-# Belgosweet — MidFi
+# Belgosweet — HiFi
 
-Klikbare structuurprototype voor de herstructurering van belgosweet.be.
-Grayscale wireframe: **geen kleur, geen fotografie, geen finale copy** — enkel
-structuur, hiërarchie en interactie.
+Klikbaar prototype voor de herstructurering van belgosweet.be. De structuur uit
+de MidFi-fase, nu uitgevoerd in het merk: kleur, typografie, logo en patroon.
+
+Nog niet ingevuld: **fotografie** (het merendeel van de catalogus staat op een
+gebrand leeg beeldvlak) en de **finale copy**. De taalschakelaar is bewust
+niet-werkend — die toont enkel waar de keuze komt te staan.
 
 De onderbouwing (klantcontext, audit, alle beslissingen met motivatie) staat in
-[`Info/belgosweet_overdracht.md`](Info/belgosweet_overdracht.md).
+[`Info/belgosweet_overdracht.md`](Info/belgosweet_overdracht.md). Het visuele
+systeem voor de HiFi-fase — kleur, typografie, logo, patroon — staat in
+[`BRANDING.md`](BRANDING.md).
 
 ## Starten
 
@@ -74,5 +79,8 @@ inline styling):
   Vaste seed: elke lading geeft dezelfde catalogus.
 - `app.js` — gedeelde header/footer, offertelijst-state, catalogus-engine
   (filters/sortering/paginering) en de pagina-controllers
-- `styles.css` — grayscale wireframe-stylesheet
+- `styles.css` — stylesheet; bevat zelf geen enkele kleurwaarde
+- `assets/css/colors.css` — de zes merkkleuren en alle afgeleide tokens
+- `assets/css/fonts.css` — Manrope (variable, `wght` 200–800)
+- `assets/logo/`, `assets/pattern/` — logo- en patroonbestanden
 # Belgosweet-design

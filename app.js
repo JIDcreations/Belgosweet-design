@@ -1,5 +1,5 @@
 /* ============================================================
-   Belgosweet — MidFi — gedeelde shell & interacties
+   Belgosweet — HiFi — gedeelde shell & interacties
    ------------------------------------------------------------
    Alles wat de structuur écht laat werken:
    - gedeelde header/footer (één bron, geen kopieerwerk per pagina)
@@ -137,7 +137,9 @@ const BS = (() => {
       }>${n.label}</a>`).join("")}
     </nav>
 
-    <a class="wordmark" href="index.html" aria-label="Belgosweet — naar de startpagina">Belgosweet</a>
+    <a class="wordmark" href="index.html" aria-label="Belgosweet — naar de startpagina">
+      <img src="assets/logo/Logo-Dark.svg" alt="Belgosweet" width="294" height="63">
+    </a>
 
     <div class="nav-right">
       <div class="lang-switch">
@@ -203,6 +205,10 @@ const BS = (() => {
     return `
 <footer class="site-footer">
   <div class="wrap-wide">
+    <div class="footer-brand">
+      <!-- Crème-versie: de footer is een donkergroen vlak. -->
+      <img src="assets/logo/Logo-Light.svg" alt="Belgosweet" width="294" height="63">
+    </div>
     <div class="footer-cols">
       <div class="footer-col">
         <div class="footer-col-title">Shop</div>
@@ -231,7 +237,7 @@ const BS = (() => {
     </div>
     <div class="footer-bottom">
       <span class="lang-switch"><a href="#" class="active">NL</a><a href="#">FR</a><a href="#">EN</a></span>
-      <span>© Belgosweet — MidFi wireframe</span>
+      <span>© Belgosweet — HiFi prototype</span>
     </div>
   </div>
 </footer>`;
@@ -339,7 +345,7 @@ const BS = (() => {
 
   function badges(p) {
     const out = [];
-    if (p.promo) out.push('<span class="badge solid">Promo</span>');
+    if (p.promo) out.push('<span class="badge promo">Promo</span>');
     if (p.bestseller) out.push('<span class="badge">Bestseller</span>');
     if (p.seasonal) out.push('<span class="badge">Seizoen</span>');
     if (p.availability === "voorraad") out.push('<span class="badge">Op voorraad</span>');
@@ -349,7 +355,7 @@ const BS = (() => {
   function productCard(p) {
     return `
 <a class="card" href="product.html?id=${p.id}">
-  <div class="ph square">product</div>
+  <div class="ph square"></div>
   ${badges(p)}
   <div class="card-title">${esc(p.name)}</div>
   <div class="card-meta">${esc(D.brandName(p.brand))}</div>
@@ -358,12 +364,31 @@ const BS = (() => {
 </a>`;
   }
 
+  /* Beschrijvende tekst uit de productdata. De definitieve copy komt van de
+     klant (overdracht §8); tot dan leest dit als een echte productbeschrijving
+     in plaats van als vulbalken. */
+  function productBlurb(p) {
+    const merk = p.brand === "huismerk" ? "onder eigen label" : "van " + D.brandName(p.brand);
+    const occ = (p.occasions || []).slice(0, 3).map((o) => D.occName(o).toLowerCase());
+    const occZin = occ.length
+      ? ` Vaak gevraagd voor ${occ.length > 1 ? occ.slice(0, -1).join(", ") + " en " + occ.slice(-1) : occ[0]}.`
+      : "";
+    const voorraad = p.availability === "voorraad"
+      ? "Doorgaans uit voorraad leverbaar."
+      : "Op aanvraag — levertermijn stemmen we af bij de offerte.";
+    return `
+<p>${esc(p.name)} ${esc(merk)}, geleverd in ${esc(D.packName(p.packaging).toLowerCase())}.
+Afname vanaf ${p.minQty} stuks, per veelvoud van ${p.multiple}.${esc(occZin)}</p>
+<p>Te personaliseren met je eigen logo op sleeve of verpakking. ${voorraad}
+Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
+  }
+
   /* Rustige tegel voor de catalogus-grids: beeld + naam, verder niets.
      Merk, prijsregel en minimumafname staan op de productpagina. */
   function productCardQuiet(p) {
     return `
 <a class="card quiet" href="product.html?id=${p.id}">
-  <div class="ph square">product</div>
+  <div class="ph square"></div>
   <div class="card-title">${esc(p.name)}</div>
 </a>`;
   }
@@ -384,7 +409,7 @@ const BS = (() => {
   function categoryTile(c) {
     return `
 <a class="tile" href="categorie.html?cat=${c.slug}">
-  <div class="ph square">beeld</div>
+  <div class="ph square"></div>
   <div class="tile-body">
     <span class="tile-name">${esc(c.name)}</span>
     <span class="tile-count">${c.count}</span>
@@ -571,7 +596,7 @@ const BS = (() => {
     function renderBar(total, from, to) {
       const icon = `<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
         <line x1="0" y1="4.5" x2="16" y2="4.5"/><line x1="0" y1="11.5" x2="16" y2="11.5"/>
-        <rect x="3.5" y="2" width="5" height="5" fill="#fff"/><rect x="8" y="9" width="5" height="5" fill="#fff"/></svg>`;
+        <rect x="3.5" y="2" width="5" height="5" fill="var(--paper)"/><rect x="8" y="9" width="5" height="5" fill="var(--paper)"/></svg>`;
 
       const activeCount = FACETS.reduce((n, f) =>
         n + ((f.key === "cat" && lockedCat) ? 0 : (state.sel[f.key] || []).length), 0);
@@ -728,7 +753,7 @@ ${renderBar(list.length, from, to)}
     if (track) {
       track.innerHTML = D.CATEGORIES.map((c) => `
 <a class="cc-slide" href="categorie.html?cat=${c.slug}">
-  <div class="ph">beeld — ${esc(c.name)}</div>
+  <div class="ph"></div>
   <div class="cc-body">
     <span class="cc-name">${esc(c.name)}</span>
     <span class="cc-n">${c.count}</span>
@@ -827,7 +852,7 @@ ${renderBar(list.length, from, to)}
     const slug = new URLSearchParams(location.search).get("cat") || D.CATEGORIES[0].slug;
     const cat = D.CATEGORIES.find((c) => c.slug === slug) || D.CATEGORIES[0];
 
-    document.title = `Belgosweet — MidFi — ${cat.name}`;
+    document.title = `Belgosweet — HiFi — ${cat.name}`;
 
     const c = $("#cat-crumbs");
     if (c) c.innerHTML = crumbs([
@@ -863,7 +888,7 @@ ${renderBar(list.length, from, to)}
     const p = D.byId(id) || D.PRODUCTS[0];
     recent.push(p.id);
 
-    document.title = `Belgosweet — MidFi — ${p.name}`;
+    document.title = `Belgosweet — HiFi — ${p.name}`;
 
     const c = $("#pdp-crumbs");
     if (c) c.innerHTML = crumbs([
@@ -878,9 +903,10 @@ ${renderBar(list.length, from, to)}
 
     const gallery = $("#pdp-gallery");
     if (gallery) gallery.innerHTML = `
-<div class="ph tall" data-main>hoofdbeeld — ${esc(p.variants.length ? p.variants[0].options[0] : "standaard")}</div>
+<div class="ph tall" data-main></div>
+<figcaption class="pdp-caption" data-main-caption>${esc(p.variants.length ? p.variants[0].options[0] : "Standaard")}</figcaption>
 <div class="pdp-thumbs">
-  ${[1, 2, 3, 4, 5].map((n) => `<div class="ph${n === 1 ? " active" : ""}" data-thumb="${n}">${n}</div>`).join("")}
+  ${[1, 2, 3, 4, 5].map((n) => `<div class="ph${n === 1 ? " active" : ""}" data-thumb="${n}"></div>`).join("")}
 </div>`;
 
     const info = $("#pdp-info");
@@ -938,9 +964,9 @@ ${p.variants.map((v, i) => `
     if (acc) acc.innerHTML = `
 <div class="acc">
   ${[
-    ["Beschrijving", '<div class="line w100"></div><div class="line w100"></div><div class="line w60"></div>', true],
+    ["Beschrijving", productBlurb(p), true],
     ["Specificaties", '<table class="stock-table" style="margin:0;"><tr><th>Categorie</th><td>' + esc(D.catName(p.cat)) + "</td></tr><tr><th>Merk</th><td>" + esc(D.brandName(p.brand)) + "</td></tr><tr><th>Minimumafname</th><td>" + p.minQty + " st. (veelvoud " + p.multiple + ")</td></tr></table>", false],
-    ["Personalisatie", '<p>Logo, sleeve of doosbedrukking — <strong>bewust nog geen configurator</strong> in deze ronde. De huidige site belooft personalisatie in de tekst maar heeft er geen functioneel veld voor; dat van nul bouwen is dev-scope voor een latere fase.</p>', false],
+    ["Personalisatie", '<p>Sleeve, doosbedrukking of een eigen lint — wat mogelijk is hangt af van de verpakking en de oplage. Stuur je logo mee bij de offerteaanvraag; je krijgt een digitale proef voordat we in productie gaan.</p>', false],
     ["Downloads", p.hasFiche
       ? '<p><a href="#" style="border-bottom:1px solid var(--ink);">Fiche produit (PDF)</a></p>'
       : '<p>Geen fiche beschikbaar voor dit artikel.</p>', false]
@@ -962,6 +988,13 @@ ${p.variants.map((v, i) => `
     /* --- interacties --- */
 
     const main = $("[data-main]");
+    const mainCaption = $("[data-main-caption]");
+    let thumbNr = 1;
+    const setCaption = () => {
+      if (!mainCaption) return;
+      const v = Object.values(chosen).join(" · ");
+      mainCaption.textContent = thumbNr > 1 ? `${v} — beeld ${thumbNr}` : v;
+    };
     $$("[data-variant]").forEach((block) => {
       const idx = parseInt(block.dataset.variant, 10);
       const label = p.variants[idx].label;
@@ -971,7 +1004,7 @@ ${p.variants.map((v, i) => `
           btn.classList.add("active");
           chosen[label] = btn.dataset.opt;
           $("[data-chosen]", block).textContent = btn.dataset.opt;
-          if (main) main.textContent = "hoofdbeeld — " + Object.values(chosen).join(" / ");
+          setCaption();
         });
       });
     });
@@ -979,7 +1012,8 @@ ${p.variants.map((v, i) => `
     $$("[data-thumb]").forEach((t) => t.addEventListener("click", () => {
       $$("[data-thumb]").forEach((x) => x.classList.remove("active"));
       t.classList.add("active");
-      if (main) main.textContent = "hoofdbeeld " + t.dataset.thumb + " — " + Object.values(chosen).join(" / ");
+      thumbNr = parseInt(t.dataset.thumb, 10);
+      setCaption();
     }));
 
     $$(".acc-head").forEach((h) => h.addEventListener("click", () => {
@@ -1040,8 +1074,9 @@ ${p.variants.map((v, i) => `
         list.innerHTML = `
 <div class="empty-state">
   <strong>Je offertelijst is leeg</strong>
-  De knop in de header blijft wél altijd actief — op de huidige site oogt die grijs/inactief zolang de lijst leeg is, wat lezers doet denken dat de site stuk is.
-  <div style="margin-top:18px;"><a class="cta-btn primary" href="shop.html">Naar de shop</a></div>
+  Zet de artikelen die je overweegt op één lijst. Aantallen pas je later nog aan —
+  je vraagt pas een prijs wanneer de lijst compleet is.
+  <div style="margin-top:22px;"><a class="cta-btn primary" href="shop.html">Naar de catalogus</a></div>
 </div>`;
         side.innerHTML = "";
         return;
@@ -1057,7 +1092,7 @@ ${p.variants.map((v, i) => `
       const vars = Object.entries(it.variants || {}).map(([k, v]) => `${k}: ${v}`).join(" · ");
       return `
     <tr>
-      <td class="thumb"><div class="ph">beeld</div></td>
+      <td class="thumb"><div class="ph"></div></td>
       <td>
         <a class="quote-item-name" href="product.html?id=${p.id}">${esc(p.name)}</a>
         <div class="quote-item-meta">${esc(D.brandName(p.brand))} · ${esc(p.sku)}</div>
@@ -1193,7 +1228,7 @@ ${p.variants.map((v, i) => `
   </div>
   ${o.items.map((p) => `
   <div class="reorder-item">
-    <div class="ph">beeld</div>
+    <div class="ph"></div>
     <div class="meta"><strong>${esc(p.name)}</strong><span>${esc(D.brandName(p.brand))} · min. ${p.minQty} st.</span></div>
     <button class="cta-btn small" type="button" data-readd="${p.id}">Toevoegen</button>
   </div>`).join("")}
@@ -1304,34 +1339,38 @@ ${p.variants.map((v, i) => `
     const DOCS = {
       voorwaarden: {
         title: "Algemene voorwaarden",
-        body: `<h2>1. Toepassing</h2><div class="line w100"></div><div class="line w100"></div><div class="line w60"></div>
-               <h2>2. Offertes en bestellingen</h2><div class="line w100"></div><div class="line w80"></div>
-               <h2>3. Minimumafname</h2><div class="line w100"></div><div class="line w50"></div>
-               <h2>4. Levering</h2><div class="line w100"></div><div class="line w70"></div>`
+        body: `<h2>1. Toepassing</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>2. Offertes en bestellingen</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>3. Minimumafname</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>4. Levering</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               `
       },
       privacy: {
         title: "Privacybeleid",
-        body: `<h2>Welke gegevens</h2><div class="line w100"></div><div class="line w80"></div>
-               <h2>Bewaartermijn</h2><div class="line w100"></div><div class="line w50"></div>
-               <h2>Je rechten</h2><div class="line w100"></div><div class="line w60"></div>`
+        body: `<h2>Welke gegevens</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>Bewaartermijn</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>Je rechten</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               `
       },
       cookies: {
         title: "Cookiebeleid",
-        body: `<h2>Welke cookies</h2><div class="line w100"></div><div class="line w80"></div>
-               <h2>Beheer je voorkeuren</h2><div class="line w60"></div>`
+        body: `<h2>Welke cookies</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>Beheer je voorkeuren</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               `
       },
       printtechnologie: {
         title: "Printtechnologie",
-        body: `<h2>Zeefdruk</h2><div class="line w100"></div><div class="line w70"></div>
-               <h2>Digitale druk</h2><div class="line w100"></div><div class="line w60"></div>
-               <h2>Reliëfdruk</h2><div class="line w80"></div>`
+        body: `<h2>Zeefdruk</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>Digitale druk</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               <h2>Reliëfdruk</h2><p class="copy-pending">Tekst wordt aangeleverd door Belgosweet.</p>
+               `
       }
     };
 
     const key = new URLSearchParams(location.search).get("p") || "voorwaarden";
     const doc = DOCS[key] || DOCS.voorwaarden;
 
-    document.title = `Belgosweet — MidFi — ${doc.title}`;
+    document.title = `Belgosweet — HiFi — ${doc.title}`;
     const t = $("#info-title"); if (t) t.textContent = doc.title;
     const b = $("#info-body"); if (b) b.innerHTML = doc.body;
     const c = $("#info-crumbs");

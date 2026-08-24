@@ -1,0 +1,103 @@
+/* ============================================================
+   Belgosweet — kleurpalet
+   ------------------------------------------------------------
+   ZES KLEUREN. GEEN VARIANTEN.
+
+   Geen tussentinten, geen transparantie, geen color-mix(), geen
+   lichtere of donkerdere versie van een basiskleur. Elke waarde
+   die de site tekent staat letterlijk in blok 1 hieronder.
+
+   Alles daaronder is uitsluitend een NAAM die naar een van die
+   zes wijst. Wie een token toevoegt, wijst het naar een van de
+   zes — er wordt niets gemengd.
+
+   Gevolg voor de hiërarchie: op crème is er precies één
+   tekstkleur die de norm haalt (donkerrood, 14.22:1). Er bestaat
+   dus geen "lichtere grijstint" voor bijschriften of tellers.
+   Rangorde loopt daarom via GROOTTE en GEWICHT, niet via kleur.
+   Zie BRANDING.md §3.3.
+
+   Contrastverhoudingen staan per regel, berekend volgens
+   WCAG 2.1. Zie de volledige matrix in BRANDING.md §2.2.
+   ============================================================ */
+
+:root{
+
+  /* ---- 1. De zes. Dit is de volledige lijst. ---------------- */
+
+  --cream:    #F9F8ED;   /* Off-white / Crème            249,248,237 */
+  --pink:     #E4C8CA;   /* Lichtroze / Poederroze       228,200,202 */
+  --burgundy: #44171B;   /* Donkerrood / Kastanjebruin    68, 23, 27 */
+  --green:    #1C2518;   /* Donkergroen / Zwartgroen      28, 37, 24 */
+  --sage:     #B8C298;   /* Saliegroen / Olijfgroen      184,194,152 */
+  --magenta:  #D33168;   /* Felroze / Magenta            211, 49,104 */
+
+
+  /* ---- 2. Tekst op lichte vlakken --------------------------- */
+  /* Donkerrood haalt 14.22:1 op crème, 9.69:1 op roze en
+     8.10:1 op salie. Het is de enige tekstkleur op licht.
+     De vier ink-namen blijven bestaan omdat styles.css ze
+     gebruikt, maar ze wijzen bewust allemaal naar dezelfde
+     kleur: er ís geen zachtere trap. */
+
+  --ink:   var(--burgundy);
+  --ink-2: var(--burgundy);
+  --ink-3: var(--burgundy);
+
+
+  /* ---- 3. Lijnen ------------------------------------------- */
+  /* Roze op crème geeft 1.47:1 — precies genoeg om een vlak af
+     te bakenen zonder een streep te trekken. Dat is genoeg voor
+     DECORATIEVE scheidingen.
+
+     Voor de rand van een bedienbaar element (invoerveld, select,
+     variantknop) eist WCAG 1.4.11 minstens 3:1. Roze en salie
+     halen dat niet. Zulke randen krijgen daarom --control. */
+
+  --rule:    var(--pink);
+  --rule-2:  var(--pink);
+  --ink-4:   var(--pink);      /* enkel lijnen en iconen, nooit tekst */
+  --control: var(--burgundy);  /* rand van bedienbare elementen, 14.22:1 */
+
+
+  /* ---- 4. Vlakken ------------------------------------------ */
+  /* Crème draagt het grootste deel van elk scherm. Roze en salie
+     zijn de zachte vlakken die het ritme breken — nooit twee
+     direct na elkaar. */
+
+  --paper:     var(--cream);
+  --paper-2:   var(--pink);
+  --surface:   var(--pink);   /* beeldvlak; donkerrood erop = 9.69:1 */
+  --band-pink: var(--pink);
+  --band-sage: var(--sage);
+
+
+  /* ---- 5. Donkere secties ---------------------------------- */
+  /* Salie is op donkergroen wél bruikbaar als tweede tekstkleur
+     (8.45:1) — daar bestaat de trap dus wel. */
+
+  --void:      var(--green);
+  --on-void:   var(--cream);  /* 14.83:1 */
+  --on-void-2: var(--sage);   /*  8.45:1 */
+
+
+  /* ---- 6. Accent ------------------------------------------- */
+  /* Magenta haalt nergens 4.5:1 — op crème blijft het op 4.46:1
+     steken. Het draagt daarom NOOIT lopende tekst. Wel: vlakken,
+     grote displaytekst (>=24px, of >=18.7px bold), randen en
+     markeringen. De primaire CTA is donkerrood, niet magenta. */
+
+  --accent:    var(--magenta);
+  --accent-on: var(--cream);
+
+
+  /* ---- 7. Legacy-aliassen ---------------------------------- */
+
+  --ink-soft:  var(--ink-3);
+  --ink-faint: var(--ink-4);
+  --line:      var(--rule-2);
+  --line-soft: var(--rule);
+  --bg:        var(--paper);
+  --bg-alt:    var(--paper-2);
+  --ph:        var(--surface);
+}

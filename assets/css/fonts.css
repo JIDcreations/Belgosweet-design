@@ -1,0 +1,56 @@
+/* ============================================================
+   Belgosweet — typografie
+   ------------------------------------------------------------
+   Eén familie: Manrope. Variable, as `wght` 200–800.
+   SIL Open Font License 1.1 — zie ../fonts/OFL.txt.
+
+   LET OP: Manrope heeft GEEN breedte-as. De MidFi bouwde
+   hiërarchie op `wdth` (Archivo); dat is hier vervangen door
+   gewicht, grootte en letterafstand. Zie BRANDING.md §3.2.
+
+   De bestanden zijn TTF zoals aangeleverd. Voor productie horen
+   ze naar WOFF2 (± 60 KB i.p.v. 167 KB); voor dit prototype is
+   dat geen blokker.
+   ============================================================ */
+
+@font-face{
+  font-family:"Manrope";
+  src:url("../fonts/Manrope-VariableFont_wght.ttf") format("truetype-variations"),
+      url("../fonts/Manrope-VariableFont_wght.ttf") format("truetype");
+  font-weight:200 800;
+  font-style:normal;
+  font-display:swap;
+}
+
+/* Statische fallbacks voor browsers zonder variable-font-ondersteuning.
+   Alleen de gewichten die de schaal in BRANDING.md §3.3 echt gebruikt. */
+@font-face{
+  font-family:"Manrope Static";
+  src:url("../fonts/static/Manrope-Regular.ttf") format("truetype");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Manrope Static";
+  src:url("../fonts/static/Manrope-Medium.ttf") format("truetype");
+  font-weight:500; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Manrope Static";
+  src:url("../fonts/static/Manrope-SemiBold.ttf") format("truetype");
+  font-weight:600; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Manrope Static";
+  src:url("../fonts/static/Manrope-Bold.ttf") format("truetype");
+  font-weight:700; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Manrope Static";
+  src:url("../fonts/static/Manrope-ExtraBold.ttf") format("truetype");
+  font-weight:800; font-style:normal; font-display:swap;
+}
+
+:root{
+  --font-sans:"Manrope","Manrope Static",-apple-system,BlinkMacSystemFont,
+              "Helvetica Neue",Arial,sans-serif;
+}

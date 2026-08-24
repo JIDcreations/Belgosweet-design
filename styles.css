@@ -1,40 +1,19 @@
 /* ============================================================
-   Belgosweet — MidFi stylesheet
+   Belgosweet — HiFi stylesheet
    ------------------------------------------------------------
-   Grayscale wireframe. Bewust GEEN kleur, GEEN fotografie,
-   GEEN typografische signatuur, GEEN finale copy.
-   Alles hier dient enkel om structuur, hiërarchie en
-   interactie leesbaar te maken.
+   De structuur uit de MidFi, nu in het merk. Kleur komt
+   uitsluitend uit assets/css/colors.css; typografie uit
+   assets/css/fonts.css. Beide moeten VÓÓR dit bestand
+   ingeladen zijn.
+
+   In dit bestand staat geen enkele hexwaarde. Wie er een nodig
+   heeft, voegt hem toe aan colors.css — niet hier. Zo blijft
+   het palet van zes afdwingbaar. Zie BRANDING.md.
    ============================================================ */
 
+/* Kleurtokens staan in assets/css/colors.css — de enige bron.
+   Hier alleen wat géén kleur is: ruimte, stapeling, beweging. */
 :root{
-  /* ---- Grayscale ramp ----------------------------------------
-     Chroma 0 over de hele lijn: de brief laat geen kleur toe.
-     Contrast doet hier het werk dat kleur normaal doet — een
-     bijna-zwart anker tegenover papierwit, niet een veld grijs.
-     Alle tekstwaarden zijn op contrast gecontroleerd (≥4.5:1). */
-  --ink:      oklch(0.19 0 0);   /* koppen, primaire tekst        */
-  --ink-2:    oklch(0.40 0 0);   /* lopende tekst op wit          */
-  --ink-3:    oklch(0.52 0 0);   /* secundair — 5.7:1 op wit      */
-  --ink-4:    oklch(0.68 0 0);   /* enkel lijnen/iconen, geen tekst */
-  --rule:     oklch(0.92 0 0);
-  --rule-2:   oklch(0.85 0 0);
-  --paper:    oklch(1 0 0);
-  --paper-2:  oklch(0.975 0 0);
-  --surface:  oklch(0.94 0 0);   /* beeldvlak-placeholder          */
-  --void:     oklch(0.18 0 0);   /* volvlak donkere secties        */
-  --on-void:  oklch(0.99 0 0);
-  --on-void-2:oklch(0.74 0 0);   /* 7.1:1 op --void                */
-
-  /* legacy-aliassen — de andere pagina's gebruiken deze nog */
-  --ink-soft:var(--ink-3);
-  --ink-faint:var(--ink-4);
-  --line:var(--rule-2);
-  --line-soft:var(--rule);
-  --bg:var(--paper);
-  --bg-alt:var(--paper-2);
-  --ph:var(--surface);
-
   /* ---- Ruimte ---- */
   --gap:24px;
   --maxw:1280px;
@@ -58,8 +37,7 @@ html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 
 body{
   margin:0;
-  font-family:"Archivo", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  font-variation-settings:"wdth" 100;
+  font-family:var(--font-sans);
   color:var(--ink-2);
   background:var(--paper);
   font-size:16px;
@@ -82,13 +60,15 @@ input,select,textarea{ font-family:inherit; }
 }
 
 /* ---- Typografische schaal ----------------------------------
-   Eén familie, contrast via de breedte-as (wdth) in plaats van
-   een serif/sans-paar. Zo blijft de MidFi eerlijk: dit legt geen
-   merktypografie vast, het legt hiërarchie vast. */
+   Eén familie: Manrope. Manrope heeft GEEN breedte-as, dus de
+   hiërarchie loopt via gewicht (200–800), grootte en
+   letterafstand — niet meer via `wdth` zoals in de MidFi.
+   Manrope is licht ijl: koppen gaan niet onder 600, anders
+   valt het verschil met de lopende tekst weg. */
 
 h1,h2,h3{
   color:var(--ink);
-  font-weight:500;
+  font-weight:700;
   line-height:1.05;
   letter-spacing:-0.025em;
   text-wrap:balance;
@@ -97,13 +77,12 @@ h1,h2,h3{
 
 .display{
   font-size:clamp(2.6rem, 6.4vw, 5.25rem);
-  font-variation-settings:"wdth" 88;
-  font-weight:500;
+  font-weight:800;
   line-height:0.98;
   letter-spacing:-0.038em;
 }
-.h-lg{ font-size:clamp(1.9rem, 3.4vw, 3rem); letter-spacing:-0.03em; }
-.h-md{ font-size:clamp(1.4rem, 2vw, 1.9rem); letter-spacing:-0.02em; }
+.h-lg{ font-size:clamp(1.9rem, 3.4vw, 3rem); font-weight:700; letter-spacing:-0.028em; }
+.h-md{ font-size:clamp(1.4rem, 2vw, 1.9rem); font-weight:600; letter-spacing:-0.02em; }
 
 .lede{
   font-size:clamp(1rem, 1.25vw, 1.15rem);
@@ -118,7 +97,7 @@ h1,h2,h3{
    sjabloon-signaal dat we hier wegwerken. */
 .label{
   font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.14em;
-  font-weight:500; color:var(--ink-3);
+  font-weight:600; color:var(--ink-3);
 }
 
 p{ margin:0 0 1em; }
@@ -171,11 +150,21 @@ p:last-child{ margin-bottom:0; }
 
 .wordmark{
   grid-column:2; justify-self:center;
+  display:flex; align-items:center;
   font-size:clamp(1.05rem, 1.5vw, 1.3rem);
-  font-variation-settings:"wdth" 82;
-  font-weight:600; letter-spacing:0.02em; color:var(--ink);
+  font-weight:700; letter-spacing:0.02em; color:var(--ink);
   white-space:nowrap;
 }
+/* Minimum 120px breed (BRANDING.md §4.2) — daaronder lopen de dunne
+   verbindingen in de script dicht. */
+.wordmark img{
+  height:clamp(21px, 2.1vw, 27px);
+  width:auto; min-width:120px;
+}
+
+/* Woordmerk in de footer — iets ruimer, met de vrije ruimte eronder. */
+.footer-brand{ margin-bottom:clamp(32px, 4vw, 52px); }
+.footer-brand img{ height:clamp(26px, 2.6vw, 34px); width:auto; }
 
 .nav-left{ grid-column:1; display:flex; align-items:center; gap:clamp(16px, 2.2vw, 32px); }
 .nav-left a{
@@ -198,7 +187,7 @@ p:last-child{ margin-bottom:0; }
 .lang-switch{ display:flex; align-items:center; gap:5px; font-size:0.75rem; letter-spacing:0.06em; color:var(--ink-3); }
 .lang-switch a{ padding:2px; }
 .lang-switch a.active{ color:var(--ink); font-weight:600; }
-.lang-switch .div{ color:var(--ink-4); }
+.lang-switch .div{ color:var(--ink-3); }
 
 .icon-btn{
   display:inline-flex; align-items:center; justify-content:center;
@@ -276,7 +265,7 @@ p:last-child{ margin-bottom:0; }
 .search-panel form{ display:flex; align-items:center; gap:14px; padding:22px 0 26px; }
 .search-panel input{
   flex:1 1 auto; border:none; border-bottom:1px solid var(--rule-2); background:none;
-  font-size:clamp(1.25rem, 2.6vw, 1.9rem); font-variation-settings:"wdth" 92;
+  font-size:clamp(1.25rem, 2.6vw, 1.9rem); font-weight:500;
   padding:8px 0; color:var(--ink); letter-spacing:-0.02em;
 }
 .search-panel input::placeholder{ color:var(--ink-3); }
@@ -296,7 +285,7 @@ p:last-child{ margin-bottom:0; }
 }
 .cta-btn:hover{ background:var(--ink); color:var(--paper); }
 .cta-btn.primary{ background:var(--ink); color:var(--paper); }
-.cta-btn.primary:hover{ opacity:.82; }
+.cta-btn.primary:hover{ background:var(--green); }
 .cta-btn.small{ padding:9px 18px; font-size:0.75rem; }
 .cta-btn[disabled]{ opacity:.45; pointer-events:none; }
 
@@ -324,7 +313,7 @@ p:last-child{ margin-bottom:0; }
 .mobile-drawer a{
   display:flex; justify-content:space-between; align-items:center;
   padding:20px 0; border-bottom:1px solid var(--rule);
-  font-size:1.35rem; font-variation-settings:"wdth" 90; color:var(--ink);
+  font-size:1.35rem; font-weight:600; color:var(--ink);
   letter-spacing:-0.02em;
 }
 .mobile-drawer .drawer-foot{ padding:28px 0; display:flex; flex-direction:column; gap:16px; }
@@ -336,7 +325,7 @@ p:last-child{ margin-bottom:0; }
 
 .breadcrumb{ font-size:12px; color:var(--ink-soft); padding:16px 0 0; }
 .breadcrumb a:hover{ color:var(--ink); text-decoration:underline; }
-.breadcrumb .sep{ padding:0 6px; color:var(--ink-faint); }
+.breadcrumb .sep{ padding:0 6px; color:var(--ink-3); }
 
 /* ============================================================
    Sectie-skelet
@@ -345,33 +334,64 @@ p:last-child{ margin-bottom:0; }
 .section{ padding:44px 0; }
 .section.tight{ padding:26px 0; }
 .section.alt{ background:var(--bg-alt); }
-.section-head{ margin-bottom:22px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; }
-.eyebrow{
-  font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft);
-  margin:0 0 6px;
+.section-head{
+  margin-bottom:clamp(28px, 3.2vw, 48px);
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:24px; flex-wrap:wrap;
 }
-.section-title{ font-size:23px; font-weight:600; margin:0; letter-spacing:-.01em; }
-.page-title{ font-size:28px; font-weight:600; margin:6px 0 0; letter-spacing:-.01em; }
-.section-sub{ font-size:13px; color:var(--ink-soft); margin:6px 0 0; max-width:560px; }
-.link-more{ font-size:12px; text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid var(--ink); padding-bottom:2px; }
+.eyebrow{
+  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.16em;
+  font-weight:600; color:var(--ink); margin:0 0 14px;
+}
+.section-title{
+  font-size:clamp(1.6rem, 2.8vw, 2.4rem); font-weight:700;
+  margin:0; letter-spacing:-.028em; line-height:1.06;
+}
+.page-title{
+  font-size:clamp(2.4rem, 5vw, 4rem); font-weight:800;
+  margin:0; letter-spacing:-.038em; line-height:1.0;
+}
+.section-sub{
+  font-size:0.9375rem; line-height:1.6; color:var(--ink);
+  margin:14px 0 0; max-width:52ch;
+}
+.link-more{
+  font-size:0.8125rem; letter-spacing:.02em; color:var(--ink);
+  border-bottom:1px solid var(--ink); padding-bottom:3px;
+}
 
 /* ============================================================
    Placeholders — beeld dat er nog niet is
    ============================================================ */
 
 .ph{
-  background:var(--ph);
-  border:1px solid var(--line-soft);
-  display:flex; align-items:center; justify-content:center;
-  color:var(--ink-faint); font-size:11px; text-transform:uppercase; letter-spacing:.05em;
-  min-height:100px; text-align:center; padding:8px;
+  background-color:var(--surface);
+  background-image:url("assets/logo/Logo-Mark.svg");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:min(24%, 96px);
+  border:none;
+  display:flex; align-items:flex-end; justify-content:center;
+  color:var(--ink-3); font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  min-height:100px; text-align:center; padding:8px 8px 12px;
+  transition:background-size .7s var(--ease), background-color .5s var(--ease);
 }
 .ph.tall{ min-height:340px; }
-.ph.short{ min-height:60px; }
+.ph.short{
+  min-height:60px;
+  background-image:none;          /* te klein voor merkteken én bijschrift */
+  align-items:center; padding:8px;
+}
 .ph.square{ aspect-ratio:1/1; min-height:0; }
 .ph.wide{ aspect-ratio:16/9; min-height:0; }
 .ph.fill{ height:100%; min-height:300px; border:none; }
 
+/* De vulbalken uit de wireframe zijn weg. Waar de tekst echt nog van de
+   klant moet komen (voorwaarden, privacy, cookies) staat dat er nu gewoon. */
+.copy-pending{
+  font-size:0.9375rem; color:var(--ink);
+  border-left:2px solid var(--rule-2); padding-left:14px; margin:10px 0 22px;
+}
 .line{ height:9px; background:var(--line-soft); margin:8px 0; }
 .line.w20{ width:20%; } .line.w30{ width:30%; } .line.w40{ width:40%; }
 .line.w50{ width:50%; } .line.w60{ width:60%; } .line.w80{ width:80%; }
@@ -396,31 +416,31 @@ p:last-child{ margin-bottom:0; }
   isolation:isolate;
   border-bottom:1px solid var(--rule-2);
 }
-/* Het hele hero-vlak ís de beeldplaats. Lichte wireframe-grijs, geen
-   ingekleurd vlak: in deze fase bestaat de fotografie nog niet. */
+/* Het hele hero-vlak ís de beeldplaats — tot de fotografie er is, draagt
+   het de verticale banen uit assets/pattern/Vertical-pattern.svg. Dat
+   bestand is acht gelijke banen (60.02 van 479.73 eenheden), afwisselend
+   crème en donkergroen. Hier één op één overgenomen als CSS, zodat het
+   meeschaalt in plaats van te tegelen. */
 .hero-canvas{
   position:absolute; inset:0; z-index:-2;
-  background:linear-gradient(180deg, oklch(0.955 0 0) 0%, oklch(0.925 0 0) 100%);
-}
-/* Fijne diagonale rasterlijnen: markeert het vlak als placeholder
-   zonder te doen alsof er een foto staat. */
-.hero-canvas::after{
-  content:""; position:absolute; inset:0;
-  background-image:repeating-linear-gradient(
-    -52deg, transparent 0 13px, oklch(0 0 0 / 0.022) 13px 14px);
+  --stripe:clamp(44px, 12.5vw, 190px);   /* 12.5vw = altijd acht banen */
+  background:repeating-linear-gradient(90deg,
+    var(--cream) 0 var(--stripe),
+    var(--green) var(--stripe) calc(var(--stripe) * 2));
 }
 .hero-vignette{ display:none; }
 .hero-tag{
   position:absolute; top:28px; left:var(--gutter);
   font-size:0.6875rem; letter-spacing:0.16em; text-transform:uppercase;
-  color:var(--ink-3);
+  color:var(--on-void); background:var(--burgundy); padding:6px 12px;
 }
-.hero-ph-note{
-  position:absolute; top:28px; right:var(--gutter);
-  font-size:0.6875rem; letter-spacing:0.14em; text-transform:uppercase;
-  color:var(--ink-3);
-}
+
 .hero-inner-full{ padding-bottom:clamp(40px, 6vw, 76px); }
+.hero-panel{
+  background:var(--pink);
+  padding:clamp(30px, 3.6vw, 58px) clamp(28px, 3.4vw, 56px) clamp(32px, 3.8vw, 60px);
+  max-width:min(660px, 100%);
+}
 .hero-full .display{ max-width:16ch; color:var(--ink); }
 .hero-full .lede{ color:var(--ink-2); max-width:46ch; margin-top:26px; }
 .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-top:38px; }
@@ -482,7 +502,7 @@ p:last-child{ margin-bottom:0; }
 }
 .fam-name{
   font-size:clamp(0.95rem, 1.2vw, 1.1rem);
-  font-variation-settings:"wdth" 88; font-weight:600;
+  font-weight:700;
   letter-spacing:-0.01em; color:var(--ink);
 }
 .fam-total{
@@ -546,6 +566,12 @@ p:last-child{ margin-bottom:0; }
   scroll-snap-align:start;
   display:block; overflow:hidden;
 }
+/* Niet elke tegel dezelfde grond: een raster van louter roze leest als één
+   vlak. Periode 4 op drie kolommen spreidt diagonaal i.p.v. per kolom. */
+.cc-slide:nth-child(even) .ph{ background-color:var(--band-sage); }
+.tile:nth-child(even) .ph{ background-color:var(--band-sage); }
+.catalog-grid .card:nth-child(4n+2) .ph,
+.grid-editorial .card:nth-child(4n+2) .ph{ background-color:var(--band-sage); }
 .cc-slide .ph{
   aspect-ratio:3/4; min-height:0; border:none;
   transition:transform .8s var(--ease);
@@ -557,8 +583,8 @@ p:last-child{ margin-bottom:0; }
   padding-top:12px; margin-top:12px; border-top:1px solid var(--rule);
 }
 .cc-name{
-  font-size:0.9375rem; color:var(--ink);
-  font-variation-settings:"wdth" 92; letter-spacing:-0.01em; line-height:1.3;
+  font-size:1rem; color:var(--ink);
+  font-weight:500; letter-spacing:-0.012em; line-height:1.3;
 }
 .cc-n{ font-size:0.75rem; color:var(--ink-3); font-variant-numeric:tabular-nums; }
 .cc-slide:hover .cc-name{ text-decoration:underline; text-underline-offset:3px; }
@@ -566,9 +592,8 @@ p:last-child{ margin-bottom:0; }
 .cc-nav{
   position:absolute; top:32%; z-index:2;
   width:46px; height:46px; border-radius:50%;
-  background:var(--paper); border:1px solid var(--rule-2); color:var(--ink);
+  background:var(--paper); border:1px solid var(--control); color:var(--ink);
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 2px 14px rgb(0 0 0 / 0.08);
   transition:opacity .35s var(--ease), background .35s var(--ease);
 }
 .cc-nav svg{ width:17px; height:17px; }
@@ -606,7 +631,7 @@ p:last-child{ margin-bottom:0; }
 }
 /* linkerrand van de pagina af */
 .season-media{ margin-left:calc(-1 * var(--gutter)); }
-.season-media .ph{ height:100%; min-height:460px; border:none; }
+.season-media .ph{ height:100%; min-height:460px; border:none; background-color:var(--band-sage); }
 
 .season-text{ display:flex; flex-direction:column; }
 .season-text .h-lg{ margin-bottom:14px; }
@@ -642,20 +667,24 @@ p:last-child{ margin-bottom:0; }
    die het bevestigt. Verder niets.
    ============================================================ */
 .usp-banner{
-  border-top:1px solid var(--rule);
-  border-bottom:1px solid var(--rule);
-  background:var(--paper-2);
-  padding:clamp(60px, 7vw, 120px) 0;
+  background:var(--burgundy);
+  padding:clamp(76px, 8.5vw, 148px) 0;
 }
 .usp-banner p{
   margin:0; text-align:center;
   font-size:clamp(1.5rem, 3.2vw, 2.75rem);
-  font-variation-settings:"wdth" 90;
-  line-height:1.22; letter-spacing:-0.028em; color:var(--ink);
+  font-weight:700;
+  line-height:1.22; letter-spacing:-0.028em; color:var(--on-void);
   text-wrap:balance; max-width:22ch; margin-inline:auto;
 }
 
-.testimonial-simple{ padding:var(--section-y) 0; }
+.testimonial-simple{ padding:var(--section-y) 0; background:var(--band-pink); }
+/* De fotocirkel is zelf roze (--surface); op een roze band verdwijnt hij.
+   Hier crème met een donkerrode rand, zodat het een vorm blijft. */
+.testimonial-simple .ts-photo{
+  background:var(--cream);
+  border:1px solid var(--ink);
+}
 .ts-inner{
   display:flex; align-items:center; gap:clamp(20px, 3vw, 40px);
   max-width:780px; margin:0 auto;
@@ -682,7 +711,7 @@ p:last-child{ margin-bottom:0; }
    HOME — merkenband & afsluiter
    ============================================================ */
 
-.brand-band{ border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+.brand-band{ background:var(--paper); border-bottom:1px solid var(--rule); }
 .brand-band-inner{
   display:grid; grid-template-columns:repeat(7,1fr);
   align-items:stretch;
@@ -691,17 +720,20 @@ p:last-child{ margin-bottom:0; }
   display:flex; align-items:center; justify-content:center;
   padding:clamp(24px, 3vw, 40px) 10px;
   border-left:1px solid var(--rule);
-  font-size:0.75rem; letter-spacing:0.06em; color:var(--ink-3);
+  font-size:0.75rem; letter-spacing:0.06em; color:var(--ink);
   text-align:center;
   transition:background .4s var(--ease), color .4s var(--ease);
 }
 .brand-band-inner a:first-child{ border-left:none; }
-.brand-band-inner a:hover{ background:var(--paper-2); color:var(--ink); }
+.brand-band-inner a:hover{ background:var(--pink); color:var(--ink); }
 
 .closer{
   border-top:1px solid var(--ink);
   padding:clamp(80px, 11vw, 168px) 0; text-align:center;
 }
+/* De USP-band draagt nu magenta. Twee magenta momenten op één pagina maken
+   er geen accent meer van (BRANDING.md §2.6), dus de slotkop gaat terug naar
+   donkerrood. Eén regel om te wisselen als de band toch groen wordt. */
 .closer .display{ color:var(--ink); margin:0 auto; max-width:14ch; }
 .closer .lede{ color:var(--ink-2); margin:24px auto 0; text-align:center; }
 .closer .hero-actions{ justify-content:center; }
@@ -741,12 +773,7 @@ p:last-child{ margin-bottom:0; }
 .ab-hero-media{ position:absolute; inset:-12% 0; z-index:0; will-change:transform; }
 .ab-hero-media .ph{
   height:100%; border:none; align-items:flex-start; padding-top:14vh;
-  background:linear-gradient(180deg, oklch(0.955 0 0), oklch(0.915 0 0));
-}
-.ab-hero-media .ph::after{
-  content:""; position:absolute; inset:0;
-  background-image:repeating-linear-gradient(
-    -52deg, transparent 0 13px, oklch(0 0 0 / 0.022) 13px 14px);
+  background:var(--pink);
 }
 .ab-hero-body{ position:relative; z-index:1; padding-bottom:clamp(36px, 5vw, 68px); }
 .ab-hero-body .display{ max-width:15ch; }
@@ -760,7 +787,7 @@ p:last-child{ margin-bottom:0; }
 .ab-statement p{
   margin:0; max-width:24ch;
   font-size:clamp(1.6rem, 3.6vw, 3rem);
-  font-variation-settings:"wdth" 90;
+  font-weight:700;
   line-height:1.15; letter-spacing:-.03em; color:var(--ink);
   text-wrap:balance;
 }
@@ -769,7 +796,9 @@ p:last-child{ margin-bottom:0; }
 .ab-story{
   display:grid; grid-template-columns:0.8fr 1.2fr;
   gap:clamp(28px, 5vw, 80px); align-items:start;
-  padding:0 0 var(--section-y);
+  /* .wrap-wide zet de zijmarge; die mag de padding-shorthand hier niet
+     wegvegen, anders plakt de kop tegen de vensterrand. */
+  padding:0 var(--gutter) var(--section-y);
 }
 .ab-story-col p{ font-size:0.9375rem; color:var(--ink-2); max-width:52ch; }
 
@@ -796,7 +825,7 @@ p:last-child{ margin-bottom:0; }
 }
 .tl-year{
   font-size:clamp(1.2rem, 1.9vw, 1.6rem);
-  font-variation-settings:"wdth" 84; font-weight:500;
+  font-weight:700;
   letter-spacing:-.02em; color:var(--ink);
   font-variant-numeric:tabular-nums; line-height:1.2;
 }
@@ -904,38 +933,61 @@ p:last-child{ margin-bottom:0; }
 .grid.cols-6{ grid-template-columns:repeat(6,1fr); }
 
 .card{ display:block; }
-.card .ph{ margin-bottom:10px; }
-.card:hover .ph{ border-color:var(--ink); }
+.card .ph{ margin-bottom:16px; }
+/* Het merkteken groeit licht: de kaart reageert, zonder dat er een kader
+   oplicht. Bij echte fotografie wordt dit exact dezelfde beweging. */
+.card:hover .ph{ background-size:min(28%, 112px); }
 
-.card-title{ font-size:13px; font-weight:600; margin:0 0 2px; }
-.card-meta{ font-size:12px; color:var(--ink-soft); }
-.card-price{ font-size:12px; color:var(--ink); margin-top:4px; }
-.card-min{ font-size:11px; color:var(--ink-faint); margin-top:2px; }
-
-/* Rustige producttegel voor de catalogus-grids: enkel beeld + naam.
-   Naam in kleine caps met letterspacing i.p.v. lopende tekst. */
-.card.quiet .ph{ margin-bottom:14px; }
-.card.quiet .card-title{
-  font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.12em;
-  line-height:1.5; margin:0;
+/* De onderlijn loopt via text-decoration, niet via een achtergrondverloop:
+   een verloop in de inktkleur achter tekst van dezelfde kleur leest voor een
+   contrastcontrole als 1:1, ook als het onzichtbaar is. */
+.card-title{
+  font-size:1rem; font-weight:500; line-height:1.3;
+  letter-spacing:-0.012em; color:var(--ink); margin:0;
+  text-decoration:underline;
+  text-decoration-color:transparent;
+  text-decoration-thickness:1px;
+  text-underline-offset:4px;
+  transition:text-decoration-color .45s var(--ease);
 }
+.card:hover .card-title{ text-decoration-color:var(--ink); }
+
+.card-meta{ font-size:0.8125rem; color:var(--ink); margin-top:5px; }
+.card-price{ font-size:0.8125rem; color:var(--ink); margin-top:9px; }
+.card-min{ font-size:0.75rem; color:var(--ink); margin-top:2px; }
+
+/* De rustige tegel toont enkel beeld + naam; merk en prijsregel staan op
+   de productpagina zelf. */
+.card.quiet .ph{ margin-bottom:16px; }
 
 /* Badges op productkaarten: enkel structureel (welke statussen bestaan),
    geen visuele styling-intentie. */
 .badges{ display:flex; gap:5px; flex-wrap:wrap; margin-bottom:6px; min-height:0; }
 .badge{
-  font-size:9px; text-transform:uppercase; letter-spacing:.06em;
-  border:1px solid var(--line); color:var(--ink-soft); padding:2px 6px;
+  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.1em;
+  font-weight:600; border:1px solid var(--rule-2);
+  color:var(--ink); padding:4px 9px;
 }
-.badge.solid{ background:var(--ink); color:#fff; border-color:var(--ink); }
+.badge.solid{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+.badge.promo{
+  background:none; color:var(--ink);
+  border:1.5px solid var(--accent); font-weight:600;
+}
 
 /* categorie-tegel */
-.tile{ display:block; border:1px solid var(--line-soft); }
-.tile:hover{ border-color:var(--ink); }
-.tile .ph{ margin:0; border:none; border-bottom:1px solid var(--line-soft); }
-.tile-body{ padding:11px 13px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
-.tile-name{ font-size:13px; font-weight:600; }
-.tile-count{ font-size:11px; color:var(--ink-faint); white-space:nowrap; }
+.tile{ display:block; }
+.tile .ph{ margin:0; border:none; }
+.tile:hover .ph{ background-size:min(28%, 112px); }
+.tile-body{
+  padding:14px 0 0; display:flex; justify-content:space-between;
+  align-items:baseline; gap:12px;
+  border-top:1px solid var(--rule); margin-top:14px;
+}
+.tile-name{ font-size:1rem; font-weight:500; letter-spacing:-.012em; }
+.tile-count{
+  font-size:0.75rem; color:var(--ink);
+  white-space:nowrap; font-variant-numeric:tabular-nums;
+}
 
 /* ============================================================
    Editorial split (porta-nyc ritme)
@@ -994,8 +1046,8 @@ p:last-child{ margin-bottom:0; }
 }
 .cat-hero-title{
   font-size:clamp(1.9rem, 3.2vw, 2.6rem); line-height:1.05;
-  font-weight:500; letter-spacing:-.03em; margin:0;
-  font-variation-settings:"wdth" 92; color:var(--ink);
+  letter-spacing:-.03em; margin:0;
+  font-weight:700; color:var(--ink);
 }
 
 /* Wat een aankoper als eerste wil weten. De minimumafname verschilt
@@ -1013,7 +1065,6 @@ p:last-child{ margin-bottom:0; }
 .cat-hero.plain{ grid-template-columns:1fr; }
 .cat-hero.plain .cat-hero-media{ display:none; }
 .cat-hero.plain .cat-hero-body{ padding:0 0 24px; }
-
 
 /* ============================================================
    Catalogus-balk: filter tonen/verbergen + telling + sortering
@@ -1059,14 +1110,30 @@ p:last-child{ margin-bottom:0; }
   margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;
 }
 .filter-opt{
-  display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink-2);
-  padding:4px 0; cursor:pointer;
+  display:flex; align-items:center; gap:12px;
+  font-size:0.875rem; color:var(--ink);
+  padding:7px 0; cursor:pointer;
 }
 .filter-opt:hover{ color:var(--ink); }
-.filter-opt input{ accent-color:var(--ink); flex:0 0 auto; margin:0; }
-.filter-opt .n{ margin-left:auto; font-size:11px; color:var(--ink-faint); }
+.filter-opt input{
+  appearance:none; -webkit-appearance:none;
+  flex:0 0 auto; margin:0; width:15px; height:15px;
+  border:1px solid var(--control); background:var(--paper);
+  display:grid; place-content:center;
+  transition:background .25s var(--ease);
+}
+.filter-opt input::before{
+  content:""; width:7px; height:7px; transform:scale(0);
+  background:var(--paper); transition:transform .2s var(--ease);
+}
+.filter-opt input:checked{ background:var(--ink); }
+.filter-opt input:checked::before{ transform:scale(1); }
+.filter-opt .n{
+  margin-left:auto; font-size:0.75rem; color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
 .filter-opt.is-empty{ opacity:.4; }
-.filter-sub{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin:10px 0 4px; }
+.filter-sub{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3); margin:10px 0 4px; }
 .filter-more{ font-size:12px; color:var(--ink-soft); border-bottom:1px solid var(--line); margin-top:6px; display:inline-block; background:none; border-top:none; border-left:none; border-right:none; padding:2px 0; }
 .filters-toggle{ display:none; width:100%; margin-bottom:16px; }
 .filters-clear{ font-size:11px; color:var(--ink-soft); background:none; border:none; border-bottom:1px solid var(--line); padding:1px 0; }
@@ -1076,15 +1143,25 @@ p:last-child{ margin-bottom:0; }
   display:flex; justify-content:space-between; align-items:center; gap:16px;
   margin-bottom:16px; font-size:12px; color:var(--ink-soft); flex-wrap:wrap;
 }
-.sort-select{ border:1px solid var(--line); background:#fff; padding:7px 10px; font-size:12px; color:var(--ink); }
+.sort-select{
+  appearance:none; -webkit-appearance:none;
+  border:1px solid var(--control); background:var(--paper);
+  padding:9px 34px 9px 13px; font-size:0.8125rem; color:var(--ink);
+  cursor:pointer; border-radius:0;
+  /* Eigen pijltje: SVG als data-URI, in donkerrood uit het palet. */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2344171B' stroke-width='1.3'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 13px center;
+  background-size:10px 6px;
+}
 
 .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
 .chip{
   display:inline-flex; align-items:center; gap:7px;
-  border:1px solid var(--line); padding:4px 9px; font-size:11px; color:var(--ink);
-  background:#fff;
+  border:1px solid var(--control); padding:4px 9px; font-size:11px; color:var(--ink);
+  background:var(--paper);
 }
-.chip b{ font-weight:400; color:var(--ink-faint); }
+.chip b{ font-weight:400; color:var(--ink-3); }
 .chip .x{ font-size:13px; line-height:1; color:var(--ink-soft); }
 .chip:hover .x{ color:var(--ink); }
 
@@ -1114,17 +1191,24 @@ p:last-child{ margin-bottom:0; }
 /* Eén paginering-methode — de huidige site heeft er twee door elkaar. */
 .pagination{ display:flex; gap:7px; justify-content:center; align-items:center; margin-top:32px; font-size:13px; flex-wrap:wrap; }
 .pagination button{
-  border:1px solid var(--line-soft); background:#fff; padding:7px 13px; color:var(--ink-soft);
+  border:1px solid var(--line-soft); background:var(--paper); padding:7px 13px; color:var(--ink-soft);
 }
 .pagination button.active{ border-color:var(--ink); color:var(--ink); font-weight:600; }
 .pagination button:hover:not([disabled]){ border-color:var(--ink); color:var(--ink); }
 .pagination button[disabled]{ opacity:.35; cursor:default; }
-.pagination .dots{ color:var(--ink-faint); padding:0 2px; }
+.pagination .dots{ color:var(--ink-3); padding:0 2px; }
 
 /* ============================================================
    Productdetail
    ============================================================ */
 
+/* Het onderschrift onder het hoofdbeeld. Bij producten zonder fotografie is
+   dit het enige zichtbare bewijs dat de variantkeuze werkt (overdracht §10.3),
+   dus het blijft — maar als onderschrift, niet als label ín het beeld. */
+.pdp-caption{
+  margin-top:12px; font-size:0.8125rem; letter-spacing:.02em;
+  color:var(--ink);
+}
 .pdp{ display:grid; grid-template-columns:1fr 1fr; gap:52px; margin-top:20px; }
 .pdp-gallery .ph.tall{ min-height:440px; }
 .pdp-thumbs{ display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:10px; }
@@ -1147,13 +1231,13 @@ p:last-child{ margin-bottom:0; }
 }
 .variant-label .chosen{ font-weight:400; text-transform:none; letter-spacing:0; color:var(--ink-soft); font-size:12px; }
 .variant-options{ display:flex; gap:8px; flex-wrap:wrap; }
-.variant-opt{ border:1px solid var(--line); padding:8px 14px; font-size:13px; background:#fff; }
+.variant-opt{ border:1px solid var(--control); padding:8px 14px; font-size:13px; background:var(--paper); }
 .variant-opt:hover{ border-color:var(--ink); }
 .variant-opt.active{ border-color:var(--ink); background:var(--bg-alt); font-weight:600; }
 
 .qty-row{ display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; margin:20px 0 6px; }
 .qty-field label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:6px; }
-.qty-input{ display:flex; border:1px solid var(--line); width:130px; }
+.qty-input{ display:flex; border:1px solid var(--control); width:130px; }
 .qty-input button{ width:34px; border:none; background:var(--bg-alt); color:var(--ink); font-size:15px; }
 .qty-input input{ width:100%; border:none; text-align:center; font-size:14px; padding:8px 0; -moz-appearance:textfield; }
 .qty-input input::-webkit-outer-spin-button,
@@ -1215,7 +1299,7 @@ p:last-child{ margin-bottom:0; }
 }
 .step{
   flex:1; padding:14px 18px 14px 0;
-  font-size:0.875rem; color:var(--ink-4);
+  font-size:0.875rem; color:var(--ink-3);
   border-right:1px solid var(--rule);
 }
 .step + .step{ padding-left:18px; }
@@ -1225,7 +1309,7 @@ p:last-child{ margin-bottom:0; }
 .step.done:hover{ color:var(--ink); }
 .step b{
   display:block; font-size:0.6875rem; text-transform:uppercase; letter-spacing:.12em;
-  font-weight:500; color:var(--ink-4); margin-bottom:4px;
+  font-weight:500; color:var(--ink-3); margin-bottom:4px;
 }
 .step.active b{ color:var(--ink); }
 .step.done b{ color:var(--ink-3); }
@@ -1265,11 +1349,11 @@ p:last-child{ margin-bottom:0; }
 .form-row.full{ grid-column:1/-1; }
 .form-row label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; color:var(--ink-soft); }
 .form-row input, .form-row textarea, .form-row select{
-  width:100%; border:1px solid var(--line); padding:10px 12px; font-size:14px;
-  font-family:inherit; background:#fff; color:var(--ink);
+  width:100%; border:1px solid var(--control); padding:10px 12px; font-size:14px;
+  font-family:inherit; background:var(--paper); color:var(--ink);
 }
 .form-row textarea{ min-height:110px; resize:vertical; }
-.form-row .hint{ font-size:11px; color:var(--ink-faint); margin-top:5px; }
+.form-row .hint{ font-size:11px; color:var(--ink-3); margin-top:5px; }
 /* Hogere specificiteit dan `.form-row label`, anders wint daar
    display:block en springt het vinkje weg van zijn tekst. */
 .form-row label.form-check,
@@ -1284,7 +1368,7 @@ p:last-child{ margin-bottom:0; }
 .form-success{ border:1px solid var(--ink); padding:16px 18px; font-size:13px; margin-bottom:20px; }
 
 .inline-form{ display:flex; gap:10px; max-width:440px; flex-wrap:wrap; }
-.inline-form input{ flex:1 1 220px; border:1px solid var(--line); padding:10px 12px; font-size:14px; }
+.inline-form input{ flex:1 1 220px; border:1px solid var(--control); padding:10px 12px; font-size:14px; }
 
 /* ============================================================
    Info-pagina (voorwaarden / privacy / cookies / print)
@@ -1317,22 +1401,34 @@ p:last-child{ margin-bottom:0; }
    Footer
    ============================================================ */
 
-.site-footer{ border-top:1px solid var(--rule); padding:clamp(48px, 6vw, 84px) 0 30px; }
+/* De footer is het tweede grote kleurvlak van de pagina. Donkergroen sluit
+   de pagina af zoals de USP-band hem in het midden verankert. */
+.site-footer{
+  background:var(--void); color:var(--on-void);
+  padding:clamp(56px, 6.5vw, 96px) 0 34px;
+}
+.site-footer .footer-brand img{ filter:none; }
 .footer-cols{
   display:grid; grid-template-columns:repeat(4,1fr);
   gap:clamp(24px, 3vw, 48px); margin-bottom:clamp(40px, 5vw, 68px);
 }
 .footer-col-title{
   font-size:0.6875rem; font-weight:500; text-transform:uppercase;
-  letter-spacing:0.14em; color:var(--ink-3); margin-bottom:18px;
+  letter-spacing:0.14em; color:var(--on-void-2); margin-bottom:18px;
 }
-.footer-col a{ display:block; font-size:0.9375rem; color:var(--ink-2); margin-bottom:11px; }
-.footer-col a:hover{ color:var(--ink); }
-.footer-col p{ font-size:0.9375rem; color:var(--ink-2); margin:0 0 12px; line-height:1.7; }
+.footer-col a{ display:block; font-size:0.9375rem; color:var(--on-void); margin-bottom:11px; }
+.footer-col a:hover{ color:var(--on-void-2); }
+.footer-col p{ font-size:0.9375rem; color:var(--on-void); margin:0 0 12px; line-height:1.7; }
+/* De taalschakelaar erft de kleuren van de header; in de donkere footer
+   moeten die omkeren. */
+.site-footer .lang-switch{ color:var(--on-void-2); }
+.site-footer .lang-switch a{ color:var(--on-void-2); }
+.site-footer .lang-switch a.active{ color:var(--on-void); font-weight:600; }
+
 .footer-bottom{
-  border-top:1px solid var(--rule); padding-top:22px;
+  border-top:1px solid var(--on-void-2); padding-top:22px;
   display:flex; justify-content:space-between; align-items:center; gap:16px;
-  font-size:0.8125rem; color:var(--ink-3); flex-wrap:wrap;
+  font-size:0.8125rem; color:var(--on-void-2); flex-wrap:wrap;
 }
 
 /* ============================================================
