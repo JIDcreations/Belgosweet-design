@@ -93,8 +93,10 @@ Daarom:
   bold — dan geldt de AA-grens van 3:1), badges, promo-/seizoensmarkering,
   hover- en actief-accenten, en grafische elementen.
 - De **primaire CTA ("Offerte aanvragen") is donkerrood met crème tekst**
-  (14.22:1), niet magenta. Magenta is te zwak om de belangrijkste actie van de
-  site te dragen en verliest bovendien zijn signaalwaarde als het overal staat.
+  (14.22:1), niet magenta. Dat is hier geen smaakkwestie: het label is 13 px, en
+  op magenta haalt crème 4.46:1 en donkerrood 3.15:1 — allebei onder de 4.5:1
+  die tekst van die maat vraagt. De knop krijgt wél een magenta rand; een rand
+  is geen tekst en heeft genoeg aan 3:1.
 
 Uit de audit (§3.1 van het overdrachtsdocument): de huidige CTA oogt inactief
 zolang de offertelijst leeg is. Donkerrood op crème lost dat op — die knop ziet
@@ -164,32 +166,36 @@ krijgt er geen. Zo ziet de verdeling op Home eruit:
 
 | Sectie | Vlak |
 |---|---|
-| Hero | verticale banen donkergroen/crème, kop op een roze vlak |
-| Merkenband | crème |
-| Catalogus | crème, beeldvlakken wisselen roze/salie |
-| Seizoen | crème, beeld salie |
-| In de kijker | crème, beeldvlakken roze |
-| USP-band | donkerrood |
+| Hero | twee donkere opnames naast elkaar onder een donkergroene sluier |
+| Merkenband | wit, magenta scheidingen |
+| Catalogus | wit, kop magenta, beeldvlakken crème |
+| Seizoen | wit, kop magenta |
+| In de kijker | wit, kop magenta, beeldvlakken crème |
+| USP-band | **magenta** |
 | Testimonial | roze |
-| Afsluiter | crème |
+| Afsluiter | wit, kop magenta |
 | Footer | donkergroen |
 
-Gemeten over de gerenderde pagina: crème 59%, roze 16%, donkergroen 11%,
-salie 8%, donkerrood 5%, magenta < 1%.
+De paginagrond is wit (§1b); crème is daarmee opgeschoven van "de grond" naar
+"het vlak waar een product op staat".
 
 De warme familie (crème, roze, donkerrood) draagt de pagina — het is een
-chocolade- en snoepmerk. Donkergroen verankert boven- en onderaan, salie
-ondersteunt in de rasters, magenta is de vonk.
+chocolade- en snoepmerk. Donkergroen verankert boven- en onderaan, en magenta
+is niet langer alleen de vonk: het draagt de sectiekoppen op Home en Shop, de
+USP-band, en de lijnen en randen door de hele interface.
 
-Twee vaste regels:
+Vaste regels:
 
 - **Nooit twee gekleurde secties direct na elkaar** die dezelfde kleur dragen.
-  Crème staat er tussen; dat is wat de kleur laat werken.
-- **Magenta krijgt nooit een volle sectie.** Zie §2.3: daarvoor is het te
-  verzadigd. Het blijft badge, markering of rand.
+  Wit staat er tussen; dat is wat de kleur laat werken.
+- **Magenta mag een volle sectie dragen.** Wat daar wél op moet kloppen is de
+  tekst erop: crème op magenta is 4.46:1, en dat haalt de norm alleen voor
+  displaytekst (≥ 24 px regulier of ≥ 18.7 px bold, grens 3:1). Wil je kleinere
+  tekst op een magenta vlak, dan komt die op een eigen crème- of donkerrood
+  vlak te staan — knoppen op de USP-band bijvoorbeeld. Dit is de reden dat de
+  band werkt: de kop is 44 px bold.
 - **Geen twee verwante kleuren op elkaar.** Donkergroen en salie zijn allebei
-  groen; ze horen niet aan elkaar te grenzen. Daarom is de merkenband onder de
-  groene hero crème en niet salie.
+  groen; ze horen niet aan elkaar te grenzen.
 
 ## 3. Typografie
 

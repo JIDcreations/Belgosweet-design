@@ -967,17 +967,41 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   box-shadow:inset 0 -3px 0 var(--accent);
 }
 
+/* --- De afsluiter is een volle magenta sectie ---
+   Dat mag sinds BRANDING.md §2.6 herschreven is. De voorwaarde die dáár
+   staat is wat dit blok stuurt: crème op magenta is 4,46:1, en dat haalt
+   de norm alleen voor displaytekst. Dus:
+
+     kop      43-90px       ruim boven de 24px-grens          → crème
+     tussenzin 24px          precies op de grens, gewicht 400  → crème
+     knoppen   13px          haalt het nooit                   → eigen vlak
+
+   De knoppen staan daarom niet als omlijnde vorm op het magenta maar als
+   volvlak erop: crème met donkerrode tekst (14,22:1) en donkerrood met
+   crème tekst (15,30:1). Twee volle knoppen naast elkaar is zwaarder dan
+   een knop plus een omlijning, maar een omlijnde knop zou hier 13px crème
+   rechtstreeks op magenta zetten en dat is 4,46:1 — te weinig. */
 .closer{
-  border-top:1px solid var(--ink);
+  background:var(--accent);
   padding:clamp(80px, 11vw, 168px) 0; text-align:center;
 }
-/* De slotkop draagt magenta net als de sectiekoppen erboven. Een VOLLE
-   magenta sectie blijft uit — dat verbiedt §2.6 met zoveel woorden ("het
-   blijft badge, markering of rand") en de USP-band is daarop al de ene
-   uitzondering die er is. Tekst op wit is iets anders dan een vlak. */
-.closer .display{ color:var(--accent); margin:0 auto; max-width:14ch; }
-.closer .lede{ color:var(--ink-2); margin:24px auto 0; text-align:center; }
-.closer .hero-actions{ justify-content:center; }
+.closer .display{ color:var(--accent-on); margin:0 auto; max-width:14ch; }
+.closer .lede{
+  color:var(--accent-on); margin:24px auto 0; text-align:center;
+  font-size:clamp(1.5rem, 1.7vw, 1.6rem); font-weight:400; max-width:40ch;
+}
+.closer .hero-actions{ justify-content:center; margin-top:38px; }
+
+/* Knoppen op een accentvlak: allebei een volvlak, geen omlijning. */
+.closer .cta-btn{
+  background:var(--accent-on); color:var(--ink);
+  border-color:var(--accent-on);
+}
+.closer .cta-btn:hover{ background:var(--ink); color:var(--accent-on); border-color:var(--ink); }
+.closer .cta-btn.primary{
+  background:var(--ink); color:var(--accent-on); border-color:var(--ink);
+}
+.closer .cta-btn.primary:hover{ background:var(--accent-on); color:var(--ink); border-color:var(--accent-on); }
 
 /* ============================================================
    OVER ONS
