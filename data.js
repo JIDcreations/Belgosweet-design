@@ -16,35 +16,35 @@ const BS_DATA = (() => {
 
   /* Twee soorten beeld, bewust gescheiden:
 
-       tile  — het CATEGORIEBEELD (tegel, carrousel, categoriehero). Hier
-               mag een vollevlaks sfeerfoto staan; die vult de tegel van
-               rand tot rand en dat is precies wat je daar wil.
-
+       tile  — het CATEGORIEBEELD (tegel, carrousel, categoriehero).
        imgs  — de PRODUCTBEELDEN, waar de tegels van de catalogus over
-               rouleren. Hier komen ALLEEN opnames van een los object op
-               een egale crèmegrond in (de PNG's uit de aanlevering). Die
-               grond is #F9F9F0, praktisch identiek aan --cream, dus het
-               product lijkt vrij op de pagina te staan in plaats van in
-               een dichtgeplakt fotokadertje. Een vollevlaks foto — een
-               macaronmuur, een koekjestextuur — doet in een productraster
-               het omgekeerde: dan zie je twaalf verschillende kadertjes
-               in plaats van twaalf producten.
+               rouleren.
+
+     Voor ALLEBEI geldt dezelfde regel: er komt alleen een opname van een
+     los object op een egale crèmegrond in — de PNG's uit de aanlevering.
+     Die grond is #F9F9F0, praktisch identiek aan --cream, dus het product
+     lijkt vrij op de pagina te staan in plaats van in een dichtgeplakt
+     fotokadertje. Een vollevlaks textuurfoto — een macaronmuur, een
+     koekjesstapel — doet het omgekeerde: dan zie je een reeks
+     verschillende kadertjes in plaats van een reeks producten. Die
+     opnames (de .jpeg-bronnen) zijn sfeerbeeld en horen in een band of
+     een hero, nooit in een houder waar een product hoort te staan.
 
      Ontbreekt een van de twee, dan blijft daar de patroon-placeholder
-     staan. Zonder `imgs` (macarons, mellow cakes) is er geen losse
-     productopname aangeleverd; bij mellow cakes en adventskalenders was
-     die er wél, maar met het merk van een ander erop (Ritter Sport,
-     Lindt) — zie de opmerking in tools/build-images.sh. */
+     staan. Voor macarons en mellow cakes is er geen losse productopname
+     aangeleverd — van macarons bestaat alleen een vollevlaks textuurfoto,
+     en die valt onder de regel hierboven. Bij mellow cakes en
+     adventskalenders wás er wel een opname, maar met het merk van een
+     ander erop (Ritter Sport, Lindt) — zie tools/build-images.sh. */
   const CATEGORIES = [
     { slug: "chocolade-pralines",     name: "Chocolade & pralines",   count: 32,
       tile: "pralines-stapel",
       imgs: ["pralines-stapel", "pralines-blik", "pralines-doos-groen",
              "pralines-blik-bordeaux"] },
     { slug: "koekjes",                name: "Koekjes",                count: 14,
-      tile: "koekjes-boter",
+      tile: "koekjes-stroopwafels",
       imgs: ["koekjes-stroopwafels", "koekjes-geluk"] },
-    { slug: "macarons",               name: "Macarons",               count: 6,
-      tile: "macarons-roze" },
+    { slug: "macarons",               name: "Macarons",               count: 6  },
     { slug: "mellow-cakes",           name: "Mellow cakes",           count: 6  },
     { slug: "snoep-lollys",           name: "Snoep & lolly's",        count: 18,
       tile: "snoep-honing",

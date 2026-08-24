@@ -30,23 +30,24 @@ maak() {
   printf "  %-34s %s\n" "$naam.jpg" "$(du -h "$OUT/$naam.jpg" | cut -f1)"
 }
 
+# ALLEEN losse objecten op een egale crèmegrond (de PNG's). De .jpeg-
+# bronnen in de aanlevering zijn vollevlakse texturen — macaronmuur,
+# koekjesstapel, witte chocolade — en die horen niet in een producthouder:
+# in een raster lezen ze als een reeks kadertjes in plaats van als een
+# reeks producten. Ze staan hieronder onder "Sfeer", voor banden en heroes.
 echo "Producten en categorieën"
 maak pralines-stapel        "ChatGPT Image 17 aug 2026, 14_41_56.png"
 maak pralines-blik          "belgosweet_ChatGPT Images 2.0 Edit_2026-08-18_07-30-16.png"
 maak pralines-doos-groen    "belgosweet_ChatGPT Images 2.0 Edit_2026-08-17_14-03-12.png"
 maak pralines-blik-bordeaux "ChatGPT Image 18 aug 2026, 09_53_42.png"
-maak koekjes-boter          "_ - 2026-07-27T152457.525.jpeg"
 maak koekjes-stroopwafels   "product shots/ChatGPT Images 2.0 Edit_0008.png"
 maak koekjes-geluk          "product shots/ChatGPT Images 2.0 Edit_0012.png"
-maak macarons-roze          "_ - 2026-07-28T140500.176.jpeg"
-maak macarons-bordeaux      "_ - 2026-07-28T191956.919.jpeg"
 maak snoep-honing           "product shots/ChatGPT Images 2.0 Edit_0002 kopie.png"
 maak snoep-kegels           "product shots/ChatGPT Images 2.0 Edit_0003 kopie.png"
 maak snoep-fruitgom         "product shots/ChatGPT Images 2.0 Edit_0006.png"
 maak noten-chocolade        "product shots/ChatGPT Images 2.0 Edit_0009.png"
 maak granola-breuk          "product shots/ChatGPT Images 2.0 Edit_0007.png"
 maak nougat-rollen          "product shots/ChatGPT Images 2.0 Edit_0005.png"
-maak witte-chocolade        "_ - 2026-07-27T234746.058.jpeg"
 maak geschenk-assortiment   "ChatGPT Image 18 aug 2026, 14_54_39 (1).png"
 maak geschenk-lint          "belgosweet_ChatGPT Images 2.0 Edit_2026-08-18_08-45-25.png"
 

@@ -357,10 +357,17 @@ const BS = (() => {
 
      `alt` blijft leeg waar het beeld naast de productnaam staat: de naam
      staat er al als tekst, en die twee keer voorlezen helpt niemand. */
-  function ph(cls, img, alt) {
-    const extra = cls ? " " + cls : "";
-    if (!img) return `<div class="ph${extra}"></div>`;
-    return `<div class="ph${extra} has-img"><img src="assets/img/${img}.jpg" alt="${esc(alt || "")}" loading="lazy" decoding="async"></div>`;
+  function ph(cls, img, alt, attrs) {
+    // Attributen krijgen een eigen parameter. Ze meesmokkelen via de
+    // klassenaam (met een aanhalingsteken erin) leek te werken, maar dan
+    // belandt de klasse `has-img` binnen dat attribuut in plaats van op
+    // het element — en dan mist precies de regel die het beeld laat
+    // vullen. Op de productpagina was dat niet te zien in de HTML maar
+    // wel in de layout.
+    const c = "ph" + (cls ? " " + cls : "") + (img ? " has-img" : "");
+    const a = attrs ? " " + attrs : "";
+    if (!img) return `<div class="${c}"${a}></div>`;
+    return `<div class="${c}"${a}><img src="assets/img/${img}.jpg" alt="${esc(alt || "")}" loading="lazy" decoding="async"></div>`;
   }
 
   function badges(p) {
@@ -1091,11 +1098,11 @@ ${renderBar(list.length, from, to)}
 
     const gallery = $("#pdp-gallery");
     if (gallery) gallery.innerHTML = `
-${ph("tall contain\" data-main=\"", gal[0], p.name)}
+${ph("tall contain", gal[0], p.name, "data-main")}
 <figcaption class="pdp-caption" data-main-caption>${esc(p.variants.length ? p.variants[0].options[0] : "Standaard")}</figcaption>
 <div class="pdp-thumbs">
   ${(gal.length ? gal : [null, null, null, null, null]).map((img, n) =>
-    ph("contain " + (n === 0 ? "active" : "") + "\" data-thumb=\"" + (n + 1), img, "")).join("")}
+    ph("contain" + (n === 0 ? " active" : ""), img, "", `data-thumb="${n + 1}"`)).join("")}
 </div>`;
 
     const info = $("#pdp-info");
