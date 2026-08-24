@@ -399,6 +399,33 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
 </a>`;
   }
 
+  /* Markeringen liggen ÓP het beeld, niet erboven. Zo verschilt een tegel
+     mét markering niet in hoogte van een tegel zonder, en blijft elke rij
+     van het raster op dezelfde lijn beginnen. Twee stuks is het maximum:
+     wat de klant hier moet zien is "scherp geprijsd" en "snel leverbaar". */
+  function cardMarks(p) {
+    const out = [];
+    if (p.promo) out.push('<span class="mk mk-promo">Promo</span>');
+    if (p.availability === "voorraad") out.push('<span class="mk">Op voorraad</span>');
+    return out.length ? `<div class="card-marks">${out.join("")}</div>` : "";
+  }
+
+  /* De catalogustegel: de rustige tegel plus die markeringen. */
+  function productCardCatalog(p) {
+    return `
+<a class="card quiet" href="product.html?id=${p.id}">
+  <div class="card-media">
+    <div class="ph square"></div>
+    ${cardMarks(p)}
+  </div>
+  <div class="card-title">${esc(p.name)}</div>
+  <div class="ledger">
+    <span class="ledger-n">${p.minQty}</span>
+    <span class="ledger-u">stuks min.</span>
+  </div>
+</a>`;
+  }
+
   function productGrid(list, cols) {
     return `<div class="grid cols-${cols || 4}">${list.map(productCard).join("")}</div>`;
   }
@@ -408,7 +435,7 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
      breken die het scanritme — elke rij begint dan op een andere hoogte. */
   function catalogGrid(list, wide) {
     return `<div class="catalog-grid${wide ? " wide" : ""}">${
-      list.map(productCardQuiet).join("")
+      list.map(productCardCatalog).join("")
     }</div>`;
   }
 
@@ -571,8 +598,8 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
           const n = countFor(it.slug);
           const on = chosen.includes(it.slug);
           body += `
-<label class="filter-opt${n === 0 && !on ? " is-empty" : ""}">
-  <input type="checkbox" data-facet="${f.key}" value="${it.slug}"${on ? " checked" : ""}>
+<label class="filter-opt${on ? " is-on" : ""}${n === 0 && !on ? " is-empty" : ""}">
+  <input type="checkbox" data-facet="${f.key}" value="${it.slug}"${on ? " checked" : ""}${n === 0 && !on ? " disabled" : ""}>
   <span>${esc(it.name)}</span><span class="n">${n}</span>
 </label>`;
         });
@@ -582,8 +609,11 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
           : "";
 
         return `
-<div class="filter-group">
-  <div class="filter-title"><span>${f.title}</span></div>
+<div class="filter-group${chosen.length ? " is-on" : ""}">
+  <div class="filter-title">
+    <span>${f.title}</span>
+    ${chosen.length ? `<span class="on-n">${chosen.length}</span>` : ""}
+  </div>
   ${body}${more}
 </div>`;
       }).join("");
@@ -613,7 +643,7 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
     ${icon}<span class="label">${state.filtersOpen ? "Filter verbergen" : "Filter tonen"}${activeCount ? " (" + activeCount + ")" : ""}</span>
   </button>
   <div class="catalog-bar-right">
-    <span>${total ? `${from}–${to} van ${total} producten` : "0 producten"}</span>
+    <span class="result-n">${total ? `${from}–${to} van <b>${total}</b> producten` : "<b>0</b> producten"}</span>
     <label>Sorteren
       <select class="sort-select" data-sort>
         ${SORTS.map((s) => `<option value="${s.key}"${s.key === state.sort ? " selected" : ""}>${s.label}</option>`).join("")}

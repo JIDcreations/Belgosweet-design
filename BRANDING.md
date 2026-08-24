@@ -109,7 +109,7 @@ site tekent staat letterlijk in de tabel van §2.1.
 **Eén uitzondering, en alleen deze:** het achtergrondpatroon in de hero mag
 dekking gebruiken (§5). Dat is bewust vrijgegeven. De regel blijft wél dat de
 dekking op de *laag* zit en niet in de kleurwaarde — in de CSS staat gewoon
-`var(--green)`, met `opacity` op het element eromheen. Zo blijft de kleur
+`var(--pink)`, met `opacity` op het element eromheen. Zo blijft de kleur
 aanwijsbaar een van de zes, ook al is de weergave lichter.
 
 Deze uitzondering geldt **niet** voor tekst. Dekking op tekst verlaagt het
@@ -353,7 +353,7 @@ Regels:
   --stripe:20px;                 /* baanbreedte; periode is dus 40px */
   background:repeating-linear-gradient(90deg,
     var(--cream) 0 var(--stripe),
-    var(--green) var(--stripe) calc(var(--stripe) * 2));
+    var(--pink) var(--stripe) calc(var(--stripe) * 2));
 }
 ```
 
@@ -361,12 +361,19 @@ Het bronbestand `Vertical-pattern.svg` heeft acht brede banen over de
 artwork-breedte; op het scherm staan ze op een vaste **20px**, wat een veel
 fijner streepbeeld geeft — dichter bij inpakpapier dan bij kleurvlakken.
 
-Op volle sterkte vecht donkergroen met het roze tekstvlak dat eroverheen ligt.
-Als achtergrond hoort het patroon te fluisteren, dus het staat op **12%
-dekking**. Let op hoe dat is opgebouwd: de kleur in de CSS blijft
-`var(--green)`, en de `opacity` staat op de laag eromheen. De kleurwaarde is
-dus nog steeds een van de zes; alleen de weergave is lichter. Eén getal
+Als achtergrond hoort het patroon te fluisteren, dus het staat op **55%
+dekking** in `var(--pink)`. Let op hoe dat is opgebouwd: de kleur in de CSS is
+een van de zes, en de `opacity` staat op de laag eromheen. De kleurwaarde
+blijft dus aanwijsbaar uit het palet; alleen de weergave is lichter. Eén getal
 aanpassen maakt het patroon sterker of zwakker.
+
+Waarom roze en niet donkergroen: sinds de home-hero de kop rechtstreeks op het
+patroon zet, is de baan de achtergrond van lopende tekst. Donkergroen moet je
+dan wegdimmen tot **12%** voor het fluistert, en op dat punt leest het als
+vuilgrijs. Roze is zélf licht, dus de baan blijft dicht bij crème: het verschil
+tussen baan en tussenruimte is kléiner (1,23:1 tegenover 1,27:1) terwijl de
+kleur juist duidelijker uit het palet komt. Minder ruis achter de tekst, meer
+merk. Salie op **40%** doet hetzelfde en is het alternatief.
 
   Het bronbestand blijft in `assets/pattern/` staan als referentie voor print.
 
@@ -377,8 +384,8 @@ is dan een SVG-achtergrond:
 .stripes{
   background:repeating-linear-gradient(
     90deg,
-    var(--cream)  0 60px,
-    var(--green) 60px 120px
+    var(--cream) 0 60px,
+    var(--pink) 60px 120px
   );
 }
 ```

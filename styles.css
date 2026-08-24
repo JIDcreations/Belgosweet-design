@@ -477,10 +477,16 @@ p:last-child{ margin-bottom:0; }
    scherm staan ze op een vaste 20px, wat een veel fijner streepbeeld geeft.
 
    Dekking is hier bewust wél toegestaan — expliciet vrijgegeven voor dit
-   patroon (zie BRANDING.md §5). Op volle sterkte vecht donkergroen met het
-   roze tekstvlak; als achtergrond hoort het te fluisteren. De kleur zelf
-   blijft var(--green): de dekking zit op de LAAG, niet in de kleurwaarde.
-   Zo komt er nog steeds geen zevende kleur in het systeem. */
+   patroon (zie BRANDING.md §5). De dekking zit op de LAAG, niet in de
+   kleurwaarde: er komt dus geen zevende kleur in het systeem.
+
+   Roze, niet donkergroen. Sinds de kop rechtstreeks op het patroon staat
+   is de baan de achtergrond van lopende tekst, en donkergroen op 12% leest
+   daar als vuilgrijs: een donkere kleur die je moet wegdimmen tot hij grijs
+   wordt. Roze is zélf licht, dus de baan blijft dicht bij crème staan — het
+   verschil tussen baan en tussenruimte is kleiner (1,23:1 in plaats van
+   1,27:1) terwijl het patroon in hue juist duidelijker aanwezig is. Minder
+   ruis achter de tekst, meer merk. Salie doet hetzelfde op 40%. */
 .hero-canvas{
   position:absolute; inset:0; z-index:0;
   background:var(--cream);
@@ -490,8 +496,8 @@ p:last-child{ margin-bottom:0; }
   --stripe:20px;                 /* baanbreedte; periode is dus 40px */
   background:repeating-linear-gradient(90deg,
     transparent 0 var(--stripe),
-    var(--green) var(--stripe) calc(var(--stripe) * 2));
-  opacity:.12;
+    var(--pink) var(--stripe) calc(var(--stripe) * 2));
+  opacity:.55;
 }
 .hero-vignette{ display:none; }
 .hero-tag{
@@ -566,9 +572,13 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   font-size:clamp(2.5rem, 5.4vw, 5rem);
   line-height:0.98;
 }
+/* Zwaarder dan de .lede-standaard (200). Die extra-light mag alleen bij een
+   ondergrens van 1.15rem op een VLAK vlak (BRANDING.md §3.3); hier staat de
+   regel op een patroon, en dan valt een haarlijn-stok weg tussen de banen. */
 .hero-full .lede{
   color:var(--ink-2); max-width:52ch; margin-inline:auto; margin-top:24px;
   font-size:clamp(1.1rem, 1.35vw, 1.3rem);
+  font-weight:400;
 }
 .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-top:38px; }
 
@@ -1087,6 +1097,28 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    de productpagina zelf. */
 .card.quiet .ph{ margin-bottom:16px; }
 
+/* --- Markeringen op het beeld ---
+   In de catalogus draagt het beeld twee mogelijke markeringen. Ze liggen
+   ERIN, niet erboven: een tegel mét markering is daardoor niet hoger dan
+   een tegel zonder, en het raster houdt zijn scanritme.
+
+   Allebei zijn het crèmevlakken met donkerrode tekst (14,22:1). De promo
+   krijgt er de magenta rand bij — hetzelfde accent als een aangevinkt
+   filter, want het is dezelfde soort melding: "hier is iets aan de hand". */
+.card-media{ position:relative; }
+.card-media .ph{ margin-bottom:16px; }
+.card-marks{
+  position:absolute; top:10px; left:10px; right:10px;
+  display:flex; gap:6px; flex-wrap:wrap;
+  pointer-events:none;
+}
+.mk{
+  background:var(--paper); color:var(--ink);
+  font-size:0.625rem; text-transform:uppercase; letter-spacing:.1em;
+  font-weight:600; padding:4px 8px;
+}
+.mk-promo{ border:1.5px solid var(--accent); padding:3px 7px; }
+
 /* ============================================================
    Het aantallenregister
    ------------------------------------------------------------
@@ -1248,6 +1280,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   padding:6px 0 22px; border-top:1px solid var(--line-soft); flex-wrap:wrap;
 }
 .catalog-bar-right{ display:flex; align-items:center; gap:20px; font-size:12px; color:var(--ink-soft); flex-wrap:wrap; }
+/* Het aantal treffers is het enige getal op deze balk dat verandert als je
+   filtert. Het mag dus zwaarder staan dan het woord ernaast. */
+.result-n b{ font-weight:700; font-size:13px; color:var(--ink); font-variant-numeric:tabular-nums; }
 
 .filter-toggle{
   display:inline-flex; align-items:center; gap:10px;
@@ -1275,42 +1310,77 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   padding:0 0 12px; border-bottom:1px solid var(--ink);
 }
 .filters-head strong{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
-.filters-body{ max-height:calc(100svh - 220px); overflow-y:auto; }
+/* De padding hier heft de negatieve marge van .filter-opt op: de
+   hover-grond mag 10px buiten de kolom vallen zonder dat er binnen de
+   body horizontaal gescrold kan worden. */
+.filters-body{
+  max-height:calc(100svh - 220px); overflow-y:auto;
+  padding-inline:10px; margin-inline:-10px;
+}
 .filter-group{ padding:18px 0; border-bottom:1px solid var(--rule); }
 .filter-group:last-child{ border-bottom:none; padding-bottom:0; }
 .filter-title{
   font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em;
   margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;
+  gap:8px;
 }
+/* Teller per groep: crème op donkerrood, dezelfde taal als de teller op de
+   offertetas in de header. Zo zie je met een dichtgeklapte groep nog steeds
+   dat er iets aanstaat. */
+.filter-title .on-n{
+  flex:0 0 auto; min-width:16px; height:16px; padding:0 4px;
+  background:var(--ink); color:var(--paper);
+  font-size:10px; line-height:16px; text-align:center; font-weight:600;
+  letter-spacing:0; border-radius:100px;
+  font-variant-numeric:tabular-nums;
+}
+/* De rij loopt 10px buiten de kolom door en is ruimer van boven en onder:
+   de hover-grond moet lucht hebben rond het vinkje en de teller, anders
+   plakt het vlak strak tegen beide uiteinden. De tekst zelf blijft op de
+   kolomlijn staan — alleen de grond steekt uit. */
 .filter-opt{
   display:flex; align-items:center; gap:12px;
   font-size:0.875rem; color:var(--ink);
-  padding:7px 0; cursor:pointer;
+  padding:9px 10px; margin-inline:-10px; cursor:pointer;
+  transition:background .2s var(--ease);
 }
-.filter-opt:hover{ color:var(--ink); }
+/* Hover was hier een lege regel: kleur naar --ink terwijl de rij al --ink
+   is. De rij gaf dus geen enkel teken dat ze aanklikbaar was. */
+.filter-opt:not(.is-empty):hover{ background:var(--pink); }
 .filter-opt input{
   appearance:none; -webkit-appearance:none;
   flex:0 0 auto; margin:0; width:15px; height:15px;
   border:1px solid var(--control); background:var(--paper);
   display:grid; place-content:center;
-  transition:background .25s var(--ease);
+  transition:background .25s var(--ease), border-color .25s var(--ease);
 }
 .filter-opt input::before{
   content:""; width:7px; height:7px; transform:scale(0);
   background:var(--paper); transition:transform .2s var(--ease);
 }
-.filter-opt input:checked{ background:var(--ink); }
+/* Aangevinkt = magenta. Dat is de enige plek in de shop waar het accent
+   een VLAK vult, en precies daarom leest het meteen als "dit staat aan".
+   Magenta draagt hier geen tekst (BRANDING.md §6): het is een markering,
+   en crème op magenta haalt 4,46:1 — ruim boven de 3:1 die voor
+   niet-tekstuele elementen geldt. */
+.filter-opt input:checked{ background:var(--accent); border-color:var(--accent); }
 .filter-opt input:checked::before{ transform:scale(1); }
+/* Kleur is nooit het enige signaal: de aangevinkte regel wordt ook zwaarder. */
+.filter-opt.is-on{ font-weight:600; }
 .filter-opt .n{
   margin-left:auto; font-size:0.75rem; color:var(--ink);
   font-variant-numeric:tabular-nums;
 }
-.filter-opt.is-empty{ opacity:.4; }
+/* Nul treffers: gedimd én echt uitgeschakeld (het `disabled`-attribuut zit
+   op de checkbox zelf, zie app.js). Eerder kon je erop klikken en gebeurde
+   er niets; met alleen `pointer-events:none` zou de muis geblokkeerd zijn
+   maar het toetsenbord er nog gewoon bij kunnen. */
+.filter-opt.is-empty{ opacity:.4; cursor:default; }
 .filter-sub{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3); margin:10px 0 4px; }
 .filter-more{ font-size:12px; color:var(--ink-soft); border-bottom:1px solid var(--line); margin-top:6px; display:inline-block; background:none; border-top:none; border-left:none; border-right:none; padding:2px 0; }
 .filters-toggle{ display:none; width:100%; margin-bottom:16px; }
-.filters-clear{ font-size:11px; color:var(--ink-soft); background:none; border:none; border-bottom:1px solid var(--line); padding:1px 0; }
-.filters-clear:hover{ color:var(--ink); }
+.filters-clear{ font-size:11px; color:var(--ink); background:none; border:none; border-bottom:1px solid var(--accent); padding:1px 0; }
+.filters-clear:hover{ border-bottom-width:2px; }
 
 .toolbar{
   display:flex; justify-content:space-between; align-items:center; gap:16px;
@@ -1329,14 +1399,17 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 
 .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+/* Chips zijn de actieve filters, dus ze dragen hetzelfde accent als het
+   vinkje waar ze uit voortkomen — een magenta rand, geen tekst in magenta. */
 .chip{
-  display:inline-flex; align-items:center; gap:7px;
-  border:1px solid var(--control); padding:4px 9px; font-size:11px; color:var(--ink);
+  display:inline-flex; align-items:center; gap:8px;
+  border:1.5px solid var(--accent); padding:5px 10px; font-size:11px; color:var(--ink);
   background:var(--paper);
+  transition:background .25s var(--ease);
 }
-.chip b{ font-weight:400; color:var(--ink-3); }
-.chip .x{ font-size:13px; line-height:1; color:var(--ink-soft); }
-.chip:hover .x{ color:var(--ink); }
+.chip b{ font-weight:600; }
+.chip .x{ font-size:14px; line-height:1; color:var(--ink); }
+.chip:hover{ background:var(--pink); }
 
 .empty-state{ border:1px solid var(--line-soft); padding:40px 24px; text-align:center; color:var(--ink-soft); font-size:13px; }
 .empty-state strong{ display:block; color:var(--ink); font-size:15px; margin-bottom:6px; }
