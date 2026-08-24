@@ -343,6 +343,19 @@ const BS = (() => {
      Herbruikbare renders
      ============================================================ */
 
+  /* Eén plek die beslist of een beeldvlak een foto krijgt of de
+     patroon-placeholder blijft. Zonder beeld valt hij terug op precies
+     wat er stond, dus categorieën waarvoor nog geen fotografie is
+     aangeleverd blijven gewoon werken (overdracht §10.3).
+
+     `alt` blijft leeg waar het beeld naast de productnaam staat: de naam
+     staat er al als tekst, en die twee keer voorlezen helpt niemand. */
+  function ph(cls, img, alt) {
+    const extra = cls ? " " + cls : "";
+    if (!img) return `<div class="ph${extra}"></div>`;
+    return `<div class="ph${extra} has-img"><img src="assets/img/${img}.jpg" alt="${esc(alt || "")}" loading="lazy" decoding="async"></div>`;
+  }
+
   function badges(p) {
     const out = [];
     if (p.promo) out.push('<span class="badge promo">Promo</span>');
@@ -355,7 +368,7 @@ const BS = (() => {
   function productCard(p) {
     return `
 <a class="card" href="product.html?id=${p.id}">
-  <div class="ph square"></div>
+  ${ph("square contain", p.img)}
   ${badges(p)}
   <div class="card-title">${esc(p.name)}</div>
   <div class="card-meta">${esc(D.brandName(p.brand))}</div>
@@ -390,7 +403,7 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
   function productCardQuiet(p) {
     return `
 <a class="card quiet" href="product.html?id=${p.id}">
-  <div class="ph square"></div>
+  ${ph("square contain", p.img)}
   <div class="card-title">${esc(p.name)}</div>
   <div class="ledger">
     <span class="ledger-n">${p.minQty}</span>
@@ -415,7 +428,7 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
     return `
 <a class="card quiet" href="product.html?id=${p.id}">
   <div class="card-media">
-    <div class="ph square"></div>
+    ${ph("square contain", p.img)}
     ${cardMarks(p)}
   </div>
   <div class="card-title">${esc(p.name)}</div>
@@ -442,7 +455,7 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
   function categoryTile(c) {
     return `
 <a class="tile" href="categorie.html?cat=${c.slug}">
-  <div class="ph square"></div>
+  ${ph("square", c.tile, c.name)}
   <div class="tile-body">
     <span class="tile-name">${esc(c.name)}</span>
     <span class="tile-count">${c.count}</span>
@@ -789,7 +802,7 @@ ${renderBar(list.length, from, to)}
     if (track) {
       track.innerHTML = D.CATEGORIES.map((c) => `
 <a class="cc-slide" href="categorie.html?cat=${c.slug}">
-  <div class="ph"></div>
+  ${ph("", c.tile, c.name)}
   <div class="cc-body">
     <span class="cc-name">${esc(c.name)}</span>
     <span class="cc-n">${c.count}</span>
@@ -1004,6 +1017,9 @@ ${renderBar(list.length, from, to)}
     // catalogus zelf — geen copy die nog geschreven moet worden.
     const t = $("#cat-hero-title"); if (t) t.textContent = cat.name;
 
+    const heroMedia = $("#cat-hero-media");
+    if (heroMedia) heroMedia.innerHTML = ph("", cat.tile, cat.name);
+
     const m = $("#cat-hero-facts");
     if (m) {
       const inCat = D.PRODUCTS.filter((p) => p.cat === cat.slug);
@@ -1040,12 +1056,31 @@ ${renderBar(list.length, from, to)}
     const chosen = {};
     p.variants.forEach((v) => { chosen[v.label] = v.options[0]; });
 
+    /* De reeks van dit artikel: eigen beeld eerst, dan de rest van de
+       categorie. De twee verpakkingsbeelden horen bij ÉLK artikel — met
+       je logo op de verpakking is hier het aanbod, niet een eigenschap
+       van één categorie. Zonder categoriebeeld valt de galerij terug op
+       de vijf placeholders die er stonden. */
+    const catObj = D.CATEGORIES.find((c) => c.slug === p.cat);
+    const shots = [];
+    if (p.img) {
+      shots.push(p.img);
+      (catObj && catObj.imgs ? catObj.imgs : []).forEach((i) => {
+        if (!shots.includes(i)) shots.push(i);
+      });
+      ["verpakking-doos-wit", "verpakking-stickers"].forEach((i) => {
+        if (!shots.includes(i)) shots.push(i);
+      });
+    }
+    const gal = shots.slice(0, 5);
+
     const gallery = $("#pdp-gallery");
     if (gallery) gallery.innerHTML = `
-<div class="ph tall" data-main></div>
+${ph("tall contain\" data-main=\"", gal[0], p.name)}
 <figcaption class="pdp-caption" data-main-caption>${esc(p.variants.length ? p.variants[0].options[0] : "Standaard")}</figcaption>
 <div class="pdp-thumbs">
-  ${[1, 2, 3, 4, 5].map((n) => `<div class="ph${n === 1 ? " active" : ""}" data-thumb="${n}"></div>`).join("")}
+  ${(gal.length ? gal : [null, null, null, null, null]).map((img, n) =>
+    ph("contain " + (n === 0 ? "active" : "") + "\" data-thumb=\"" + (n + 1), img, "")).join("")}
 </div>`;
 
     const info = $("#pdp-info");
@@ -1160,6 +1195,11 @@ ${p.variants.map((v, i) => `
       $$("[data-thumb]").forEach((x) => x.classList.remove("active"));
       t.classList.add("active");
       thumbNr = parseInt(t.dataset.thumb, 10);
+      // Het hoofdbeeld volgt de duim nu écht; eerder wisselde alleen
+      // het onderschrift en bleef er hetzelfde vlak staan.
+      const src = gal[thumbNr - 1];
+      const mainImg = main && $("img", main);
+      if (src && mainImg) mainImg.src = "assets/img/" + src + ".jpg";
       setCaption();
     }));
 
@@ -1239,7 +1279,7 @@ ${p.variants.map((v, i) => `
       const vars = Object.entries(it.variants || {}).map(([k, v]) => `${k}: ${v}`).join(" · ");
       return `
     <tr>
-      <td class="thumb"><div class="ph"></div></td>
+      <td class="thumb">${ph("contain", p.img)}</td>
       <td>
         <a class="quote-item-name" href="product.html?id=${p.id}">${esc(p.name)}</a>
         <div class="quote-item-meta">${esc(D.brandName(p.brand))} · ${esc(p.sku)}</div>
@@ -1375,7 +1415,7 @@ ${p.variants.map((v, i) => `
   </div>
   ${o.items.map((p) => `
   <div class="reorder-item">
-    <div class="ph"></div>
+    ${ph("contain", p.img)}
     <div class="meta"><strong>${esc(p.name)}</strong><span>${esc(D.brandName(p.brand))} · min. ${p.minQty} st.</span></div>
     <button class="cta-btn small" type="button" data-readd="${p.id}">Toevoegen</button>
   </div>`).join("")}

@@ -14,21 +14,58 @@ const BS_DATA = (() => {
 
   /* ---------- facetten ---------- */
 
+  /* Twee soorten beeld, bewust gescheiden:
+
+       tile  — het CATEGORIEBEELD (tegel, carrousel, categoriehero). Hier
+               mag een vollevlaks sfeerfoto staan; die vult de tegel van
+               rand tot rand en dat is precies wat je daar wil.
+
+       imgs  — de PRODUCTBEELDEN, waar de tegels van de catalogus over
+               rouleren. Hier komen ALLEEN opnames van een los object op
+               een egale crèmegrond in (de PNG's uit de aanlevering). Die
+               grond is #F9F9F0, praktisch identiek aan --cream, dus het
+               product lijkt vrij op de pagina te staan in plaats van in
+               een dichtgeplakt fotokadertje. Een vollevlaks foto — een
+               macaronmuur, een koekjestextuur — doet in een productraster
+               het omgekeerde: dan zie je twaalf verschillende kadertjes
+               in plaats van twaalf producten.
+
+     Ontbreekt een van de twee, dan blijft daar de patroon-placeholder
+     staan. Zonder `imgs` (macarons, mellow cakes) is er geen losse
+     productopname aangeleverd; bij mellow cakes en adventskalenders was
+     die er wél, maar met het merk van een ander erop (Ritter Sport,
+     Lindt) — zie de opmerking in tools/build-images.sh. */
   const CATEGORIES = [
-    { slug: "chocolade-pralines",     name: "Chocolade & pralines",   count: 32 },
-    { slug: "koekjes",                name: "Koekjes",                count: 14 },
-    { slug: "macarons",               name: "Macarons",               count: 6  },
+    { slug: "chocolade-pralines",     name: "Chocolade & pralines",   count: 32,
+      tile: "pralines-stapel",
+      imgs: ["pralines-stapel", "pralines-blik", "pralines-doos-groen",
+             "pralines-blik-bordeaux"] },
+    { slug: "koekjes",                name: "Koekjes",                count: 14,
+      tile: "koekjes-boter",
+      imgs: ["koekjes-stroopwafels", "koekjes-geluk"] },
+    { slug: "macarons",               name: "Macarons",               count: 6,
+      tile: "macarons-roze" },
     { slug: "mellow-cakes",           name: "Mellow cakes",           count: 6  },
-    { slug: "snoep-lollys",           name: "Snoep & lolly's",        count: 18 },
-    { slug: "pepermunt-kauwgom",      name: "Pepermunt & kauwgom",    count: 10 },
+    { slug: "snoep-lollys",           name: "Snoep & lolly's",        count: 18,
+      tile: "snoep-honing",
+      imgs: ["snoep-honing", "snoep-kegels", "nougat-rollen"] },
+    { slug: "pepermunt-kauwgom",      name: "Pepermunt & kauwgom",    count: 10,
+      tile: "snoep-fruitgom",
+      imgs: ["snoep-fruitgom"] },
     { slug: "adventskalenders",       name: "Adventskalenders",       count: 16 },
-    { slug: "noten-zoute-snacks",     name: "Noten & zoute snacks",   count: 8  },
-    { slug: "gezonde-snacks-granola", name: "Gezonde snacks & granola", count: 8 },
+    { slug: "noten-zoute-snacks",     name: "Noten & zoute snacks",   count: 8,
+      tile: "noten-chocolade",
+      imgs: ["noten-chocolade"] },
+    { slug: "gezonde-snacks-granola", name: "Gezonde snacks & granola", count: 8,
+      tile: "granola-breuk",
+      imgs: ["granola-breuk"] },
     { slug: "koffie-thee-suiker",     name: "Koffie, thee & suiker",  count: 9  },
     { slug: "dranken",                name: "Dranken",                count: 6  },
     { slug: "olijfolie",              name: "Olijfolie",              count: 4  },
     { slug: "zout-pepermolen",        name: "Zout- & pepermolen",     count: 4  },
-    { slug: "gourmet-geschenkmand",   name: "Gourmet geschenkmand",   count: 5  },
+    { slug: "gourmet-geschenkmand",   name: "Gourmet geschenkmand",   count: 5,
+      tile: "geschenk-assortiment",
+      imgs: ["geschenk-assortiment", "geschenk-lint"] },
     { slug: "drinkflessen",           name: "Drinkflessen",           count: 5  },
     { slug: "paraplus",               name: "Paraplu's",              count: 4  }
   ];
@@ -260,6 +297,10 @@ const BS_DATA = (() => {
         sku: "BS-" + String(10000 + n),
         name: name,
         cat: cat.slug,
+        // Rouleert over de beelden van de categorie (zie CATEGORIES.imgs).
+        // Deterministisch op de index, dus een product houdt zijn beeld
+        // bij elke render — anders springt het raster bij elk filter.
+        img: cat.imgs ? cat.imgs[i % cat.imgs.length] : null,
         brand: pick(r.brands),
         packaging: pick(r.packaging),
         occasions: occ,

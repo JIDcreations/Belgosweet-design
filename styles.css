@@ -415,6 +415,41 @@ p:last-child{ margin-bottom:0; }
   background-image:none;          /* te klein voor merkteken én bijschrift */
   align-items:center; padding:8px;
 }
+/* --- Beeldvlak MET foto ---
+   De .ph blijft de doos die de maat bepaalt (aspect-ratio, min-height,
+   de kleurgrond) en de foto legt zich er absoluut overheen. Zo hoeft
+   geen enkele bestaande maatregel te wijken en valt een vlak zonder
+   foto terug op precies het merkteken-op-kleur dat er stond.
+
+   De grond blijft eronder staan en is zichtbaar zolang de foto laadt:
+   roze of salie, nooit wit. */
+/* De padding op .ph is er voor het bijschrift van een LEEG vlak. Staat er
+   een foto in, dan moet die tot de rand lopen: een absoluut gepositioneerd
+   kind rekent `inset:0` af tegen de padding-box, dus zonder deze regel
+   houdt het beeld een randje grond over aan alle vier de kanten. */
+.ph.has-img{ position:relative; overflow:hidden; padding:0; }
+.ph.has-img > img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover; display:block;
+  transition:transform .8s var(--ease);
+}
+/* Dezelfde beweging als het merkteken op een leeg vlak maakte: de kaart
+   reageert, zonder dat er een kader oplicht. */
+.card:hover .ph.has-img > img,
+.tile:hover .ph.has-img > img,
+.cc-slide:hover .ph.has-img > img{ transform:scale(1.045); }
+
+/* --- Productbeeld: het object, niet het kader ---
+   De aangeleverde productopnames staan als los object op een egale grond
+   van #F9F9F0 — praktisch --cream. Met `contain` op datzelfde crème valt
+   de rand van de foto weg tegen de pagina en lijkt het product vrij te
+   staan. Met `cover` zou een staande verpakkingsfoto bovendien bovenaan
+   en onderaan afgesneden worden; juist bij een doos is dat het deel dat
+   je wil zien. */
+.ph.has-img.contain{ background-color:var(--cream); }
+.ph.has-img.contain > img{ object-fit:contain; }
+
 .ph.square{ aspect-ratio:1/1; min-height:0; }
 .ph.wide{ aspect-ratio:16/9; min-height:0; }
 .ph.fill{ height:100%; min-height:300px; border:none; }
@@ -489,15 +524,30 @@ p:last-child{ margin-bottom:0; }
    ruis achter de tekst, meer merk. Salie doet hetzelfde op 40%. */
 .hero-canvas{
   position:absolute; inset:0; z-index:0;
-  background:var(--cream);
+  background:var(--cream) url("assets/img/hero-verpakking.jpg") center / cover no-repeat;
 }
+/* Het streeppatroon is hier vervangen door fotografie. De laag blijft
+   staan als crèmesluier: de opname is licht, maar niet overal even licht,
+   en de kop moet op elk formaat op dezelfde ondergrond landen. Dit is
+   var(--cream) op dekking — dezelfde uitzondering die §5 voor dit vlak
+   toestaat, alleen nu om te temperen in plaats van te tekenen.
+
+   60% is geen smaakgetal maar een ondergrens. Door het kader van de kop,
+   de tussenzin én het woordmerk loopt telkens een donkergroene baan of
+   een bordeaux doos — daar zit de ondergrond op bijna zwart. Gemeten op
+   het echte beeld, op de echte plek van de tekst:
+
+     dekking   slechtste contrast met donkerrood
+       .50     3,6:1   te weinig
+       .55     4,3:1   te weinig voor de tussenzin
+       .60     5,0:1   gehaald
+       .65     5,9:1   ruim, maar het beeld verbleekt
+
+   Verlaag je dit, of wissel je van hero-opname, meet dan opnieuw. */
 .hero-canvas::before{
   content:""; position:absolute; inset:0;
-  --stripe:20px;                 /* baanbreedte; periode is dus 40px */
-  background:repeating-linear-gradient(90deg,
-    transparent 0 var(--stripe),
-    var(--pink) var(--stripe) calc(var(--stripe) * 2));
-  opacity:.55;
+  background:var(--cream);
+  opacity:.60;
 }
 .hero-vignette{ display:none; }
 .hero-tag{
@@ -705,10 +755,14 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 /* Niet elke tegel dezelfde grond: een raster van louter roze leest als één
    vlak. Periode 4 op drie kolommen spreidt diagonaal i.p.v. per kolom. */
-.cc-slide:nth-child(even) .ph{ background-color:var(--band-sage); }
-.tile:nth-child(even) .ph{ background-color:var(--band-sage); }
-.catalog-grid .card:nth-child(4n+2) .ph,
-.grid-editorial .card:nth-child(4n+2) .ph{ background-color:var(--band-sage); }
+/* De afwisseling roze/salie is er om een raster van LEGE vlakken op te
+   breken. Zodra er een foto in zit doet ze het omgekeerde — dan zie je
+   gekleurde kadertjes in plaats van producten — dus ze geldt alleen nog
+   voor vlakken zonder beeld. */
+.cc-slide:nth-child(even) .ph:not(.has-img){ background-color:var(--band-sage); }
+.tile:nth-child(even) .ph:not(.has-img){ background-color:var(--band-sage); }
+.catalog-grid .card:nth-child(4n+2) .ph:not(.has-img),
+.grid-editorial .card:nth-child(4n+2) .ph:not(.has-img){ background-color:var(--band-sage); }
 .cc-slide .ph{
   aspect-ratio:3/4; min-height:0; border:none;
   transition:transform .8s var(--ease);
@@ -1458,8 +1512,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .pdp{ display:grid; grid-template-columns:1fr 1fr; gap:52px; margin-top:20px; }
 .pdp-gallery .ph.tall{ min-height:440px; }
 .pdp-thumbs{ display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:10px; }
-.pdp-thumbs .ph{ min-height:66px; cursor:pointer; }
-.pdp-thumbs .ph.active{ border-color:var(--ink); }
+.pdp-thumbs .ph{ min-height:66px; aspect-ratio:1/1; cursor:pointer; }
+/* .ph heeft `border:none`, dus border-color deed hier niets. Een outline
+   legt de markering bovenop het beeld in plaats van ernaast, en verandert
+   de maat van de duim niet. */
+.pdp-thumbs .ph.active{ outline:2px solid var(--ink); outline-offset:-2px; }
 
 .pdp-title{
   font-size:clamp(1.9rem, 3vw, 2.7rem); font-weight:700;
