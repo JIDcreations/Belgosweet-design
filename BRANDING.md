@@ -103,8 +103,18 @@ er altijd actief uit.
 ### 2.4 Geen varianten
 
 Er worden **geen tussentinten gemaakt**. Geen lichtere of donkerdere versie van
-een basiskleur, geen transparantie, geen `color-mix()`, geen verloop tussen twee
-kleuren. Wat de site tekent staat letterlijk in de tabel van §2.1.
+een basiskleur, geen `color-mix()`, geen verloop tussen twee kleuren. Wat de
+site tekent staat letterlijk in de tabel van §2.1.
+
+**Eén uitzondering, en alleen deze:** het achtergrondpatroon in de hero mag
+dekking gebruiken (§5). Dat is bewust vrijgegeven. De regel blijft wél dat de
+dekking op de *laag* zit en niet in de kleurwaarde — in de CSS staat gewoon
+`var(--green)`, met `opacity` op het element eromheen. Zo blijft de kleur
+aanwijsbaar een van de zes, ook al is de weergave lichter.
+
+Deze uitzondering geldt **niet** voor tekst. Dekking op tekst verlaagt het
+contrast zonder dat je het aan de kleurwaarde ziet, en dat is precies hoe een
+ontoegankelijke tint binnensluipt.
 
 Dat heeft één gevolg dat vooraf duidelijk moet zijn: **op crème bestaat er maar
 één tekstkleur die de norm haalt** — donkerrood, 14.22:1. Donkergroen kan ook
@@ -205,22 +215,40 @@ de vraag die §10.5 van het overdrachtsdocument openliet — hierbij beantwoord.
 
 ### 3.3 Schaal
 
-| Rol | Klasse | Grootte | Gewicht | Tracking |
-|---|---|---|---|---|
-| Display (hero) | `.display` | `clamp(2.6rem, 6.4vw, 5.25rem)` | 800 | -0.035em |
-| Sectiekop | `.h-lg` | `clamp(1.9rem, 3.4vw, 3rem)` | 700 | -0.028em |
-| Subkop | `.h-md` | `clamp(1.4rem, 2vw, 1.9rem)` | 600 | -0.02em |
-| Lede | `.lede` | `clamp(1rem, 1.25vw, 1.15rem)` | 400 | 0 |
-| Lopende tekst | `body` | 16px | 400 | 0 |
-| Meta | `.meta` | 0.8125rem | 500 | 0 |
-| Label | `.label` | 0.6875rem, uppercase | 600 | 0.14em |
+De hiërarchie loopt in **twee richtingen** tegelijk. Koppen dragen gewicht,
+alles eromheen laat los. Daardoor is het aantallenregister het enige grote
+LICHTE element op de pagina — en dat is precies wat het laat opvallen.
 
-Manrope is op lage gewichten ijl; ga voor koppen niet onder 600, anders valt de
-hiërarchie weg tegen de lopende tekst. Regelhoogte blijft zoals nu: 1.05 voor
-koppen, 1.55 voor lopende tekst.
+| Rol | Klasse | Grootte | Gewicht |
+|---|---|---|---|
+| Display (hero) | `.display` | `clamp(2.7rem, 6.6vw, 5.6rem)` | **700** |
+| Paginakop | `.cat-hero-title` / `.page-title` | `clamp(2.5rem, 5.4vw, 4.4rem)` | **700** |
+| Productnaam (PDP) | `.pdp-title` | `clamp(1.9rem, 3vw, 2.7rem)` | **700** |
+| Sectiekop | `.h-lg` / `.section-title` | `clamp(2rem, 3.6vw, 3.1rem)` | **700** |
+| Subkop | `.h-md` | `clamp(1.5rem, 2.2vw, 2.1rem)` | 600 |
+| Lopende tekst | `body` | 16px | 400 |
+| Lede | `.lede` | `clamp(1.15rem, 1.4vw, 1.35rem)` | **200** |
+| Registergetal | `.ledger-n` | `clamp(1.9rem, 2.6vw, 2.5rem)` | **200** |
+| Prijsuitspraak | `.pdp-price-v` | `clamp(1.6rem, 2.4vw, 2.1rem)` | **200** |
+| Details, meta | `.card-meta`, `.meta`, `.pdp-sku` | 13px | 300 |
+| Labels, units | `.label`, `.eyebrow`, `.ledger-u` | 11px kapitalen | 600 |
 
-Labels blijven **spaarzaam** — niet boven elke sectie. Dat is precies het
-sjabloon-signaal dat in de MidFi is weggewerkt.
+**Waar de grens ligt.** Gewicht 200 heeft formaat nodig. Boven ± 18px draagt
+het; daaronder worden de stokken te dun, zeker op een scherm zonder hoge
+pixeldichtheid. Daarom:
+
+- lopende tekst blijft **400**. Op 16px is 200 in ideale omstandigheden nog
+  leesbaar, maar het verliest te veel op gewone schermen en over langere stukken.
+- kleine kapitalen blijven **600**. Uppercase op klein formaat heeft gewicht
+  nodig, geen elegantie.
+- de lede staat op 200 **omdat de ondergrens op 1.15rem (18.4px) ligt**. Verlaag
+  je die, dan moet het gewicht mee omhoog.
+
+> Let op: een contrastcontrole vangt dit **niet**. WCAG rekent op kleur, niet op
+> streekdikte — extra light in donkerrood haalt dezelfde 14.22:1 als bold. Dit is
+> een leesbaarheidsgrens die je zelf moet bewaken.
+
+Het woordmerk is handgetekend en wordt nooit nagezet in Manrope (§3.4).
 
 ### 3.4 Het woordmerk is geen font
 
@@ -322,19 +350,23 @@ Regels:
 
 ```css
 .hero-canvas{
-  --stripe:clamp(46px, 7.1vw, 116px);
+  --stripe:20px;                 /* baanbreedte; periode is dus 40px */
   background:repeating-linear-gradient(90deg,
-    var(--burgundy) 0 var(--stripe),
-    var(--pink) var(--stripe) calc(var(--stripe) * 2));
-}
-.hero-canvas::after{           /* de schuine breuk: fase een halve slag om */
-  content:""; position:absolute; inset:0;
-  background:repeating-linear-gradient(90deg,
-    var(--pink) 0 var(--stripe),
-    var(--burgundy) var(--stripe) calc(var(--stripe) * 2));
-  clip-path:polygon(0 100%, 0 62%, 100% 22%, 100% 100%);
+    var(--cream) 0 var(--stripe),
+    var(--green) var(--stripe) calc(var(--stripe) * 2));
 }
 ```
+
+Het bronbestand `Vertical-pattern.svg` heeft acht brede banen over de
+artwork-breedte; op het scherm staan ze op een vaste **20px**, wat een veel
+fijner streepbeeld geeft — dichter bij inpakpapier dan bij kleurvlakken.
+
+Op volle sterkte vecht donkergroen met het roze tekstvlak dat eroverheen ligt.
+Als achtergrond hoort het patroon te fluisteren, dus het staat op **12%
+dekking**. Let op hoe dat is opgebouwd: de kleur in de CSS blijft
+`var(--green)`, en de `opacity` staat op de laag eromheen. De kleurwaarde is
+dus nog steeds een van de zes; alleen de weergave is lichter. Eén getal
+aanpassen maakt het patroon sterker of zwakker.
 
   Het bronbestand blijft in `assets/pattern/` staan als referentie voor print.
 

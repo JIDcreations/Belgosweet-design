@@ -60,11 +60,27 @@ input,select,textarea{ font-family:inherit; }
 }
 
 /* ---- Typografische schaal ----------------------------------
-   Eén familie: Manrope. Manrope heeft GEEN breedte-as, dus de
-   hiërarchie loopt via gewicht (200–800), grootte en
-   letterafstand — niet meer via `wdth` zoals in de MidFi.
-   Manrope is licht ijl: koppen gaan niet onder 600, anders
-   valt het verschil met de lopende tekst weg. */
+   Eén familie: Manrope, gewichtsas 200–800. De hiërarchie loopt
+   niet in één richting, maar in twee:
+
+     koppen         700  bold, groot        — die bevestigen
+     subkoppen      600  semibold
+     lopende tekst  400  regular
+     lede           200  extra light, 18px+ — die ondersteunt
+     details        300  light
+     getallen       200  extra light, groot — het register
+     labels/units   600  semibold, kapitalen
+
+   Koppen dragen gewicht, alles eromheen laat los. Daardoor is het
+   aantallenregister het enige grote LICHTE element op de pagina —
+   en dat maakt het meteen het element dat opvalt.
+
+   Waar de grens ligt: gewicht 200 heeft formaat nodig. Boven
+   ± 40px draagt het; daaronder worden de stokken te dun, zeker
+   op een scherm zonder hoge pixeldichtheid. Lopende tekst blijft
+   daarom 400 en kleine kapitalen blijven 600. Let op: een
+   contrastcontrole vangt dit NIET — die rekent op kleur, niet op
+   streekdikte. Dit is een leesbaarheidsgrens, geen contrastgrens. */
 
 h1,h2,h3{
   color:var(--ink);
@@ -75,23 +91,34 @@ h1,h2,h3{
   margin:0;
 }
 
+/* Extra light vraagt meer formaat en strakkere spatiëring dan een
+   vette kop: de letters moeten elkaar vasthouden. */
 .display{
-  font-size:clamp(2.6rem, 6.4vw, 5.25rem);
-  font-weight:800;
-  line-height:0.98;
-  letter-spacing:-0.038em;
+  font-size:clamp(2.7rem, 6.6vw, 5.6rem);
+  font-weight:700;
+  line-height:0.96;
+  letter-spacing:-0.042em;
 }
-.h-lg{ font-size:clamp(1.9rem, 3.4vw, 3rem); font-weight:700; letter-spacing:-0.028em; }
-.h-md{ font-size:clamp(1.4rem, 2vw, 1.9rem); font-weight:600; letter-spacing:-0.02em; }
+.h-lg{
+  font-size:clamp(2rem, 3.6vw, 3.1rem);
+  font-weight:700; letter-spacing:-0.032em; line-height:1.04;
+}
+.h-md{
+  font-size:clamp(1.5rem, 2.2vw, 2.1rem);
+  font-weight:600; letter-spacing:-0.026em;
+}
 
 .lede{
-  font-size:clamp(1rem, 1.25vw, 1.15rem);
+  /* Extra light kan hier, maar alleen omdat de ondergrens op 1.15rem
+     (18.4px) ligt. Zakt dit onder ± 18px, dan moet het terug naar 300. */
+  font-size:clamp(1.15rem, 1.4vw, 1.35rem);
+  font-weight:200;
   line-height:1.6;
   color:var(--ink-2);
-  max-width:56ch;
+  max-width:52ch;
   text-wrap:pretty;
 }
-.meta{ font-size:0.8125rem; color:var(--ink-3); letter-spacing:0.005em; }
+.meta{ font-size:0.8125rem; font-weight:300; color:var(--ink-3); letter-spacing:0.005em; }
 
 /* Sparingly. Niet boven elke sectie — dat is precies het
    sjabloon-signaal dat we hier wegwerken. */
@@ -344,16 +371,16 @@ p:last-child{ margin-bottom:0; }
   font-weight:600; color:var(--ink); margin:0 0 14px;
 }
 .section-title{
-  font-size:clamp(1.6rem, 2.8vw, 2.4rem); font-weight:700;
-  margin:0; letter-spacing:-.028em; line-height:1.06;
+  font-size:clamp(1.8rem, 3vw, 2.6rem); font-weight:700;
+  margin:0; letter-spacing:-.032em; line-height:1.06;
 }
 .page-title{
-  font-size:clamp(2.4rem, 5vw, 4rem); font-weight:800;
-  margin:0; letter-spacing:-.038em; line-height:1.0;
+  font-size:clamp(2.5rem, 5.4vw, 4.4rem); font-weight:700;
+  margin:0; letter-spacing:-.04em; line-height:1.0;
 }
 .section-sub{
-  font-size:0.9375rem; line-height:1.6; color:var(--ink);
-  margin:14px 0 0; max-width:52ch;
+  font-size:1rem; font-weight:300; line-height:1.62; color:var(--ink);
+  margin:16px 0 0; max-width:50ch;
 }
 .link-more{
   font-size:0.8125rem; letter-spacing:.02em; color:var(--ink);
@@ -417,16 +444,27 @@ p:last-child{ margin-bottom:0; }
   border-bottom:1px solid var(--rule-2);
 }
 /* Het hele hero-vlak ís de beeldplaats — tot de fotografie er is, draagt
-   het de verticale banen uit assets/pattern/Vertical-pattern.svg. Dat
-   bestand is acht gelijke banen (60.02 van 479.73 eenheden), afwisselend
-   crème en donkergroen. Hier één op één overgenomen als CSS, zodat het
-   meeschaalt in plaats van te tegelen. */
+   het de verticale banen uit assets/pattern/Vertical-pattern.svg.
+
+   Het bronbestand heeft acht brede banen over de artwork-breedte; op het
+   scherm staan ze op een vaste 20px, wat een veel fijner streepbeeld geeft.
+
+   Dekking is hier bewust wél toegestaan — expliciet vrijgegeven voor dit
+   patroon (zie BRANDING.md §5). Op volle sterkte vecht donkergroen met het
+   roze tekstvlak; als achtergrond hoort het te fluisteren. De kleur zelf
+   blijft var(--green): de dekking zit op de LAAG, niet in de kleurwaarde.
+   Zo komt er nog steeds geen zevende kleur in het systeem. */
 .hero-canvas{
   position:absolute; inset:0; z-index:-2;
-  --stripe:clamp(44px, 12.5vw, 190px);   /* 12.5vw = altijd acht banen */
+  background:var(--cream);
+}
+.hero-canvas::before{
+  content:""; position:absolute; inset:0;
+  --stripe:20px;                 /* baanbreedte; periode is dus 40px */
   background:repeating-linear-gradient(90deg,
-    var(--cream) 0 var(--stripe),
+    transparent 0 var(--stripe),
     var(--green) var(--stripe) calc(var(--stripe) * 2));
+  opacity:.12;
 }
 .hero-vignette{ display:none; }
 .hero-tag{
@@ -584,7 +622,7 @@ p:last-child{ margin-bottom:0; }
 }
 .cc-name{
   font-size:1rem; color:var(--ink);
-  font-weight:500; letter-spacing:-0.012em; line-height:1.3;
+  font-weight:400; letter-spacing:-0.012em; line-height:1.3;
 }
 .cc-n{ font-size:0.75rem; color:var(--ink-3); font-variant-numeric:tabular-nums; }
 .cc-slide:hover .cc-name{ text-decoration:underline; text-underline-offset:3px; }
@@ -942,7 +980,7 @@ p:last-child{ margin-bottom:0; }
    een verloop in de inktkleur achter tekst van dezelfde kleur leest voor een
    contrastcontrole als 1:1, ook als het onzichtbaar is. */
 .card-title{
-  font-size:1rem; font-weight:500; line-height:1.3;
+  font-size:1rem; font-weight:400; line-height:1.35;
   letter-spacing:-0.012em; color:var(--ink); margin:0;
   text-decoration:underline;
   text-decoration-color:transparent;
@@ -952,13 +990,59 @@ p:last-child{ margin-bottom:0; }
 }
 .card:hover .card-title{ text-decoration-color:var(--ink); }
 
-.card-meta{ font-size:0.8125rem; color:var(--ink); margin-top:5px; }
+.card-meta{ font-size:0.8125rem; font-weight:300; color:var(--ink); margin-top:5px; }
 .card-price{ font-size:0.8125rem; color:var(--ink); margin-top:9px; }
-.card-min{ font-size:0.75rem; color:var(--ink); margin-top:2px; }
+.card-min{ font-size:0.75rem; font-weight:300; color:var(--ink); margin-top:2px; }
 
 /* De rustige tegel toont enkel beeld + naam; merk en prijsregel staan op
    de productpagina zelf. */
 .card.quiet .ph{ margin-bottom:16px; }
+
+/* ============================================================
+   Het aantallenregister
+   ------------------------------------------------------------
+   Belgosweet toont nergens een prijs — dat is de hele opzet.
+   Het getal dat een aankoper wél nodig heeft om te beslissen is
+   de minimumafname, en die loopt in deze catalogus van 1 tot
+   1000 stuks. Op de huidige site staat dat als rode waarschuwing
+   onderaan de pagina; hier is het gewoon een feit, groot gezet,
+   direct onder de naam.
+
+   Manrope is één familie, dus het contrast komt uit de
+   gewichtsas: de getallen op 250, de woorden eromheen op
+   500-600. Licht mag alleen op formaat — onder ± 30px wordt
+   gewicht 250 te ijl en zakt de leesbaarheid.
+   ============================================================ */
+
+.ledger{
+  display:flex; align-items:baseline; gap:9px;
+  border-top:1px solid var(--rule);
+  margin-top:14px; padding-top:11px;
+}
+.ledger-n{
+  font-size:clamp(1.9rem, 2.6vw, 2.5rem);
+  font-weight:200; letter-spacing:-0.045em; line-height:0.85;
+  font-variant-numeric:tabular-nums; color:var(--ink);
+}
+.ledger-u{
+  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.13em;
+  font-weight:600; color:var(--ink);
+}
+
+/* Op de productpagina staan beide getallen: het minimum en het
+   veelvoud waarin besteld wordt. */
+.ledger-pair{
+  display:flex; gap:clamp(32px, 5vw, 68px);
+  border-top:1px solid var(--control);
+  border-bottom:1px solid var(--rule);
+  padding:24px 0; margin:26px 0;
+}
+.ledger-col{ display:flex; flex-direction:column; gap:12px; }
+.ledger-k{
+  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.14em;
+  font-weight:600; color:var(--ink);
+}
+.ledger-col .ledger-n{ font-size:clamp(2.6rem, 4.4vw, 3.8rem); }
 
 /* Badges op productkaarten: enkel structureel (welke statussen bestaan),
    geen visuele styling-intentie. */
@@ -983,7 +1067,7 @@ p:last-child{ margin-bottom:0; }
   align-items:baseline; gap:12px;
   border-top:1px solid var(--rule); margin-top:14px;
 }
-.tile-name{ font-size:1rem; font-weight:500; letter-spacing:-.012em; }
+.tile-name{ font-size:1rem; font-weight:400; letter-spacing:-.012em; }
 .tile-count{
   font-size:0.75rem; color:var(--ink);
   white-space:nowrap; font-variant-numeric:tabular-nums;
@@ -1045,8 +1129,8 @@ p:last-child{ margin-bottom:0; }
   color:var(--ink-3); margin:0 0 12px;
 }
 .cat-hero-title{
-  font-size:clamp(1.9rem, 3.2vw, 2.6rem); line-height:1.05;
-  letter-spacing:-.03em; margin:0;
+  font-size:clamp(2.5rem, 5.4vw, 4.4rem); line-height:1.0;
+  letter-spacing:-.04em; margin:0;
   font-weight:700; color:var(--ink);
 }
 
@@ -1206,7 +1290,7 @@ p:last-child{ margin-bottom:0; }
    dit het enige zichtbare bewijs dat de variantkeuze werkt (overdracht §10.3),
    dus het blijft — maar als onderschrift, niet als label ín het beeld. */
 .pdp-caption{
-  margin-top:12px; font-size:0.8125rem; letter-spacing:.02em;
+  margin-top:12px; font-size:0.8125rem; font-weight:300; letter-spacing:.02em;
   color:var(--ink);
 }
 .pdp{ display:grid; grid-template-columns:1fr 1fr; gap:52px; margin-top:20px; }
@@ -1215,14 +1299,27 @@ p:last-child{ margin-bottom:0; }
 .pdp-thumbs .ph{ min-height:66px; cursor:pointer; }
 .pdp-thumbs .ph.active{ border-color:var(--ink); }
 
-.pdp-title{ font-size:26px; font-weight:600; margin:0 0 6px; letter-spacing:-.01em; }
-.pdp-sku{ font-size:12px; color:var(--ink-soft); margin-bottom:16px; }
-.pdp-price{
-  font-size:14px; margin-bottom:20px; padding-bottom:20px;
-  border-bottom:1px solid var(--line-soft);
+.pdp-title{
+  font-size:clamp(1.9rem, 3vw, 2.7rem); font-weight:700;
+  margin:0 0 8px; letter-spacing:-.032em; line-height:1.05;
 }
-.pdp-price strong{ font-weight:700; }
-.pdp-price .hint{ display:block; font-size:12px; color:var(--ink-soft); margin-top:4px; }
+.pdp-sku{ font-size:0.8125rem; font-weight:300; color:var(--ink); margin-bottom:22px; }
+.pdp-price-k{
+  display:block; font-size:0.6875rem; text-transform:uppercase;
+  letter-spacing:.14em; font-weight:600; color:var(--ink); margin-bottom:8px;
+}
+.pdp-price-v{
+  display:block; font-size:clamp(1.6rem, 2.4vw, 2.1rem);
+  font-weight:200; letter-spacing:-0.03em; line-height:1; color:var(--ink);
+}
+.pdp-price-note{
+  font-size:0.9375rem; font-weight:300; line-height:1.62; color:var(--ink);
+  margin:16px 0 0; max-width:46ch;
+}
+.pdp-price{
+  margin-bottom:26px; padding-bottom:26px;
+  border-bottom:1px solid var(--rule);
+}
 
 .variant-block{ margin-bottom:20px; }
 .variant-label{

@@ -359,8 +359,10 @@ const BS = (() => {
   ${badges(p)}
   <div class="card-title">${esc(p.name)}</div>
   <div class="card-meta">${esc(D.brandName(p.brand))}</div>
-  <div class="card-price">Prijs op aanvraag</div>
-  <div class="card-min">Vanaf ${p.minQty} st.</div>
+  <div class="ledger">
+    <span class="ledger-n">${p.minQty}</span>
+    <span class="ledger-u">stuks min.</span>
+  </div>
 </a>`;
   }
 
@@ -390,6 +392,10 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
 <a class="card quiet" href="product.html?id=${p.id}">
   <div class="ph square"></div>
   <div class="card-title">${esc(p.name)}</div>
+  <div class="ledger">
+    <span class="ledger-n">${p.minQty}</span>
+    <span class="ledger-u">stuks min.</span>
+  </div>
 </a>`;
   }
 
@@ -916,8 +922,9 @@ ${renderBar(list.length, from, to)}
 <div class="pdp-sku">Artikelnummer ${esc(p.sku)} · ${esc(D.packName(p.packaging))}</div>
 
 <div class="pdp-price">
-  Prijs: <strong>op aanvraag</strong>
-  <span class="hint">Belgosweet is B2B — er zijn geen publieke prijzen en geen checkout. Elke prijs volgt uit een offerte.</span>
+  <span class="pdp-price-k">Prijs</span>
+  <span class="pdp-price-v">op aanvraag</span>
+  <p class="pdp-price-note">Je prijs hangt af van je oplage en personalisatie. Zet dit artikel op je lijst; je krijgt een offerte binnen 48 uur.</p>
 </div>
 
 ${p.variants.map((v, i) => `
@@ -928,8 +935,15 @@ ${p.variants.map((v, i) => `
   </div>
 </div>`).join("")}
 
-<div class="warn-box">
-  <strong>Minimumafname:</strong> ${p.minQty} stuks — per veelvoud van ${p.multiple}
+<div class="ledger-pair">
+  <div class="ledger-col">
+    <span class="ledger-k">Minimumafname</span>
+    <span class="ledger-n">${p.minQty}<span class="ledger-u"> stuks</span></span>
+  </div>
+  <div class="ledger-col">
+    <span class="ledger-k">Per veelvoud van</span>
+    <span class="ledger-n">${p.multiple}</span>
+  </div>
 </div>
 
 <div class="qty-row">
