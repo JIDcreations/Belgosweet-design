@@ -60,8 +60,12 @@ maak geschenk-lint          "belgosweet_ChatGPT Images 2.0 Edit_2026-08-18_08-45
 # dezelfde opnames zonder merk; die gebruiken we wel.
 
 echo "Hero"
-# Volle breedte op een 4K-scherm, dus ruimer dan de rest. Het is een
-# lichte opname met veel wit, waar JPEG efficient mee omgaat.
+# De twee donkere panelen naast elkaar. Elk paneel is een halve hero, dus
+# ~1200px breed volstaat ruim; ze zijn bovendien donker en fijn van
+# textuur, waar JPEG efficient mee omgaat.
+maak hero-links             "Explore the rich landscape of our cocoa powder, where soft curves mingle to create a sensory delight ✨__#Nouga_#Kuwait #ArtisanChocolatier.jpeg" 1400 78
+maak hero-rechts            "_ - 2026-07-28T192003.818.jpeg" 1400 78
+# Blijft beschikbaar voor andere secties.
 maak hero-verpakking        "hero/1.png" 2400 76
 
 echo "Sfeer en verpakking"

@@ -155,6 +155,13 @@ const BS = (() => {
 
   <div class="mega" data-mega>
     <div><div class="wrap-wide">
+      <!-- Seizoen staat bóven de families, niet ertussen: wie in september
+           een eindejaarsgeschenk zoekt, zoekt niet op productsoort. -->
+      <a class="mega-season" href="shop.html?occ=kerst">
+        <span class="mega-season-k">Rond deze periode</span>
+        <span class="mega-season-v">Adventskalenders en eindejaarsgeschenken — vastleggen vóór 30 september</span>
+        ${ICON.arrow}
+      </a>
       <div class="mega-inner">
         ${D.FAMILIES.map((f) => `
         <div class="mega-col">
@@ -887,59 +894,66 @@ ${renderBar(list.length, from, to)}
      Twee exemplaren van hetzelfde woordmerk, niet één element dat
      verhuist:
 
-       1. het grote exemplaar staat onderaan de hero vastgeprikt
-          (bottom:30px, left/right:5%) en krimpt met transform:scale(),
-          transform-origin onder-midden. Er zit geen verticale translate
-          in — de pagina zelf voert het omhoog;
+       1. het grote exemplaar staat sticky bovenin de hero. Het blijft
+          dus in beeld terwijl de hero eronder doorschuift, en krimpt
+          ondertussen met transform-origin op BOVEN-midden;
        2. het exemplaar in de header staat gecentreerd op vaste breedte
           en begint op opacity:0.
 
-     Op het moment dat de schaal zo ver is dat het grote exemplaar exact
-     even breed is als het kleine, staan ze op dezelfde plek. In datzelfde
-     frame gaat de een naar 0 en de ander naar 1. De knip is niet te zien,
-     dus het leest als één logo dat de balk in schuift. Terugscrollen
-     draait het gewoon om.
+     Omdat het grote exemplaar blijft hangen in plaats van mee te
+     scrollen, bepaalt de pagina de aanloop niet meer — die zetten we
+     zelf: `end`. Binnen die afstand loopt de schaal naar de headermaat
+     én schuift het naar de plek van het headerlogo. Op het eindpunt
+     dekken de twee elkaar exact en gaat de een naar 0 en de ander naar
+     1. De knip is niet te zien, dus het leest als één logo dat in de
+     balk schuift en van kleur wisselt met zijn ondergrond.
 
-     De eindmaat wordt GEMETEN, niet aangenomen: als de header ooit een
-     ander formaat logo krijgt, klopt de landing nog steeds. */
+     De eindmaat en de eindplek worden GEMETEN, niet aangenomen: krijgt
+     de header ooit een ander logo of een andere hoogte, dan klopt de
+     landing nog steeds. */
   function heroWordmarkDock() {
     const big = $("[data-hero-wordmark]");
     const img = big && $("img", big);
     const small = $(".site-header .wordmark img");
-    if (!big || !img || !small) return;
+    const hero = $(".hero-full");
+    if (!big || !img || !small || !hero) return;
 
-    // Zonder animatie is de hero gewoon een hoge sectie met een groot
+    // Zonder animatie is de hero gewoon een donker vlak met een groot
     // woordmerk erin, en staat het headerlogo er van meet af aan.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let end = 0;        // scrollpositie waarop het gedokt is
-    let scale = 1;      // schaal op dat punt
-    let shift = 0;      // horizontale correctie (normaal 0, zie hieronder)
+    let end = 0;        // scrollafstand waarover het krimpt
+    let scale = 1;      // schaal op het eindpunt
+    let dx = 0, dy = 0; // verschuiving naar het headerlogo
     let live = false;
     let last = -1;
     let docked = null;
 
     /* Meten gebeurt met transform uitgezet. Het herstel staat in hetzelfde
        synchrone blok, dus de browser krijgt de ongeschaalde staat nooit te
-       zien. */
+       zien. De scrollpositie doet er niet toe: het grote exemplaar staat
+       vast aan het scherm en het headerlogo zit in een sticky balk op
+       top:0, dus beide rechthoeken zijn op elke scrollpositie dezelfde. */
     const measure = () => {
+      document.body.classList.add("wm-dock");   // nodig: position:fixed
       big.style.transform = "none";
 
       const b = big.getBoundingClientRect();
       const s = small.getBoundingClientRect();
 
-      // Beide zijn in het document gecentreerd, dus dit is in de praktijk 0.
-      // Het staat er voor het geval een scrollbalk of een gutter de twee
-      // middens uit elkaar duwt: dan blijft de wissel alsnog naadloos.
-      shift = (s.left + s.width / 2) - (b.left + b.width / 2);
-
       scale = s.width / b.width;
-      // Onderrand van het grote exemplaar in documentcoördinaten, minus de
-      // onderrand van het kleine in schermcoördinaten (de header plakt op
-      // top:0, dus die tweede waarde is constant).
-      end = (b.bottom + window.scrollY) - s.bottom;
+      dx = (s.left + s.width / 2) - (b.left + b.width / 2);
+      dy = s.top - b.top;
 
-      live = end > 40 && b.width > 0 && s.width > 0 && scale < 1;
+      /* Aanloop. Kort houden is hier geen smaak maar noodzaak: het grote
+         exemplaar staat vast aan het scherm, dus terwijl het krimpt komt
+         de kop van de hero ván onderen naar boven toe. Duurt de krimp te
+         lang, dan schuift die kop dwars door het woordmerk heen voordat
+         de balk wit is geworden. Een kleine kwart schermhoogte is precies
+         op tijd klaar. */
+      end = Math.max(160, Math.min(hero.offsetHeight * 0.24, 280));
+
+      live = b.width > 0 && s.width > 0 && scale < 1;
       document.body.classList.toggle("wm-dock", live);
       if (!live) {
         big.style.transform = "";
@@ -957,7 +971,8 @@ ${renderBar(list.length, from, to)}
       last = p;
 
       const k = 1 + p * (scale - 1);
-      big.style.transform = `translateX(${(shift * p).toFixed(3)}px) scale(${k.toFixed(6)})`;
+      big.style.transform =
+        `translate(${(dx * p).toFixed(3)}px, ${(dy * p).toFixed(3)}px) scale(${k.toFixed(6)})`;
 
       // De wissel valt in hetzelfde frame als het bereiken van p = 1.
       const now = p >= 1;

@@ -33,6 +33,22 @@
   --magenta:  #D33168;   /* Felroze / Magenta            211, 49,104 */
 
 
+  /* ---- 1b. Wit ---------------------------------------------- */
+  /* Zuiver wit stond NIET in de oorspronkelijke zes. Het is er op
+     uitdrukkelijk verzoek bijgekomen als paginagrond, en dat heeft
+     één gevolg dat je moet kennen: crème is daarmee gepromoveerd
+     van "de grond van het scherm" naar "een vlak op het scherm".
+     Productbeelden staan nu op crème en dat crème leest alleen als
+     vlak zolang de pagina eromheen wit is.
+
+     Wit draagt zelf geen tekst en trekt zelf geen lijn; het is
+     uitsluitend grond. Donkerrood haalt er 15.30:1 op (nog iets
+     meer dan de 14.22:1 op crème), dus de tekstregels uit §2
+     blijven onveranderd gelden. */
+
+  --white:    #FFFFFF;   /* Paginagrond                  255,255,255 */
+
+
   /* ---- 2. Tekst op lichte vlakken --------------------------- */
   /* Donkerrood haalt 14.22:1 op crème, 9.69:1 op roze en
      8.10:1 op salie. Het is de enige tekstkleur op licht.
@@ -65,9 +81,14 @@
      zijn de zachte vlakken die het ritme breken — nooit twee
      direct na elkaar. */
 
-  --paper:     var(--cream);
+  --paper:     var(--white);  /* de pagina zelf                       */
   --paper-2:   var(--pink);
-  --surface:   var(--pink);   /* beeldvlak; donkerrood erop = 9.69:1 */
+  /* Het beeldvlak was roze zolang de pagina crème was. Nu de pagina wit
+     is, is crème precies het juiste vlak: het licht ver genoeg op tegen
+     wit om een tegel af te bakenen, en het is exact de grond waarop de
+     productopnames zijn gefotografeerd (#F9F9F0). Het product lijkt
+     daardoor vrij te staan in plaats van in een fotokadertje. */
+  --surface:   var(--cream);  /* beeldvlak; donkerrood erop = 14.22:1 */
   --band-pink: var(--pink);
   --band-sage: var(--sage);
 

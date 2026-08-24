@@ -16,29 +16,34 @@
 <main>
 
   <!-- ============ HERO ============ -->
+  <!-- Twee donkere panelen naast elkaar, het woordmerk groot bovenin en de
+       belofte links uitgelijnd in een blok dat zelf gecentreerd staat.
+       Het woordmerk krimpt bij het scrollen naar de headermaat; app.js
+       wisselt op dat punt dit crème-exemplaar om voor het donkerrode in
+       de header, die op datzelfde moment wit wordt. -->
   <section class="hero-full">
-    <div class="hero-canvas"></div>
-    <div class="wrap-wide hero-inner-full">
-      <!-- Alleen de belofte, gecentreerd boven het woordmerk. Geen knoppen en
-           geen vlak eronder: de hero is hier één beeld, de wegen naar de shop
-           lopen via de header en de secties hieronder.
-           LET OP — dit wijkt af van BRANDING.md §5 ("tekst gaat nooit direct
-           over het patroon"). Bewust zo gevraagd. Het patroon is daarop
-           aangepast: roze in plaats van donkergroen, zodat de baan dicht bij
-           crème blijft en er minder ruis achter de regel staat. -->
-      <h1 class="display reveal" style="--d:60ms">Belgian art of gourmet gifting.</h1>
-      <p class="lede reveal" style="--d:180ms">
-        Belgische chocolade, koekjes en snoep als relatiegeschenk. Met je logo,
-        vanaf 250 stuks, prijs op maat van je oplage.
-      </p>
+    <div class="hero-media" aria-hidden="true">
+      <div class="hero-shot">
+        <img src="assets/img/hero-links.jpg" alt="" loading="eager" decoding="async">
+      </div>
+      <div class="hero-shot">
+        <img src="assets/img/hero-rechts.jpg" alt="" loading="eager" decoding="async">
+      </div>
     </div>
 
-    <!-- Het woordmerk op ware grootte, onderaan de hero vastgezet en volledig
-         in beeld bij het laden. Bij het scrollen krimpt dit exemplaar tot exact
-         de maat van het exemplaar in de header, waarna app.js de twee wisselt.
-         Decoratief: de leesbare naam staat in de header-link. -->
     <div class="hero-wordmark" data-hero-wordmark aria-hidden="true">
-      <img src="assets/logo/Logo-Dark.svg" alt="" width="294" height="63">
+      <img src="assets/logo/Logo-Light.svg" alt="" width="294" height="63">
+    </div>
+
+    <div class="wrap-wide hero-inner-full">
+      <div class="hero-copy">
+        <p class="hero-eyebrow reveal" style="--d:40ms">Relatiegeschenken op maat</p>
+        <h1 class="display reveal" style="--d:120ms">Belgian art of gourmet gifting.</h1>
+        <p class="lede reveal" style="--d:220ms">
+          Belgische chocolade, koekjes en snoep met je logo. Vanaf 250 stuks,
+          prijs op maat van je oplage.
+        </p>
+      </div>
     </div>
   </section>
 
