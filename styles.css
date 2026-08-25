@@ -1344,11 +1344,28 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    OVER ONS
    ------------------------------------------------------------
    De enige pagina die van de klant uitdrukkelijk een "wow" moest
-   krijgen. Dat kan hier alleen via compositie, typografie en
-   beweging — kleur en fotografie liggen buiten deze fase.
-   Bewust drie bewegingen en niet meer: parallax op het portret,
-   een lijn die zich vult in de tijdlijn, en secties die bij het
-   in beeld komen opklaren.
+   krijgen. Toen deze sectie geschreven werd lagen kleur en
+   fotografie nog buiten de fase en moest het van compositie,
+   typografie en beweging komen. Allebei zijn er intussen: het
+   palet staat vast en er is beeldmateriaal. De pagina is daarop
+   herzien.
+
+   Wat er mis was: acht witte secties onder elkaar met een roze
+   haarlijn ertussen. Dat is geen ritme maar een lijst, en het is
+   precies wat BRANDING.md §2.6 verbiedt — kleur hoort in grote
+   vlakken, niet in versieringen. Elk beeldvlak stond bovendien
+   leeg terwijl de home al met foto's werkt; de pagina die moest
+   laten zien wie Belgosweet is, liet niets zien.
+
+   De pagina wisselt nu van vlak: crème, wit, crème, wit, roze,
+   wit, crème, wit — nooit twee gekleurde na elkaar, wit ertussen,
+   zoals §2.6 het voorschrijft. De haarlijnen tussen de secties
+   zijn daarmee overbodig geworden en weg; wat een sectie afbakent
+   is nu het vlak zelf.
+
+   Bewust drie bewegingen en niet meer: parallax op de hero-opname,
+   een lijn die zich vult in de tijdlijn, en secties die bij het in
+   beeld komen opklaren.
    ============================================================ */
 
 /* --- Onthullen bij scrollen ---
@@ -1364,52 +1381,197 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   html.js [data-reveal].in{ opacity:1; transform:none; }
 }
 
-/* --- Hero met parallax --- */
+/* --- Het vlak onder een sectie ---
+   Eén klasse voor alle gekleurde banden op deze pagina. Crème is de
+   standaard; het team zet hem hieronder om naar roze. De band loopt
+   over de volle vensterbreedte en de .wrap-wide erbinnen houdt de
+   inhoud op de bladspiegel — dat is het verschil tussen "een sectie
+   met een achtergrondje" en "een vlak waar de pagina op staat". */
+.ab-band{ background:var(--surface); padding:var(--section-y) 0; }
+
+/* ============================================================
+   Hero — lichte split
+   ------------------------------------------------------------
+   De home draagt de donkere hero. Die hier herhalen zou de pagina
+   twee keer laten beginnen, en de sluier die daar nodig is om tekst
+   op beeld leesbaar te houden heeft deze pagina helemaal niet nodig:
+   de kop staat op een crème vlak en het beeld staat ernaast.
+
+   Verhouding 1 : 0.86 in het voordeel van de TEKST. Op de home is de
+   split andersom (1 : 1.15, beeld groter) omdat daar het beeld het
+   argument is; hier is de kop het argument en bewijst het beeld hem
+   pas daarna. Gelijke helften laten een split besluiteloos ogen, dus
+   één van de twee moet winnen — en op deze pagina is dat de zin.
+   ============================================================ */
+
 .ab-hero{
-  position:relative; overflow:hidden;
   background:var(--surface);
-  min-height:min(88svh, 760px);
-  display:flex; align-items:flex-end;
-  border-bottom:1px solid var(--rule);
+  overflow:hidden;              /* de parallax mag niet buiten de sectie */
 }
-.ab-hero-media{ position:absolute; inset:-12% 0; z-index:0; will-change:transform; }
-.ab-hero-media .ph{
-  height:100%; border:none; align-items:flex-start; padding-top:14vh;
-  background:var(--pink);
-}
-.ab-hero-body{ position:relative; z-index:1; padding-bottom:clamp(36px, 5vw, 68px); }
-.ab-hero-body .display{ max-width:15ch; }
-.ab-hero-sub{
-  margin-top:20px; font-size:var(--fs-xs); letter-spacing:var(--tr-label);
-  text-transform:uppercase; color:var(--ink-3);
+.ab-hero-inner{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 0.86fr);
+  gap:clamp(30px, 4.5vw, 84px);
+  align-items:center;
+  min-height:min(84svh, 780px);
 }
 
-/* --- Groot statement --- */
-.ab-statement{ padding:var(--section-y) 0; }
-.ab-statement p{
-  margin:0; max-width:24ch;
+/* Padding-block op de TEKST en niet op de sectie: zo loopt het beeld
+   van boven- tot onderrand door en houdt alleen de kop lucht. Dat is
+   wat de split een spread maakt in plaats van twee blokken naast
+   elkaar. */
+.ab-hero-body{ padding-block:clamp(48px, 8vh, 104px); }
+.ab-hero-body .display{ max-width:14ch; margin:0; }
+.ab-hero-sub{
+  margin:clamp(18px, 2.4vw, 30px) 0 0;
+  font-size:var(--fs-lede);
+  font-weight:200;
+  line-height:1.6;
+  color:var(--ink-2);
+  max-width:38ch;
+  text-wrap:pretty;
+}
+
+/* Rechterrand van de pagina af, precies zoals .usp-split-media op de
+   home. Dezelfde ingreep, dus dezelfde maat: één gutter negatief. Tot
+   1600px raakt het beeld daarmee de vensterrand; daarboven stopt het
+   op de rand van de bladspiegel, en breder dan de bladspiegel bestaat
+   er op deze site niets. */
+.ab-hero-media{
+  position:relative;
+  align-self:stretch;
+  overflow:hidden;
+  background:var(--band-pink);   /* grond zolang de foto laadt */
+  margin-right:calc(-1 * var(--gutter));
+  min-height:clamp(420px, 52vw, 780px);
+}
+
+/* Het beeld staat OVERHOOG in zijn doos: 140% hoog en 10% omhoog
+   geschoven. app.js verschuift het bij het scrollen over ongeveer een
+   zevende van de sectiehoogte, en die speling moet er aan allebei de
+   kanten zijn — anders schuift er een rand in beeld op het moment dat
+   de beweging juist onzichtbaar hoort te zijn.
+
+   Geen transition: app.js zet de transform per frame. Een overgang van
+   .8s eroverheen (zoals .ph.has-img > img die heeft) maakt van een
+   parallax een slepende vertraging. Vandaar ook een gewone <img> hier
+   en geen .ph — het beeldvlak van de site heeft die overgang, en dit
+   beeld hoort hem niet te krijgen. */
+.ab-hero-media img{
+  position:absolute; left:0; top:-10%;
+  width:100%; height:140%;
+  object-fit:cover;
+  will-change:transform;
+}
+
+/* ============================================================
+   Statement + register
+   ------------------------------------------------------------
+   De vraag links, het antwoord in cijfers rechts. Hetzelfde
+   .usp-facts-component als in de bewijsband op de home, maar op een
+   ander vlak: daar op vol roze, hier op wit. De haarlijnen staan in
+   donkerrood en halen op allebei ruim de norm.
+
+   Waarom het register hier mag terugkomen: op de home is het bewijs
+   onderaan een verkooppagina, hier is het de inhoud zelf. Dat is de
+   ene plek waar herhaling geen herhaling is.
+   ============================================================ */
+
+.ab-proof{ padding:var(--section-y) 0; }
+.ab-proof-grid{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 0.9fr);
+  gap:clamp(34px, 6vw, 96px);
+  align-items:start;
+}
+.ab-statement{
+  margin:0; max-width:22ch;
   font-size:var(--fs-head);
   font-weight:200;
-  line-height:1.22; letter-spacing:var(--tr-head); color:var(--ink);
+  line-height:1.18; letter-spacing:var(--tr-head); color:var(--ink);
   text-wrap:balance;
 }
 
-/* --- Verhaal in twee kolommen --- */
+/* ============================================================
+   Verhaal — crème band
+   ============================================================ */
+
+/* Drie kolommen: kop, opening, vervolg. Met twee kolommen liep de tekst
+   op 52ch dood halverwege de bladspiegel en bleef er rechts een derde van
+   de band leeg — op 1440px leest die maat als een fout en niet als lucht.
+   Drie kolommen vullen de breedte én leveren de trap in maat die de tekst
+   toch al had: de opening staat groter dan het vervolg. */
 .ab-story{
+  display:grid; grid-template-columns:0.95fr 1fr 1fr;
+  gap:clamp(28px, 5vw, 80px); align-items:start;
+}
+
+/* De eerste alinea zakt een trap MINDER dan de rest: hij draagt de
+   opening van het verhaal. Het onderscheid loopt via maat, niet via
+   kleur — allebei staan ze gewoon in donkerrood. */
+.ab-story-lead{
+  font-size:var(--fs-lede);
+  font-weight:200;
+  line-height:1.55;
+  color:var(--ink);
+  max-width:46ch;
+  margin-bottom:clamp(16px, 1.8vw, 24px);
+  text-wrap:pretty;
+}
+.ab-story-col p{
+  font-size:var(--fs-body-2); font-weight:300; line-height:1.7;
+  color:var(--ink-2); max-width:52ch;
+}
+
+/* Het beeld staat ONDER de tekst en over de volle breedte van de band,
+   niet ernaast. Het verhaal is een alinea, geen split; een kolom beeld
+   ernaast zou de tekst tot een bijschrift maken. 2:1 en niet 16:9: bij
+   een liggende opname over de volle bladspiegel is dat het verschil
+   tussen "een foto" en "een panorama", en een panorama sluit een band
+   af waar een foto er middenin blijft hangen. Verder dan 2:1 kan niet —
+   de bronopname is 3:2 en dan snijdt de crop door het onderwerp.
+
+   De opname zelf staat op een crème ondergrond, net als deze band. Dat
+   is geen toeval maar de reden dat juist DEZE foto hier staat: een
+   opname op wit zou als een los wit vlakje op de band liggen. */
+.ab-story-figure{ margin:clamp(44px, 6vw, 96px) 0 0; }
+.ab-story-figure .ph{
+  aspect-ratio:2/1; min-height:0; border:none;
+  background-color:var(--band-pink);
+}
+.ab-story-figure figcaption{
+  margin-top:14px;
+  font-size:var(--fs-xs); font-weight:300; color:var(--ink-3);
+  letter-spacing:var(--tr-flat);
+  max-width:60ch;
+}
+
+/* ============================================================
+   Tijdlijn
+   ------------------------------------------------------------
+   De verticale lijn vult zich mee met je scrollpositie: de vorm van
+   het onderdeel ís de boodschap, dus daar mag de beweging zitten.
+
+   Geen border-top meer: de crème band erboven bakent deze sectie al
+   af. Een haarlijn direct onder een vlakovergang is een tweede
+   scheiding op dezelfde plek.
+   ============================================================ */
+
+.ab-timeline{ padding:var(--section-y) 0; }
+
+/* Kop links, jaartallen rechts. De tijdlijn vulde op een breed scherm maar
+   de linkerhelft van de bladspiegel; nu draagt de linkerkolom de kop en
+   heeft de rechter de volle maat voor de items.
+
+   De kop blijft staan terwijl je langs de jaartallen scrolt. Dat is geen
+   effect maar een antwoord: halverwege een rij van zes jaartallen weet je
+   anders niet meer waar je naar kijkt. Hij plakt onder de header, want die
+   is op deze pagina sticky en zou hem anders overdekken. */
+.ab-timeline-grid{
   display:grid; grid-template-columns:0.8fr 1.2fr;
   gap:clamp(28px, 5vw, 80px); align-items:start;
-  /* .wrap-wide zet de zijmarge; die mag de padding-shorthand hier niet
-     wegvegen, anders plakt de kop tegen de vensterrand. */
-  padding:0 var(--gutter) var(--section-y);
 }
-.ab-story-col p{ font-size:var(--fs-body-2); color:var(--ink-2); max-width:52ch; }
-
-/* --- Tijdlijn ---
-   De verticale lijn vult zich mee met je scrollpositie: de vorm
-   van het onderdeel ís de boodschap, dus daar mag de beweging
-   zitten. */
-.ab-timeline{ padding:var(--section-y) 0; border-top:1px solid var(--rule); }
-.tl-head{ margin-bottom:clamp(32px, 4vw, 56px); }
+.tl-head{ position:sticky; top:calc(var(--header-h) + clamp(24px, 5vh, 64px)); }
 .tl-body{ position:relative; }
 .tl-rail{
   position:absolute; top:0; bottom:0;
@@ -1432,6 +1594,14 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   font-weight:300;
   letter-spacing:var(--tr-body); color:var(--ink);
   font-variant-numeric:tabular-nums; line-height:1.2;
+  /* Tegen de lijn aan en niet tegen de linkerrand: het jaartal hoort bij
+     de stip ernaast, niet bij de kolomrand erachter. Links uitgelijnd bleef
+     er een gat van vijftig pixel tussen het getal en de rail waar niets
+     stond. */
+  text-align:right;
+  /* De rail staat exact op de kolomgrens, dus rechts uitlijnen zet het
+     getal pal tegen de stip. Deze marge is de ademruimte ertussen. */
+  padding-right:clamp(16px, 1.8vw, 26px);
 }
 .tl-dot{
   position:absolute; left:clamp(76px, 9vw, 148px); top:clamp(28px, 3vw, 44px);
@@ -1442,78 +1612,206 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .tl-item.passed .tl-dot{ background:var(--ink); border-color:var(--ink); }
 .tl-text h3{ font-size:var(--fs-lede); font-weight:500; margin-bottom:7px; }
-.tl-text p{ font-size:var(--fs-body-2); color:var(--ink-2); max-width:54ch; margin:0; }
+.tl-text p{ font-size:var(--fs-body-2); font-weight:300; color:var(--ink-2); max-width:54ch; margin:0; }
 
-/* --- Team ---
+/* ============================================================
+   Team — roze band
+   ------------------------------------------------------------
    Vier portretten in een rij. Onder elke naam staat waarvoor je bij
    die persoon moet zijn: de hele site belooft "één aanspreekpunt",
-   dus dan hoor je hier ook te zien wie dat is. */
-.ab-team{ padding:var(--section-y) 0; border-top:1px solid var(--rule); }
+   dus dan hoor je hier ook te zien wie dat is.
+
+   Het roze vlak doet twee dingen tegelijk. Het is het zachte moment
+   van de pagina — dit is het menselijke stuk en dat mag er anders
+   uitzien — en het lost het beeldprobleem op. Er zijn nog geen
+   portretten, dus de vier vlakken staan leeg met het merkteken erin.
+   Op wit zijn dat vier lege crème kaders; op roze zijn het vier crème
+   vlakken die eruitzien alsof ze zo bedoeld zijn.
+   ============================================================ */
+
+.ab-team{ background:var(--band-pink); }
 .team-head{
   display:flex; justify-content:space-between; align-items:flex-end;
   gap:24px; flex-wrap:wrap; margin-bottom:clamp(30px, 3.6vw, 52px);
 }
-.team-head .lede{ margin-top:14px; }
+.team-head .lede{ margin-top:14px; color:var(--accent-on); }
 .team-grid{
   display:grid; grid-template-columns:repeat(4, 1fr);
   gap:clamp(16px, 2vw, 30px);
 }
+/* Het bijschrift staat gecentreerd en niet onderaan zoals bij een gewoon
+   beeldvlak. Een portretvlak is hoog en leeg; het woord onderin laat het
+   als een afgeknipte foto lezen, in het midden als een gereserveerde plek. */
 .team-member .ph{
   aspect-ratio:3/4; min-height:0; border:none; margin-bottom:14px;
+  align-items:center;
   transition:transform .8s var(--ease);
 }
 .team-member{ overflow:hidden; }
 .team-member:hover .ph{ transform:scale(1.035); }
-.team-name{ font-size:var(--fs-body-2); color:var(--ink); font-weight:500; }
-.team-role{ font-size:var(--fs-xs); color:var(--ink-3); margin-top:3px; }
+.team-name{ font-size:var(--fs-body-2); color:var(--accent-on); font-weight:500; }
+.team-role{ font-size:var(--fs-xs); font-weight:300; color:var(--accent-on); margin-top:3px; }
+/* De haarlijn staat hier in donkerrood en niet in de gewone --rule:
+   --rule is roze, en roze op een roze band is geen lijn. */
 .team-focus{
-  margin-top:12px; padding-top:11px; border-top:1px solid var(--rule);
-  font-size:var(--fs-xs); color:var(--ink-2);
+  margin-top:12px; padding-top:11px; border-top:1px solid var(--accent-on);
+  font-size:var(--fs-xs); font-weight:300; color:var(--accent-on);
 }
 
-/* --- Sociaal engagement --- */
-.ab-social{
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:clamp(28px, 4vw, 72px); align-items:center;
-  padding:var(--section-y) 0; border-top:1px solid var(--rule);
-}
-.ab-social-media .ph{ aspect-ratio:4/3; min-height:0; border:none; }
+/* ============================================================
+   Sociaal engagement
+   ------------------------------------------------------------
+   Beeld LINKS van de pagina af, tegenover de hero die zijn beeld
+   rechts heeft. Twee splits met het beeld aan dezelfde kant laten de
+   pagina hakkelen — hetzelfde argument als bij .usp-split op de home.
+   ============================================================ */
 
-/* --- Contact --- */
-.ab-contact{ padding:var(--section-y) 0; border-top:1px solid var(--rule); }
+/* De footer linkt naar #engagement en #contact. De header is op deze
+   pagina sticky, dus zonder deze marge landt een ankersprong met de
+   bovenrand van de sectie ónder de balk. */
+.ab-social, .ab-contact{ scroll-margin-top:var(--header-h); }
+
+.ab-social{ padding:var(--section-y) 0; }
+.ab-social-inner{
+  display:grid; grid-template-columns:minmax(0, 1.05fr) minmax(0, 1fr);
+  gap:clamp(28px, 4.5vw, 84px); align-items:center;
+}
+.ab-social-media{ margin-left:calc(-1 * var(--gutter)); }
+/* 3:2 op een bronopname van 16:9 snijdt maar een paar procent van de
+   flanken; 4:3 zou de blikken links en de doos rechts halveren. */
+.ab-social-media .ph{
+  aspect-ratio:3/2; min-height:0; border:none;
+  background-color:var(--band-pink);
+}
+.ab-social-text{ max-width:56ch; }
+.ab-social-text .h-lg{ margin-top:0; }
+.ab-social-text .lede{ margin:clamp(16px, 2vw, 24px) 0 0; }
+/* Zelfde trap als .usp-split-body op de home: de eerste alinea draagt
+   de belofte, deze onderbouwt hem. Via maat, niet via kleur. */
+.ab-social-body{
+  margin:clamp(14px, 1.6vw, 20px) 0 0;
+  font-size:var(--fs-body-2); font-weight:300; line-height:1.7;
+  letter-spacing:var(--tr-flat); color:var(--ink);
+  text-wrap:pretty;
+}
+
+/* ============================================================
+   Contact — crème band
+   ------------------------------------------------------------
+   Het formulier staat op crème en niet op een donker vlak. Alles wat
+   het nodig heeft klopt daar vanzelf: donkerrood op crème is 14,22:1,
+   de rand van een invoerveld is --control en dus ook donkerrood, en de
+   velden zelf zijn wit — een lichte doos op een warme grond, wat
+   precies leest als "hier typ je". Op donkergroen had elk veld,
+   elk label en elke knop een eigen uitzondering nodig gehad.
+   ============================================================ */
+
+.ab-contact-head{ margin-bottom:clamp(32px, 4vw, 56px); }
+.ab-contact-head .h-lg{ max-width:18ch; }
 .ab-contact-grid{
   display:grid; grid-template-columns:0.8fr 1.2fr;
   gap:clamp(28px, 5vw, 80px); align-items:start;
 }
-.ab-contact-list{ list-style:none; margin:22px 0 0; padding:0; }
+.ab-contact-list{ list-style:none; margin:0; padding:0; }
 .ab-contact-list li{
   display:flex; justify-content:space-between; gap:16px;
   padding:12px 0; border-top:1px solid var(--rule);
-  font-size:var(--fs-body-2); color:var(--ink-2);
+  font-size:var(--fs-body-2); font-weight:300; color:var(--ink-2);
 }
 .ab-contact-list li:last-child{ border-bottom:1px solid var(--rule); }
 .ab-contact-list b{ color:var(--ink); font-weight:500; }
-.ab-map .ph{ aspect-ratio:16/10; min-height:0; border:none; }
+/* Het kaartvlak is roze en niet crème: op een crème band zou een crème
+   vlak niet bestaan. */
+.ab-map{ margin-top:clamp(20px, 2.4vw, 30px); }
+.ab-map .ph{
+  aspect-ratio:16/10; min-height:0; border:none;
+  background-color:var(--band-pink);
+}
+.ab-form-title{ font-size:var(--fs-sub); font-weight:200; letter-spacing:var(--tr-head); margin:0 0 8px; }
+.ab-form-sub{
+  font-size:var(--fs-body-2); font-weight:300; line-height:1.65;
+  color:var(--ink-2); max-width:44ch; margin:0 0 clamp(22px, 2.6vw, 32px);
+}
 
-/* --- Nieuwsbrief --- */
+/* ============================================================
+   Nieuwsbrief
+   ------------------------------------------------------------
+   Blijft wit en blijft klein. Dit is een hulpmiddel vlak voor de
+   footer, geen afsluiter — de laatste actie van de site staat op de
+   home en heet "Offerte aanvragen". Een tweede afsluiter hier zou
+   daarmee concurreren. De donkerrode lijn erboven is de enige
+   haarlijn die op deze pagina overblijft, en dat is precies waarom
+   hij nog werkt.
+   ============================================================ */
+
 .ab-news{
   border-top:1px solid var(--ink);
   padding:clamp(40px, 5vw, 72px) 0;
   display:grid; grid-template-columns:1fr 1fr;
   gap:clamp(24px, 4vw, 64px); align-items:center;
 }
-.ab-news h2{ margin-bottom:8px; }
+.ab-news-title{ font-size:var(--fs-sub); font-weight:200; letter-spacing:var(--tr-head); margin-bottom:8px; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
 
 @media (max-width: 1000px){
-  .ab-story, .ab-social, .ab-contact-grid, .ab-news{ grid-template-columns:1fr; }
-  .ab-hero{ min-height:min(72svh, 560px); }
+  .ab-proof-grid, .ab-story, .ab-timeline-grid,
+  .ab-social-inner, .ab-contact-grid, .ab-news{
+    grid-template-columns:1fr;
+  }
+  /* Gestapeld heeft plakken geen zin meer: de kop zou over de items heen
+     blijven hangen in plaats van ernaast. */
+  .tl-head{ position:static; margin-bottom:clamp(32px, 4vw, 56px); }
+  .ab-statement{ max-width:26ch; }
+
+  /* Gestapeld: kop boven, beeld eronder over de volle breedte. Een half
+     uitbrekend beeld is op een smal scherm een scheve vorm; over de
+     volle breedte is het gewoon een beeld. Zelfde ingreep als bij
+     .usp-split-media en .season-media. */
+  .ab-hero-inner{ grid-template-columns:1fr; gap:0; min-height:0; }
+  .ab-hero-body{ padding-block:clamp(40px, 7vh, 72px) clamp(28px, 4vh, 44px); }
+  .ab-hero-media{
+    margin-inline:calc(-1 * var(--gutter));
+    min-height:0; aspect-ratio:4/5; max-height:66svh;
+  }
+  .ab-social-media{
+    margin-inline:calc(-1 * var(--gutter));
+    order:-1;
+  }
+  .ab-social-text{ max-width:none; }
+  .ab-contact-head .h-lg{ max-width:none; }
+  .ab-story-figure .ph{ aspect-ratio:16/9; }
+  .ab-social-media .ph{ aspect-ratio:4/3; }
+
   .tl-rail, .tl-dot{ left:clamp(56px, 14vw, 90px); }
   .tl-item{ grid-template-columns:clamp(56px, 14vw, 90px) 1fr; gap:20px; }
+
   /* Twee portretten naast elkaar blijven: één per rij maakt er een
      eindeloze kolom van. */
   .team-grid{ grid-template-columns:repeat(2, 1fr); gap:28px 16px; }
 }
 
+@media (max-width: 620px){
+  /* Het register staat onder de vraag; op deze breedte is de
+     kolombreedte van max-content krap genoeg om "500+" te laten
+     afbreken. Een halve regel witruimte minder is het waard. */
+  .ab-proof-grid{ gap:clamp(28px, 8vw, 44px); }
+  .ab-hero-media{ aspect-ratio:1/1; }
+  .ab-story-figure .ph{ aspect-ratio:4/3; }
+
+  /* Het jaartal gaat BOVEN de tekst en de rail schuift naar de
+     linkerrand. Naast elkaar houdt de tekst op een telefoon nog geen
+     250px over, en "Vandaag" past sowieso niet in een kolom van 56px —
+     dat woord liep dwars over de lijn heen. Gestapeld heeft elke regel
+     de volle breedte en blijft de lijn wat hij is: de vorm van het
+     onderdeel. */
+  .tl-rail, .tl-dot{ left:4px; }
+  .tl-item{ grid-template-columns:1fr; gap:0; padding-left:30px; }
+  .tl-year{ text-align:left; padding-right:0; margin-bottom:4px; }
+  .tl-dot{ top:clamp(24px, 4vw, 32px); }
+}
 /* ============================================================
    Hero (oude, lichte variant — nog in gebruik elders)
    ============================================================ */
