@@ -1486,401 +1486,504 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .closer .hero-actions{ justify-content:center; margin-top:clamp(28px, 3vw, 38px); }
 
 /* ============================================================
-   OVER ONS
+   OVER ONS — "Het pakje"
    ------------------------------------------------------------
-   De pagina houdt drie onderdelen over die werken — de tijdlijn,
-   het team en Axedis — en is verder teruggebracht tot wat ze
-   dragen. Wat eruit ging en waarom:
+   De vorige versie van deze pagina was vakkundig en volstrekt
+   inwisselbaar: donkere herofoto met dunne kop, verhaal in twee
+   kolommen, verticale tijdlijn met stippen die zich vult, vier
+   identieke portretvlakken, beeld-links/tekst-rechts, formulier.
+   Elk merk in elke sector zet die pagina neer.
 
-   • De split-hero met een productopname ernaast. Dat beeld
-     bewees niets: het is een doos met een strik, op de pagina
-     die over de mensen erachter gaat. Een sfeerbeeld naast een
-     belofte is decoratie, en decoratie is precies wat een
-     "over ons" ongeloofwaardig maakt. De hero is nu typografie
-     op crème, met het verhaal er direct onder in twee kolommen.
+   Deze versie vertrekt van wat Belgosweet werkelijk maakt — een
+   pakje — en bouwt de pagina uit dezelfde onderdelen op. Alles wat
+   daarvoor nodig is zat al in het merk:
 
-   • De kop "Van één bestelwagen naar vijfhonderd bedrijven."
-     Een groeicijfer als kop belooft een succesverhaal en niet
-     een bedrijf; bovendien stond dezelfde bestelwagen een sectie
-     lager in de tijdlijn. Het verhaal heeft nu geen eigen kop
-     meer nodig — de H1 erboven is de kop.
+     inpakpapier  het streepveld (.pattern-band), hier in ROZE op 55%.
+                  Die variant staat in BRANDING.md §5 beschreven en
+                  was nergens in gebruik; de home draagt hetzelfde
+                  veld in donkerrood op 15%. Eén patroon, per pagina
+                  een eigen kleur — dat is wat §5 met "hetzelfde
+                  patroon twee keer mag" bedoelt.
+     etiket       het crème volvlak erop. §5 leest dat zelf al zo:
+                  "de banen stoppen gewoon, wat leest als een etiket
+                  op inpakpapier."
+     zegel        de ronde badge, half over de rand van de brief.
+     de brief     de kaart in het pakje, ondertekend met het
+                  woordmerk — een script-woordmerk ís een handtekening.
+     de inhoud    de tijdlijn als zes échte verpakkingen in plaats van
+                  zes stippen op een lijn.
+     de doos      het team in de vakverdeling van een pralinedoos.
 
-   • De panoramafoto onder het verhaal. Volle bladspiegel, 2:1,
-     en zonder enig verband met de alinea erboven.
-
-   • Het cijferregister op de patroonband. Het was een kopie van
-     de bewijsband op de home, en op deze pagina zei het niets
-     wat de tijdlijn er niet beter zegt: die eindigt op "Meer dan
-     500 bedrijven" en heeft de jaartallen erbij. Twee keer
-     dezelfde cijfers op één pagina maakt ze allebei zwakker.
-
-   • De nieuwsbriefstrook. Een los formulier tussen het contact
-     en de footer, zonder aanleiding.
+   Kleur: geen enkele nieuwe waarde. Roze, crème, donkerrood,
+   donkergroen en salie, allemaal via de tokens uit colors.css. De
+   dekking van 55% zit op de patroonlaag en niet in een kleurwaarde —
+   dezelfde constructie als op de home (§5, "de dekking zit op de
+   LAAG en niet in de kleurwaarde").
 
    Ritme van de vlakken, nooit twee gekleurde na elkaar:
-   crème (opening) → wit (tijdlijn) → roze (team) → wit (Axedis)
+   streepveld → wit (tijdlijn) → donkergroen (Axedis) → wit (team)
    → crème (contact).
 
-   Twee bewegingen: een lijn die zich vult in de tijdlijn, en
-   secties die opklaren bij het in beeld komen. De parallax is
-   met de hero-opname vervallen.
+   Beweging: drie stuks, elk met een reden.
+   1. Het papier schuift zijdelings bij het scrollen terwijl het
+      etiket blijft staan. Verticale banen die verticaal bewegen zie
+      je niet; zijdelings wél, en dat is precies het gebaar van een
+      vel dat onder een etiket doorschuift.
+   2. De opening (etiketregel → kop → onderregel → brief) klaart in
+      vier stappen op bij het laden. Eén georkestreerd moment.
+   3. Elk onderdeel eronder krijgt de beweging die eráchter zit: het
+      jaartal schuift ná zijn beeld binnen, het portretvlak groeit
+      naar zijn maat, het Axedisbeeld komt van de linkerrand waar het
+      toch al vandaan loopt. Wat er NIET meer is: één identieke
+      opklaring op elk blok. Dat was de reflex.
    ============================================================ */
 
 /* --- Onthullen bij scrollen ---
-   Alleen verbergen als JavaScript draait (html.js). Zonder script
-   of bij een mislukte observer blijft alles gewoon zichtbaar —
-   een reveal die nooit afvuurt mag geen lege pagina opleveren. */
+   Alleen verbergen als JavaScript draait (html.js). Zonder script of
+   bij een mislukte observer blijft alles gewoon zichtbaar — een
+   reveal die nooit afvuurt mag geen lege pagina opleveren.
+
+   De basisregel zet alleen de dekking. De VERPLAATSING staat per
+   onderdeel hieronder, want een tijdlijnstap, een portretvakje en een
+   beeld dat van de bladrand komt horen niet dezelfde weg af te
+   leggen. Dat is het verschil tussen beweging en een sjabloon. */
 @media (prefers-reduced-motion: no-preference){
   html.js [data-reveal]{
-    opacity:0; transform:translateY(22px);
-    transition:opacity .85s var(--ease-soft), transform .95s var(--ease);
+    opacity:0;
+    transition:opacity .8s var(--ease-soft), transform .95s var(--ease);
     transition-delay:var(--rd, 0ms);
   }
   html.js [data-reveal].in{ opacity:1; transform:none; }
-}
 
-/* --- Het vlak onder een sectie ---
-   Eén klasse voor de gekleurde banden. Crème is de standaard; het
-   team zet hem om naar roze. De band loopt over de volle
-   vensterbreedte en de .wrap-wide erbinnen houdt de inhoud op de
-   bladspiegel — dat is het verschil tussen "een sectie met een
-   achtergrondje" en "een vlak waar de pagina op staat". */
-.ab-band{ background:var(--surface); padding:var(--section-y) 0; }
+  /* Koppen en tekstblokken: rustig omhoog. */
+  html.js .section-lead[data-reveal],
+  html.js .pak-axedis-tekst[data-reveal],
+  html.js .ab-contact-intro[data-reveal],
+  html.js .ab-contact-grid > [data-reveal]{ transform:translateY(20px); }
+
+  /* Een stap uit de tijdlijn komt als geheel omhoog, en het jaartal
+     schuift dáárna pas van links binnen — eerst de doos, dan het
+     etiket eraan. Zonder die tweede tel is het weer één blok dat
+     opklaart. */
+  html.js .pak-stap[data-reveal]{ transform:translateY(34px); }
+  html.js .pak-stap[data-reveal] .pak-jaar{
+    opacity:0; transform:translateX(-16px);
+    transition:opacity .7s var(--ease-soft), transform .8s var(--ease);
+    transition-delay:calc(var(--rd, 0ms) + 200ms);
+  }
+  html.js .pak-stap[data-reveal].in .pak-jaar{ opacity:1; transform:none; }
+
+  /* Het portretvlak groeit naar zijn maat vanuit de linkerbovenhoek —
+     de hoek waar het in het vakje vastzit. Geen verplaatsing: een
+     vakje in een doos schuift niet. */
+  html.js .pak-vak[data-reveal]{ transform:translateY(24px); }
+  html.js .pak-vak[data-reveal] .pak-portret{
+    transform:scale(.9); transform-origin:left top;
+    transition:transform 1s var(--ease);
+    transition-delay:calc(var(--rd, 0ms) + 140ms);
+  }
+  html.js .pak-vak[data-reveal].in .pak-portret{ transform:none; }
+
+  /* Het Axedisbeeld loopt de bladspiegel links uit. Het komt dus van
+     die kant en niet van onderen. */
+  html.js .pak-axedis-media[data-reveal]{ transform:translateX(-34px); }
+}
 
 /* ============================================================
-   Hero — volvlak beeld
+   Het pakje — streepveld, etiket en brief
    ------------------------------------------------------------
-   De opname is cacaopoeder, over de volle sectie. Bewust GEEN
-   product: op de pagina die over de mensen achter Belgosweet gaat
-   is een doos met een strik decoratie, en dat was precies wat er
-   aan de vorige hero mankeerde. Cacao is de grondstof waar het in
-   1998 mee begon — het is de enige opname op deze site die staat
-   voor "waar het vandaan komt" in plaats van "wat je krijgt".
+   Eén sectie, drie lagen: papier, etiket erop, brief die er half
+   onderuit steekt.
 
-   Het is bovendien een TEXTUUR en geen tafereel: er is geen
-   onderwerp dat door de kop wordt afgesneden en geen crop die op
-   een andere schermmaat scheef valt. Dat is wat een beeld geschikt
-   maakt als ondergrond voor tekst.
-
-   Verschil met de home, die ook een donkere hero heeft: daar staan
-   twee panelen naast elkaar onder een GROENE sluier, met het
-   woordmerk dat in de balk dokt. Hier is het één vlak onder een
-   DONKERRODE sluier, de kop links onderin, en de header blijft de
-   gewone witte balk. Twee donkere heroes, twee verschillende
-   gebaren.
+   De maat van het veld komt uit de INHOUD (de padding hieronder) en
+   niet uit de vensterhoogte. Een hero op 80svh heeft op elke
+   schermmaat een andere verhouding; dit etiket houdt overal dezelfde
+   marge rond zijn kop. Dat is wat een etiket doet.
    ============================================================ */
 
-.ab-open{
+/* Geen volle --section-y onderaan: de brief steekt zelf al ver onder het
+   papier uit, en de tijdlijn eronder brengt zijn eigen sectiemarge mee.
+   Allebei achter elkaar gaf ± 380px wit tussen de handtekening en de kop
+   erna — een gat, geen ademruimte. */
+.pak-open{
   position:relative;
-  overflow:hidden;
-  background:var(--ink);              /* grond zolang de foto laadt */
-  color:var(--on-void);
-  display:flex; align-items:flex-end;
-  min-height:min(80svh, 800px);
-  padding-block:clamp(96px, 12vw, 168px) clamp(56px, 7vw, 104px);
+  background:var(--paper);
+  padding-bottom:clamp(26px, 3.6vw, 60px);
 }
 
-.ab-open-media{ position:absolute; inset:0; z-index:0; overflow:hidden; }
-/* 136% hoog en 18% omhoog: app.js verschuift het beeld bij het scrollen
-   over 14% van de sectiehoogte (`-hero.top * 0.14`), en die speling moet
-   er aan allebei de kanten zijn — anders schuift er een rand in beeld op
-   het moment dat de beweging juist onzichtbaar hoort te zijn. 18 tegen 14
-   is de marge; bij 15 tegen 14 stond de bovenrand er onderaan de sectie
-   nog maar acht pixel vanaf.
+/* De onderpadding is met opzet veel groter dan de bovenpadding: dat is
+   de ruimte waar de brief straks in terugschuift. Trek je de brief niet
+   op, dan staat er een leeg stuk papier onder het etiket. */
+.pak-veld{
+  position:relative;
+  overflow:hidden;
+  padding-block:clamp(104px, 12vw, 176px) clamp(215px, 24vw, 370px);
+}
+.pak-veld > .wrap-wide{ position:relative; }
 
-   Geen transition: app.js zet de transform per frame. Een overgang van
-   .8s eroverheen maakt van een parallax een slepende vertraging. */
-.ab-open-media img{
-  position:absolute; left:0; top:-18%;
-  width:100%; height:136%;
-  object-fit:cover; display:block;
+/* Het papier. Aparte laag omdat app.js hem zijdelings verschuift; de
+   ::before van .pattern-band is een pseudo-element en dat kun je niet
+   los aansturen. 12% overbreedte aan allebei de kanten, zodat de
+   verschuiving (max ± 34px) nooit een rand kan tonen.
+
+   .pattern-band staat op relative; hier moet hij absoluut liggen. De
+   drie variabelen zijn precies waarvoor ze op de band gezet zijn: één
+   regel per pagina en het veld heeft een andere kleur. */
+.pak-papier{
+  position:absolute; inset:0 -12%;
+  --stripe:40px;
+  --stripe-color:var(--pink);
+  --stripe-fade:.55;
   will-change:transform;
 }
 
-/* Donkerrode sluier. Twee taken, net als de groene op de home: het beeld
-   naar één toon trekken en de tekst een gegarandeerde ondergrond geven.
-
-   Gemeten, niet geschat. De maat is genomen tegen de ALLERLICHTSTE pixel
-   in het hele bronbestand — rgb(141,100,87) — en niet tegen het stuk dat
-   op één schermmaat toevallig achter de kop valt. Zo blijft de uitkomst
-   gelden bij elke crop, en de opname is portret (1282×1600) tegen een
-   liggend vlak, dus die crop verschilt per venster fors.
-
-     sluier   crème erop
-      .25       6,3:1
-      .30       6,7:1
-      .35       7,1:1   ← gekozen, AAA
-      .45       8,0:1
-      .55       8,9:1   het poeder dooft tot een vlak
-
-   Bij .55 was er van de korrel niets meer over en las de hero als een
-   effen donkerrood vlak — dan kun je de foto net zo goed weglaten.
-   Wissel je van opname, meet dan opnieuw. */
-.ab-open-media::after{
-  content:""; position:absolute; inset:0;
-  background:var(--ink); opacity:.35;
+/* Het etiket. Crème volvlak — de banen stoppen gewoon, en dat is
+   precies de lezing die BRANDING.md §5 eraan geeft. Links uitgelijnd,
+   met het papier dat er rechts naast doorloopt; zou het vlak de volle
+   breedte pakken, dan was er geen etiket meer maar een sectie. */
+.pak-etiket{
+  background:var(--surface);
+  max-width:min(980px, 78%);
+  padding:clamp(30px, 3.6vw, 54px) clamp(28px, 3.4vw, 52px) clamp(34px, 4vw, 58px);
 }
 
-.ab-open-inner{ position:relative; z-index:1; }
+/* De bovenste regel van een etiket: wat erin zit, waar het vandaan
+   komt, sinds wanneer. Het is géén sectiekopje — er staat er precies
+   één op deze pagina, en er staat er geen boven een andere sectie. Een
+   kapitalenregel boven élke kop is het sjabloonsignaal; één regel
+   binnen het etiket is de vorm van een etiket. */
+.pak-etiket-regel{
+  margin:0 0 clamp(22px, 2.6vw, 34px);
+  padding-bottom:clamp(12px, 1.4vw, 16px);
+  border-bottom:1px solid var(--rule);
+  font-size:var(--fs-label); text-transform:uppercase;
+  letter-spacing:var(--tr-label); font-weight:600; color:var(--ink);
+}
+.pak-etiket-regel span{ margin:0 6px; }
 
-/* Op donker is crème de tekstkleur — donkerrood haalt daar niets. Dat
-   geldt ook voor het streepje van de .eyebrow, dat zijn kleur van --ink
-   krijgt en anders onzichtbaar op de sluier staat. */
-.ab-open .eyebrow{ color:var(--on-void); }
-.ab-open .eyebrow::before{ background:var(--on-void); }
+/* Gewicht 200 en dus een RUIMERE letterafstand (minder negatief): dunne
+   stokken op krappe afstand lopen optisch in elkaar over. Zie de
+   toelichting bij de schaal in type.css.
 
-/* Overschrijft h1.display uit het hoofd van dit bestand. Bij 200 gaat
-   de letterafstand OMHOOG (minder negatief): dunne stokken op krappe
-   afstand lopen optisch in elkaar over. Zie de toelichting bij .display.
-
-   Waarom niet het vette h1.display van de home: het ene zware element
-   van de site is de hero daar. Deze pagina gaat over mensen en opent
-   zachter — en op een volvlak beeld doet de maat het werk toch al.
-
-   De max-width staat op de H1 zelf en niet op de doos eromheen. `ch`
-   rekent af tegen de font-size van het element waar het op staat: op de
-   doos is dat 16px en wordt de kop tot een kolom van 230px geknepen, op
-   de kop zelf is het de displaymaat en klopt de regelmaat. */
-.ab-open h1{
+   Niet het vette h1.display van de home: het ene zware element van de
+   site is de hero daar. Dit is een etiket op papier en geen roep. */
+.pak-kop{
+  margin:0;
   font-size:var(--fs-display);
   font-weight:200;
   line-height:1.02;
   letter-spacing:var(--tr-tight);
-  color:var(--on-void);
-  margin:0;
+  color:var(--ink);
   max-width:15ch;
+  text-wrap:balance;
 }
-.ab-open-sub{
-  margin:clamp(20px, 2.6vw, 32px) 0 0;
-  font-size:var(--fs-lede);
-  font-weight:200;
-  line-height:1.6;
-  color:var(--on-void);
-  max-width:46ch;
-  text-wrap:pretty;
+.pak-etiket-sub{
+  margin:clamp(20px, 2.4vw, 30px) 0 0;
+  font-size:var(--fs-lede); font-weight:200; line-height:1.6;
+  color:var(--ink); max-width:44ch; text-wrap:pretty;
 }
 
-/* ============================================================
-   Verhaal — crème band
-   ------------------------------------------------------------
-   Twee kolommen: de opening links op ledemaat, het vervolg rechts
-   een trap kleiner. Dezelfde trap als .usp-split-text op de home —
-   lede, dan body-2 — alleen naast elkaar in plaats van onder
-   elkaar.
+/* --- De brief ---
+   Schuift met een negatieve marge terug omhoog het veld in, en ligt
+   daardoor grotendeels op het papier met de onderste derde op de witte
+   pagina: de kaart die onder het lint uit steekt. Rechts uitgelijnd
+   tegenover het etiket links — twee vlakken die elkaar in evenwicht
+   houden in plaats van twee blokken onder elkaar.
 
-   Geen kop. Er stond er een ("Van één bestelwagen naar vijfhonderd
-   bedrijven") en die is weg: een groeicijfer als kop belooft een
-   succesverhaal in plaats van een bedrijf, en dezelfde bestelwagen
-   staat een sectie lager in de tijdlijn. De H1 in de hero erboven
-   is de kop; dit is de alinea eronder.
-   ============================================================ */
+   De verhouding is gemeten en niet geschat. Bij een overlap van 100px
+   hing tweederde van de kaart onder het papier en bleef er links een
+   witte L van ± 450px hoog over — een gat in plaats van lucht. Bij
+   een overlap van 300px hangt nog een derde over: genoeg om te zien
+   dat de kaart erop ligt, weinig genoeg om er geen leegte naast te
+   krijgen. De onderpadding van .pak-veld beweegt mee, anders eindigt
+   het papier onder de kop in plaats van eronder.
 
-.ab-story{
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:clamp(28px, 5vw, 80px); align-items:start;
+   Allebei de vlakken zijn positioned zonder z-index, dus de
+   DOM-volgorde beslist en de brief komt boven het papier. Geen z-index
+   nodig. */
+.pak-brief{
+  --zegel:clamp(72px, 8vw, 108px);
+  position:relative;
+  margin-top:calc(-1 * clamp(170px, 19vw, 300px));
+  margin-left:auto;
+  max-width:min(760px, 100%);
+  background:var(--surface);
+  padding:calc(var(--zegel) / 2 + clamp(24px, 2.6vw, 38px))
+          clamp(28px, 3.4vw, 56px)
+          clamp(38px, 4.2vw, 60px);
 }
-/* De lede is elders in de site op 52ch gezet omdat hij daar over de
-   volle bladspiegel loopt. Hier IS de kolom de maat, dus de
-   begrenzing moet eraf — anders staat er rechts in de kolom een
-   tweede gat. */
-.ab-story .lede{ max-width:none; margin:0; }
-.ab-story-col p{
-  font-size:var(--fs-body-2); font-weight:300; line-height:1.7;
-  color:var(--ink-2); max-width:none;
+
+/* Het zegel sluit de kaart aan het papier: half op de brief, half op
+   het veld. De badge draagt zijn eigen volvlak, dus hij mag over de
+   rand van het patroon heen (§4.3 verbiedt roteren en herkleuren, niet
+   overlappen). Logo-Icon_pink.svg is het enige badgebestand met schone
+   vectoren — 6 KB tegen 114-200 KB voor de rest, zie §4.4. */
+.pak-zegel{
+  position:absolute;
+  top:calc(-1 * var(--zegel) / 2);
+  left:clamp(28px, 3.4vw, 56px);
+  display:block; width:var(--zegel); height:var(--zegel);
 }
 
-/* De ondertekening onder het verhaal. Dit is de persoonlijke pagina
-   van de site; één regel die zegt wie er aan het woord was hoort er
-   dan bij. Zelfde streepje-en-kapitalen als .eyebrow, alleen
-   omgekeerd gebruikt: niet als aankondiging vooraf maar als
-   handtekening achteraf. */
-.ab-sign{
-  display:flex; align-items:center; gap:10px;
-  margin:clamp(22px, 2.6vw, 32px) 0 0;
+.pak-brief-lede{
+  font-size:var(--fs-lede); font-weight:200; line-height:1.6;
+  color:var(--ink); max-width:52ch; text-wrap:pretty;
+}
+.pak-brief p{
+  font-size:var(--fs-body-2); font-weight:300; line-height:1.75;
+  color:var(--ink); max-width:62ch; text-wrap:pretty;
+}
+/* De lede staat een trap hoger dan de rest en moet die maat houden;
+   .pak-brief p erboven zou hem anders terugzetten. */
+.pak-brief p.pak-brief-lede{ font-size:var(--fs-lede); font-weight:200; line-height:1.6; }
+
+/* De ondertekening. Het woordmerk staat hier niet als merkteken maar
+   als wat het van huis uit is: handgetekende letters onder een brief
+   (§3.4). 140-178px breed — ruim boven de 120px ondergrens van §4.2,
+   waaronder de dunne verbindingen in de script dichtlopen. */
+.pak-onder{
+  margin-top:clamp(30px, 3.4vw, 44px);
+  padding-top:clamp(24px, 2.6vw, 34px);
+  border-top:1px solid var(--rule);
+}
+.pak-handtekening{ display:block; width:clamp(140px, 15vw, 178px); height:auto; }
+.pak-onder-regel{
+  margin:14px 0 0;
   font-size:var(--fs-label); text-transform:uppercase;
   letter-spacing:var(--tr-label); font-weight:600; color:var(--ink);
 }
-.ab-sign::before{
-  content:""; flex:0 0 auto; width:22px; height:2px; background:var(--ink);
-}
 
 /* ============================================================
-   Tijdlijn
+   De inhoud — wat er per jaar in het pakje kwam
    ------------------------------------------------------------
-   De verticale lijn vult zich mee met je scrollpositie: de vorm van
-   het onderdeel ís de boodschap, dus daar mag de beweging zitten.
+   De tijdlijn als zes verpakkingen in plaats van zes stippen op een
+   lijn. Het vakwerk van die lijn was in orde — hij vulde zich mee met
+   de scrollpositie — maar hij is hét herkenningsteken van de
+   sjabloonpagina, en een grafisch lijntje bewijst niets. Zes échte
+   opnames doen dat wel: dit is wat er dat jaar in het pakje zat.
 
-   De rij loopt door tot de rechterrand: jaartal, wat het was, wat
-   het betekende. Dat is dezelfde indexregel als .fam-head in de
-   catalogus, alleen met een lijn erdoorheen.
+   Het raster is bewust ONgelijk. Twaalf kolommen, zes stappen van
+   verschillende breedte, elk met een eigen verticale verspringing
+   (--z). Zes gelijke tegels naast elkaar zouden precies het
+   kaartraster opleveren dat deze herziening kwijt wilde; een ongelijke
+   loop leest als een rij dozen op een plank.
+
+   Plaatsing staat expliciet per stap (--c kolom, --s breedte,
+   --r rij). Op automatische plaatsing vertrouwen werkt hier ook, maar
+   dan verschuift de hele compositie zodra er een stap bijkomt.
    ============================================================ */
 
-.ab-timeline{ padding:var(--section-y) 0; }
-.tl{ position:relative; }
-.tl-rail{
-  position:absolute; top:0; bottom:0;
-  left:clamp(76px, 8vw, 130px); width:1px; background:var(--rule);
-}
-.tl-rail span{
-  position:absolute; left:0; top:0; width:1px; height:0;
-  background:var(--ink); transition:height .15s linear;
-}
-.tl-item{
-  position:relative;
+.pak-lijn{ padding:var(--section-y) 0; }
+.pak-loop{
   display:grid;
-  /* De titelkolom heeft een VASTE maat en geen fr: met twee fr-kolommen
-     stond er achter elke korte titel een gat van driehonderd pixel voordat
-     de toelichting begon, en dan lezen de twee helften van de regel niet
-     meer als één regel. Nu begint de toelichting overal op dezelfde plek,
-     vlak achter de titel.
-
-     De toelichting krijgt geen max-width. Elk van de zes is één zin die
-     op deze breedte binnen één regel blijft, en voor een regel bestaat er
-     geen te lange leesmaat — die begint pas bij de tweede regel. */
-  grid-template-columns:clamp(76px, 8vw, 130px) clamp(200px, 24vw, 380px) minmax(0, 1fr);
-  gap:clamp(20px, 2.6vw, 44px);
-  align-items:baseline;
-  padding:clamp(20px, 2.4vw, 32px) 0;
+  grid-template-columns:repeat(12, 1fr);
+  gap:clamp(40px, 5vw, 84px) clamp(16px, 2vw, 32px);
+  align-items:start;
 }
-/* 19-26px zit op de grens: 200 wordt hier al ijl, 300 houdt het jaartal
-   herkenbaar zonder terug te vallen op vet. */
-.tl-year{
-  font-size:var(--fs-lede);
-  font-weight:300;
-  letter-spacing:var(--tr-body); color:var(--ink);
-  font-variant-numeric:tabular-nums; line-height:1.2;
-  /* Tegen de lijn aan en niet tegen de linkerrand: het jaartal hoort bij
-     de stip ernaast, niet bij de kolomrand erachter. */
-  text-align:right;
-  padding-right:clamp(16px, 1.8vw, 26px);
-}
-.tl-dot{
-  position:absolute; left:clamp(76px, 8vw, 130px); top:clamp(26px, 2.8vw, 40px);
-  width:7px; height:7px; border-radius:50%;
-  background:var(--paper); border:1px solid var(--rule-2);
-  transform:translateX(-3px);
-  transition:background .4s var(--ease), border-color .4s var(--ease);
-}
-.tl-item.passed .tl-dot{ background:var(--ink); border-color:var(--ink); }
-.tl-title{ font-size:var(--fs-lede); font-weight:500; margin:0; line-height:1.3; }
-.tl-text{ font-size:var(--fs-body-2); font-weight:300; color:var(--ink-2); margin:0; }
-
-/* ============================================================
-   Team — roze band
-   ------------------------------------------------------------
-   Vier portretten in een rij. Onder elke naam staat waarvoor je bij
-   die persoon moet zijn: de hele site belooft "één aanspreekpunt",
-   dus dan hoor je hier ook te zien wie dat is.
-
-   Het roze vlak doet twee dingen tegelijk. Het is het zachte moment
-   van de pagina — dit is het menselijke stuk en dat mag er anders
-   uitzien — en het lost het beeldprobleem op. Er zijn nog geen
-   portretten, dus de vier vlakken staan leeg met het merkteken
-   erin. Op wit zijn dat vier lege crème kaders; op roze zijn het
-   vier crème vlakken die eruitzien alsof ze zo bedoeld zijn.
-   ============================================================ */
-
-.ab-team{ background:var(--band-pink); }
-.ab-team .h-lg,
-.ab-team .lede{ color:var(--accent-on); }
-.team-grid{
-  display:grid; grid-template-columns:repeat(4, 1fr);
-  gap:clamp(16px, 2vw, 30px);
-}
-/* Het bijschrift staat gecentreerd en niet onderaan zoals bij een
-   gewoon beeldvlak. Een portretvlak is hoog en leeg; het woord
-   onderin laat het als een afgeknipte foto lezen, in het midden als
-   een gereserveerde plek. */
-.team-member .ph{
-  aspect-ratio:3/4; min-height:0; border:none; margin-bottom:16px;
-  align-items:center;
-}
-/* Dezelfde beweging als .card:hover .ph elders op de site: het
-   merkteken groeit een slag, er licht geen kader op. */
-.team-member:hover .ph{ background-size:min(30%, 118px); }
-.team-name{
-  font-size:var(--fs-body); color:var(--accent-on); font-weight:500;
-  padding-bottom:8px; border-bottom:1px solid var(--accent-on);
-}
-/* De functie is wie iemand IS, de regel eronder is waarvoor je bij hem of
-   haar moet zijn. Twee keer light op dezelfde maat leest als twee gelijke
-   regels; 400 tegenover 300 zet ze uit elkaar zonder er een kop van te
-   maken. */
-.team-role{
-  font-size:var(--fs-xs); font-weight:400; color:var(--accent-on);
-  margin-top:9px;
-}
-/* Geen tweede lijn onder de functie: vier portretten met twee streepjes
-   elk gaven acht lijnen op dezelfde hoogtes, en dat is het tabelgevoel
-   dat een team niet moet hebben. Eén lijn, onder de naam. */
-.team-focus{
-  margin-top:6px;
-  font-size:var(--fs-xs); font-weight:300; color:var(--accent-on);
+.pak-stap{
+  grid-column:var(--c) / span var(--s);
+  grid-row:var(--r);
+  margin-top:var(--z, 0px);
 }
 
-/* ============================================================
-   Sociaal engagement
-   ------------------------------------------------------------
-   Beeld links van de pagina af — de enige opname op deze pagina, en
-   de enige die iets bewijst: dat is wat er uit de assemblage komt.
-   Verhouding 1.15 : 1, dezelfde als .usp-split op de home.
-   ============================================================ */
-
-/* De footer linkt naar #engagement en #contact. De header is op deze
-   pagina sticky, dus zonder deze marge landt een ankersprong met de
-   bovenrand van de sectie ónder de balk. */
-.ab-social, .ab-contact{ scroll-margin-top:var(--header-h); }
-
-.ab-social{ padding:var(--section-y) 0; }
-.ab-social-inner{
-  display:grid;
-  grid-template-columns:minmax(0, 1.15fr) minmax(0, 1fr);
-  gap:clamp(30px, 4.5vw, 84px); align-items:center;
+/* Het enige grote lichte element van de sectie, en daardoor het element
+   dat de rangorde draagt. Geen kleurverschil nodig — dat bestaat op
+   licht ook niet (colors.css §2). */
+.pak-jaar{
+  margin:0 0 clamp(16px, 1.8vw, 24px);
+  font-size:var(--fs-num-lg); font-weight:300;
+  letter-spacing:var(--tr-num); line-height:1;
+  font-variant-numeric:tabular-nums; color:var(--ink);
 }
-.ab-social-media{ margin-left:calc(-1 * var(--gutter)); }
-/* 3:2 op een bronopname van 16:9 snijdt maar een paar procent van de
-   flanken; 4:3 zou de blikken links en de doos rechts halveren. */
-.ab-social-media .ph{
-  aspect-ratio:3/2; min-height:0; border:none;
-  background-color:var(--band-pink);
+/* Hier `cover` en niet de `contain` van de catalogus, en dat is een
+   bewuste uitzondering. De opnames zijn 2:3 met een royale marge rond het
+   object; contain in een tegel van deze breedte gaf een vlak van 450 tot
+   625px hoog met een klein doosje in het midden — het beeld werd een
+   kader in plaats van bewijs. Cover op 4:5 of 1:1 snijdt precies die
+   lege marge weg, niet het object.
+
+   De grond blijft crème (van .ph), dus wat er niet gedekt wordt valt
+   nog altijd weg tegen het vlak.
+
+   Verhouding per stap: een koker is niet zo hoog als een blik, en zes
+   gelijke verhoudingen naast elkaar zijn weer een raster. */
+.pak-beeld{
+  aspect-ratio:var(--ar, 4/5);
+  min-height:0; border:none;
 }
-.ab-social-text{ max-width:52ch; }
-.ab-social-text .h-lg{ margin:0; text-wrap:balance; }
-.ab-social-text .lede{ margin:clamp(18px, 2vw, 26px) 0 0; }
-/* Zelfde trap als .usp-split-body op de home: de eerste alinea draagt
-   de belofte, deze onderbouwt hem. Via maat, niet via kleur. */
-.ab-social-body{
-  margin:clamp(14px, 1.6vw, 20px) 0 0;
+.pak-stap:hover .pak-beeld > img{ transform:scale(1.035); }
+
+.pak-stap-kop{
+  margin:clamp(18px, 2vw, 26px) 0 0;
+  font-size:var(--fs-lede); font-weight:500; line-height:1.3;
+  letter-spacing:var(--tr-body); color:var(--ink); text-wrap:balance;
+}
+.pak-stap-tekst{
+  margin:clamp(8px, 1vw, 12px) 0 0;
   font-size:var(--fs-body-2); font-weight:300; line-height:1.65;
-  letter-spacing:var(--tr-flat); color:var(--ink);
-  text-wrap:pretty;
+  color:var(--ink); max-width:44ch; text-wrap:pretty;
+}
+
+/* ============================================================
+   Axedis — donkergroen
+   ------------------------------------------------------------
+   Het enige donkere vlak van de pagina, en het staat hier met opzet:
+   het zwaarste onderwerp krijgt het zwaarste vlak. Op donkergroen
+   bestaat als enige plek op de site de tekstrangorde uit twee KLEUREN
+   (crème 14,83:1 primair, salie 8,45:1 secundair, colors.css §5);
+   overal op licht is er maar één inktkleur en loopt de rangorde via
+   maat en gewicht.
+
+   Lichte tekst op donker leest optisch dunner en heeft meer lucht
+   nodig: de regelafstand staat hier een stap hoger dan dezelfde
+   tekstsoort op wit.
+
+   De opname staat zelf op een lichte grond, dus op donkergroen wordt
+   het vanzelf een oplichtend crème vlak — dezelfde etiket-op-papier
+   vorm als de kop bovenaan, alleen omgekeerd.
+   ============================================================ */
+
+/* De footer linkt naar #engagement en #contact. De header is sticky, dus
+   zonder deze marge landt een ankersprong met de bovenrand van de sectie
+   ónder de balk. */
+.pak-axedis, .ab-contact{ scroll-margin-top:var(--header-h); }
+
+.pak-axedis{
+  background:var(--void); color:var(--on-void);
+  padding:var(--section-y) 0;
+}
+.pak-axedis-inner{
+  display:grid;
+  grid-template-columns:minmax(0, 1.08fr) minmax(0, 1fr);
+  gap:clamp(30px, 4.5vw, 80px); align-items:center;
+}
+/* Het beeld loopt de bladspiegel links uit: een vlak dat tegen de rand
+   stopt leest als een foto in een kader, een vlak dat eroverheen loopt
+   als een vlak. */
+.pak-axedis-media{ margin-left:calc(-1 * var(--gutter)); }
+.pak-axedis-beeld{
+  aspect-ratio:16/9; min-height:0; border:none;
+  background-color:var(--band-pink);   /* grond zolang de foto laadt */
+}
+.pak-axedis .h-lg{ margin:0; color:var(--on-void); text-wrap:balance; }
+.pak-axedis-lede{
+  margin:clamp(18px, 2vw, 26px) 0 0;
+  font-size:var(--fs-lede); font-weight:200; line-height:1.65;
+  color:var(--on-void); max-width:44ch; text-wrap:pretty;
+}
+.pak-axedis-body{
+  margin:clamp(14px, 1.6vw, 20px) 0 0;
+  font-size:var(--fs-body-2); font-weight:300; line-height:1.7;
+  letter-spacing:var(--tr-flat); color:var(--on-void-2);
+  max-width:52ch; text-wrap:pretty;
+}
+
+/* ============================================================
+   Het team — de vakverdeling van een pralinedoos
+   ------------------------------------------------------------
+   Eén crème vlak, vier vakjes, roze scheidingen van 1px. Dat is de
+   binnenkant van de doos die de rest van deze pagina inpakt.
+
+   Het lost meteen het probleem op dat de vorige versie omzeilde: er
+   zijn nog geen portretten. Vier lege vlakken van 3:4 en 400px hoog
+   verkopen die leegte als ontwerp — het zijn vier gaten. Hier is het
+   portret een vierkantje van hooguit 148px (roze vlak, merkteken in
+   crème, precies zoals BRANDING.md §6 het lege beeldvlak voorschrijft)
+   en draagt de REGEL de persoon. Iemand die zegt "bel me in september
+   voor december" is aanwezig; een leeg kader met "portret" erin niet.
+
+   De scheiding is 1px en is een vakwand, geen accentstreep: hij staat
+   tussen de vakken, niet aan de zijkant van een kaart.
+
+   De voet van elk vakje staat met margin-top:auto tegen de bodem,
+   zodat de vier namen op één lijn eindigen ook als de citaten
+   verschillend lang zijn. Dat is wat een vakverdeling doet.
+   ============================================================ */
+
+.pak-team{ padding:var(--section-y) 0; }
+.pak-vakken{
+  display:grid; grid-template-columns:repeat(4, 1fr);
+  background:var(--surface);
+  padding:clamp(18px, 2vw, 30px);
+}
+.pak-vak{
+  display:flex; flex-direction:column;
+  padding:clamp(18px, 2vw, 30px);
+  border-left:1px solid var(--rule);
+}
+.pak-vak:first-child{ border-left:none; }
+
+/* Vierkant en klein. Het merkteken staat gecentreerd op min(24%, 96px)
+   van .ph, wat op dit formaat neerkomt op ± 35px — de "± 20% van de
+   korte zijde" uit §6. Het bijschrift blijft onderin staan (de
+   flex-end van .ph) en zegt wat het is: een gereserveerde plek. */
+.pak-portret{
+  aspect-ratio:1/1; min-height:0; border:none;
+  background-color:var(--band-pink);
+  max-width:clamp(96px, 11vw, 148px);
+  margin-bottom:clamp(20px, 2.2vw, 30px);
+}
+
+.pak-rol{
+  margin:0;
+  font-size:var(--fs-lede); font-weight:300; line-height:1.25;
+  letter-spacing:var(--tr-head); color:var(--ink);
+}
+/* Het aanhalingsteken hangt in de marge, zodat de tekstkolom links
+   recht blijft lopen. Zonder die inspringing staat de eerste regel
+   zichtbaar een half teken naar binnen ten opzichte van de rest. */
+.pak-stem{
+  margin:clamp(12px, 1.4vw, 18px) 0 0;
+  font-size:var(--fs-body-2); font-weight:300; line-height:1.7;
+  color:var(--ink); text-indent:-0.42em; text-wrap:pretty;
+}
+.pak-vak-voet{
+  margin-top:auto;
+  padding-top:clamp(22px, 2.4vw, 32px);
+  border-top:1px solid var(--rule);
+}
+/* De functie staat hierboven als kop; dit is wie dat is. 500 tegenover
+   de 300 daarboven zet ze uit elkaar zonder een tweede kop te maken. */
+.pak-naam{ margin:0; font-size:var(--fs-body); font-weight:500; color:var(--ink); }
+.pak-waarvoor{
+  margin:6px 0 0;
+  font-size:var(--fs-xs); font-weight:300; color:var(--ink);
 }
 
 /* ============================================================
    Contact — crème band
    ------------------------------------------------------------
-   Het formulier zag eruit als een formulier: acht witte doosjes met
-   een rand eromheen en een rij micro-kapitalen erboven. Dat is de
-   standaardopmaak van een browser met een kleurtje eroverheen, en
-   op een pagina die verder uit typografie bestaat valt het er als
-   een ander document in.
+   Ongewijzigd overgenomen uit de vorige versie, en met opzet: dit
+   onderdeel was al herzien en werkt.
+
+   Het formulier zag er ooit uit als een formulier — acht witte doosjes
+   met een rand en een rij micro-kapitalen erboven. Dat is de
+   standaardopmaak van een browser met een kleurtje eroverheen, en op
+   een pagina die verder uit vlakken en typografie bestaat valt het er
+   als een ander document in.
 
    Het is nu een SCHRIJFLIJN en geen doos: alleen een onderrand, de
-   tekst op leesmaat en het label eronder in plaats van erboven.
-   Zonder doos hoeft het veld niet af te steken tegen zijn grond,
-   dus de rand mag weg en blijft alleen de lijn waarop je schrijft.
-   Dat is dezelfde afspraak als .ulink elders op de site: een lijn
-   onder tekst betekent "hier kun je iets".
+   tekst op leesmaat en het label eronder in plaats van erboven. Zonder
+   doos hoeft het veld niet af te steken tegen zijn grond, dus de rand
+   mag weg en blijft alleen de lijn waarop je schrijft. Dat is dezelfde
+   afspraak als .ulink elders op de site: een lijn onder tekst betekent
+   "hier kun je iets".
 
    Deze regels staan met opzet BINNEN .ab-contact. De offerte- en
-   accountpagina's gebruiken hetzelfde .form-grid en horen niet mee
-   te veranderen zolang die niet zelf herzien zijn.
+   accountpagina's gebruiken hetzelfde .form-grid en horen niet mee te
+   veranderen zolang die niet zelf herzien zijn.
 
-   Contrast: de lijn is --control (donkerrood), 14,22:1 op crème,
-   ruim boven de 3:1 die WCAG 1.4.11 voor de rand van een bedienbaar
-   element eist. Bij focus wordt hij 2px — dikte in plaats van
-   kleur, want er is op licht maar één inktkleur (BRANDING.md §2).
+   Contrast: de lijn is --control (donkerrood), 14,22:1 op crème, ruim
+   boven de 3:1 die WCAG 1.4.11 voor de rand van een bedienbaar element
+   eist. Bij focus wordt hij 2px — dikte in plaats van kleur, want er is
+   op licht maar één inktkleur (BRANDING.md §2).
    ============================================================ */
+
+/* Eén klasse voor de gekleurde band. De band loopt over de volle
+   vensterbreedte en de .wrap-wide erbinnen houdt de inhoud op de
+   bladspiegel — dat is het verschil tussen "een sectie met een
+   achtergrondje" en "een vlak waar de pagina op staat". */
+.ab-band{ background:var(--surface); padding:var(--section-y) 0; }
 
 .ab-contact-grid{
   display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.05fr);
@@ -1889,8 +1992,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .ab-contact-intro .h-lg{ margin:0; max-width:16ch; text-wrap:balance; }
 .ab-contact-intro .lede{ margin:clamp(16px, 2vw, 24px) 0 clamp(30px, 3.4vw, 46px); }
 
-/* De adresregels zijn nu links (tel:, mailto:). Ze stonden er als vette
-   tekst bij, en dan is het adres van een bedrijf iets om over te typen
+/* De adresregels zijn links (tel:, mailto:). Ze stonden er als vette
+   tekst bij, en dan is het nummer van een bedrijf iets om over te typen
    in plaats van iets om aan te tikken. */
 .ab-contact-list{ list-style:none; margin:0; padding:0; max-width:46ch; }
 .ab-contact-list li{
@@ -1916,9 +2019,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   color:var(--ink-2); max-width:44ch; margin:0 0 clamp(26px, 3vw, 40px);
 }
 
-/* Geen max-width van 640px: het formulier vult zijn kolom, want de
-   kolom IS al de maat. Een raster van 640px in een kolom van 700
-   laat rechts een strook over die nergens op slaat. */
+/* Geen max-width van 640px: het formulier vult zijn kolom, want de kolom
+   IS al de maat. Een raster van 640px in een kolom van 700 laat rechts
+   een strook over die nergens op slaat. */
 .ab-contact .form-grid{
   max-width:none;
   gap:0 clamp(20px, 2.6vw, 44px);
@@ -1927,8 +2030,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
 /* Label ONDER het veld en niet erboven. Boven het veld is het een
    instructie vooraf en staat er een rij kapitalen tussen elk paar
-   velden in; eronder is het een bijschrift bij wat je net getypt
-   hebt, en loopt de kolom van veld naar veld door. */
+   velden in; eronder is het een bijschrift bij wat je net getypt hebt,
+   en loopt de kolom van veld naar veld door. */
 .ab-contact .form-row{ display:flex; flex-direction:column-reverse; }
 .ab-contact .form-row label{
   margin:8px 0 0;
@@ -1952,9 +2055,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .ab-contact .form-row textarea{ min-height:96px; padding-top:4px; }
 /* De onderrand wordt dikker in plaats van anders van kleur: op licht is
-   er precies één inktkleur die de norm haalt, dus nadruk moet uit
-   dikte komen. De outline van :focus-visible blijft eroverheen staan
-   voor wie met het toetsenbord werkt. */
+   er precies één inktkleur die de norm haalt, dus nadruk moet uit dikte
+   komen. De outline van :focus-visible blijft eroverheen staan voor wie
+   met het toetsenbord werkt. */
 .ab-contact .form-row input:focus,
 .ab-contact .form-row textarea:focus{
   outline:none;
@@ -1983,47 +2086,61 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    ============================================================ */
 
 @media (max-width: 1000px){
-  .ab-story, .ab-social-inner, .ab-contact-grid{
-    grid-template-columns:1fr;
-  }
-  .ab-open h1{ max-width:none; }
-  .ab-social-media{
+  /* Het etiket en de brief pakken de volle bladspiegel: een vlak van
+     78% naast een strook papier van 22% is op deze breedte geen
+     compositie meer maar een restje. Het papier blijft eronder liggen
+     boven en onder het etiket, en dat is genoeg om het als papier te
+     lezen. */
+  .pak-etiket{ max-width:none; }
+  .pak-brief{ max-width:none; margin-left:0; }
+
+  /* Twaalf kolommen met vaste plaatsing wordt hier onleesbaar smal.
+     Twee kolommen, en de verspringing komt van de even stappen — het
+     ongelijke ritme blijft, de kolom blijft leesbaar. De expliciete
+     waarden overschrijven de var()-plaatsing hierboven. */
+  .pak-loop{ grid-template-columns:repeat(2, 1fr); }
+  .pak-stap{ grid-column:auto / span 1; grid-row:auto; margin-top:0; }
+  .pak-stap:nth-child(even){ margin-top:clamp(30px, 6vw, 64px); }
+  .pak-stap-breed{ grid-column:1 / span 2; }
+  .pak-stap-breed .pak-beeld{ aspect-ratio:16/9; }
+
+  .pak-axedis-inner{ grid-template-columns:1fr; }
+  .pak-axedis-media{
     margin-inline:calc(-1 * var(--gutter));
     order:-1;
   }
-  .ab-social-text{ max-width:none; }
-  .ab-social-media .ph{ aspect-ratio:4/3; }
+
+  /* Twee vakjes naast elkaar. De wand loopt dan tussen kolom 1 en 2, en
+     de twee onderste vakjes krijgen er een wand bovenaan bij — anders
+     zweeft de tweede rij los in de doos. */
+  .pak-vakken{ grid-template-columns:repeat(2, 1fr); }
+  .pak-vak:nth-child(odd){ border-left:none; }
+  .pak-vak:nth-child(n+3){ border-top:1px solid var(--rule); }
+
+  .ab-contact-grid{ grid-template-columns:1fr; }
   .ab-contact-intro .h-lg{ max-width:none; }
   /* Gestapeld is de kolom de volle bladspiegel; een lijst van 46ch laat
      dan rechts een strook over waar niets tegenover staat. */
   .ab-contact-list{ max-width:none; }
-
-  /* Twee kolommen in plaats van drie: de toelichting krijgt de volle
-     breedte onder de titel, want naast elkaar houdt ze hier geen
-     leesbare maat meer over. */
-  .tl-rail, .tl-dot{ left:clamp(56px, 14vw, 90px); }
-  .tl-item{
-    grid-template-columns:clamp(56px, 14vw, 90px) 1fr;
-    gap:6px 20px;
-  }
-  .tl-year{ grid-row:span 2; }
-
-  /* Twee portretten naast elkaar blijven: één per rij maakt er een
-     eindeloze kolom van. */
-  .team-grid{ grid-template-columns:repeat(2, 1fr); gap:28px 16px; }
 }
 
 @media (max-width: 620px){
-  /* Het jaartal gaat BOVEN de tekst en de rail schuift naar de
-     linkerrand. Naast elkaar houdt de tekst op een telefoon nog geen
-     250px over, en "Vandaag" past sowieso niet in een kolom van 56px —
-     dat woord liep dwars over de lijn heen. Gestapeld heeft elke regel
-     de volle breedte en blijft de lijn wat hij is: de vorm van het
-     onderdeel. */
-  .tl-rail, .tl-dot{ left:4px; }
-  .tl-item{ grid-template-columns:1fr; gap:4px; padding-left:30px; }
-  .tl-year{ grid-row:auto; text-align:left; padding-right:0; }
-  .tl-dot{ top:clamp(24px, 4vw, 32px); }
+  /* Eén kolom. Twee verpakkingen naast elkaar houden op een telefoon
+     nog geen 150px over, en dan is de opname geen bewijs meer. */
+  .pak-loop{ grid-template-columns:1fr; gap:clamp(38px, 9vw, 56px); }
+  .pak-stap:nth-child(even){ margin-top:0; }
+  .pak-stap-breed{ grid-column:auto; }
+
+  /* Het zegel schaalt niet mee omlaag met vw: onder ± 64px lopen de
+     dunne verbindingen in de script binnen de badge dicht (§4.2 zet de
+     ondergrens van de badge op 32px, maar de tekst erin is hier het
+     bepalende deel). */
+  .pak-brief{ --zegel:66px; }
+
+  .pak-vakken{ grid-template-columns:1fr; padding:clamp(14px, 4vw, 22px); }
+  .pak-vak{ border-left:none; border-top:1px solid var(--rule); }
+  .pak-vak:first-child{ border-top:none; }
+  .pak-portret{ max-width:120px; }
 }
 /* ============================================================
    Hero (oude, lichte variant — nog in gebruik elders)

@@ -33,7 +33,7 @@ Daarna → <http://localhost:8000>
 | `product.html?id=…` | Productdetail — varianten, minimumafname, offerte-CTA |
 | `offerte.html` | Offertelijst + aanvraagformulier *(vervangt het winkelmandje)* |
 | `account.html` | Login + snel opnieuw aanvragen |
-| `over-ons.html` | Verhaal, sociaal engagement, contact + formulier, nieuwsbrief |
+| `over-ons.html` | Verhaal, tijdlijn in verpakkingen, team, sociaal engagement, contact + formulier |
 | `info.html?p=…` | Voorwaarden / privacy / cookies / printtechnologie |
 
 ## Wat er écht werkt

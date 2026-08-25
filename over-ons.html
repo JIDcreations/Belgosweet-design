@@ -14,257 +14,375 @@
 
 <div id="shell-header"></div>
 
+<!-- ============================================================
+     OVER ONS — "Het pakje"
+     ------------------------------------------------------------
+     De vorige versie van deze pagina was correct en volstrekt
+     inwisselbaar: donkere herofoto met een dunne kop erover, verhaal
+     in twee kolommen, verticale tijdlijn met stippen die zich vult,
+     vier identieke portretvlakken, beeld-links/tekst-rechts, formulier.
+     Dat is niet de "over ons" van Belgosweet, dat is DE "over ons" —
+     dezelfde die elk merk in elke sector op het scherm zet.
+
+     Deze versie vertrekt van wat Belgosweet werkelijk maakt: een pakje.
+     De pagina is opgebouwd uit dezelfde onderdelen als de verpakking en
+     gebruikt daarvoor alleen wat er al in het merk zit:
+
+       inpakpapier  het streepveld (.pattern-band) over de volle breedte,
+                    hier in ROZE op 55% — de variant die BRANDING.md §5 wel
+                    beschrijft maar die nergens in gebruik was. De home
+                    draagt hetzelfde veld in donkerrood op 15%; twee
+                    pagina's, één patroon, een eigen kleur per pagina.
+       etiket       het crème volvlak erop. §5 leest dat zelf al zo:
+                    "de banen stoppen gewoon, wat leest als een etiket op
+                    inpakpapier". Dat is letterlijk de kop van deze pagina.
+       zegel        de ronde badge (Logo-Icon_pink.svg) half over de rand
+                    van de brief — het enige bestand van de badgereeks dat
+                    schone vectoren bevat (6 KB tegen 114-200 KB, §4.4).
+       de brief     de kaart die in het pakje zit: het verhaal, ondertekend
+                    met het woordmerk. Een script-woordmerk ís een
+                    handtekening; dit is de enige plek op de site waar het
+                    ook als handtekening gebruikt wordt.
+       de inhoud    de tijdlijn is geen rail met stippen meer maar zes
+                    échte verpakkingen — wat er in dat jaar in het pakje
+                    kwam. Beeld in plaats van een grafisch lijntje.
+       de doos      het team staat in de vakverdeling van een pralinedoos:
+                    één crème vlak, vier vakjes, roze scheidingen van 1px.
+
+     Wat er ten opzichte van de vorige versie uit ging:
+
+     • De donkere heroopname met cacaopoeder. De opname is een egale
+       bruine textuur; onder een sluier van 35% bleef er van de korrel
+       niets over en las de hero als een effen donkerrood vlak met dunne
+       letters erop. Een foto die je niet kunt herkennen is geen foto.
+     • De verticale tijdlijn met de meevullende lijn en de stippen. Het
+       vakwerk was in orde, maar het is hét herkenningsteken van de
+       sjabloonpagina. De inhoud (1998 → vandaag) is gebleven en heeft er
+       zes verpakkingsopnames bij gekregen.
+     • De vier portretvlakken van 3:4. Er zijn nog geen portretten, en
+       vier lege torens van 400px hoog zijn niet "het menselijke stuk" —
+       ze zijn vier gaten. Elke persoon staat er nu met een regel in de
+       eigen stem; het portret is teruggebracht tot een vierkantje.
+     • De uniforme opklaring op elk blok. Alles kwam met dezelfde
+       beweging binnen; dat is de reflex, niet de bedoeling. Elk
+       onderdeel heeft nu de beweging die bij dat onderdeel hoort.
+
+     Ritme van de vlakken (nooit twee gekleurde na elkaar):
+     streepveld → wit (tijdlijn) → donkergroen (Axedis) → wit (team)
+     → crème (contact).
+     ============================================================ -->
+
 <main>
 
-  <!-- ============ HERO — volvlak beeld ============
-       De opname is cacaopoeder over de volle sectie. Bewust geen product:
-       op de pagina die over de mensen achter Belgosweet gaat is een doos
-       met een strik decoratie, en dat was precies wat er aan de vorige
-       hero mankeerde. Cacao is de grondstof waar het in 1998 mee begon.
+  <!-- ============ HET PAKJE — streepveld, etiket en brief ============
+       Eén sectie, drie lagen. Het veld draagt het etiket; de brief
+       schuift met een negatieve marge terug omhoog het veld in, zodat de
+       kaart onder het papier uit steekt in plaats van eronder te staan.
 
-       Het is bovendien een textuur en geen tafereel — geen onderwerp dat
-       door de kop wordt afgesneden, geen crop die op een andere schermmaat
-       scheef valt. Dat is wat een beeld geschikt maakt als ondergrond voor
-       tekst. De sluier eroverheen staat in styles.css, met de meting.
+       De maat van het veld komt uit de INHOUD (de padding van .pak-veld)
+       en niet uit de vensterhoogte. Een hero op 80svh is een hero die op
+       elke schermmaat een andere verhouding heeft; dit etiket houdt
+       overal dezelfde marge rond de kop.
 
-       aria-hidden op het beeldvlak en een leeg alt: de opname zegt niets
-       wat de kop er niet al zegt, dus voor een schermlezer is ze ruis.
+       Er staat geen tekst rechtstreeks op het patroon — BRANDING.md §5.
+       Alles ligt op crème. -->
+  <section class="pak-open">
 
-       De parallax zit op de <img> en niet op het vlak: het vlak bepaalt
-       de maat en mag dus niet bewegen. Het beeld staat overhoog in zijn
-       doos (zie .ab-open-media img), zodat de beweging nooit een rand
-       kan tonen.
+    <div class="pak-veld">
+      <!-- Het papier zelf. Aparte laag omdat app.js hem bij het scrollen
+           zijdelings verschuift: verticale banen die verticaal bewegen
+           zie je niet, zijdelings wél. Het papier schuift, het etiket
+           blijft staan — dat is het hele gebaar. 10% overbreedte aan
+           allebei de kanten zodat er nooit een rand in beeld komt. -->
+      <div class="pak-papier pattern-band" data-parallax aria-hidden="true"></div>
 
-       De .eyebrow staat er als paginabepaling — wie, waar, sinds wanneer —
-       en niet als sectiekop. Het is de enige op de pagina; de home heeft
-       er nul. -->
-  <section class="ab-open">
-
-    <div class="ab-open-media" aria-hidden="true">
-      <img data-parallax src="assets/img/sfeer-cacaopoeder.jpg"
-           alt="" loading="eager" decoding="async">
-    </div>
-
-    <div class="wrap-wide ab-open-inner">
-      <p class="eyebrow reveal" style="--d:80ms">Belgosweet — Waver, sinds 1998</p>
-      <h1 class="reveal" style="--d:160ms">Wij weten wat er in het pakje moet.</h1>
-      <p class="ab-open-sub reveal" style="--d:260ms">
-        Zevenentwintig jaar Belgische chocolade, koekjes en snoep — met
-        het logo van iemand anders erop.
-      </p>
-    </div>
-
-  </section>
-
-  <!-- ============ VERHAAL — crème band ============
-       Geen kop. Er stond er een ("Van één bestelwagen naar vijfhonderd
-       bedrijven") en die is weg: een groeicijfer als kop belooft een
-       succesverhaal in plaats van een bedrijf, en dezelfde bestelwagen
-       staat een sectie lager in de tijdlijn. De H1 in de hero hierboven
-       is de kop; dit is de alinea eronder. -->
-  <section class="ab-band">
-    <div class="wrap-wide ab-story">
-
-      <div data-reveal>
-        <p class="lede">
-          Belgosweet begon in 1998 in Waver, met twee mensen en een handvol
-          Belgische chocolatiers. We kenden de makers bij naam, en dat is
-          nooit veranderd.
-        </p>
-        <!-- De ondertekening sluit de opening van het verhaal af. Zelfde
-             streepje-en-kapitalen als .eyebrow, alleen omgekeerd gebruikt:
-             niet als aankondiging vooraf maar als handtekening achteraf. -->
-        <p class="ab-sign">Het team van Belgosweet, Waver</p>
+      <div class="wrap-wide">
+        <div class="pak-etiket">
+          <!-- De regel bovenaan is geen sectiekopje maar de bovenste regel
+               van een etiket: wat erin zit, waar het vandaan komt, sinds
+               wanneer. Het is de enige op de pagina. -->
+          <p class="pak-etiket-regel reveal" style="--d:120ms">
+            Belgosweet <span aria-hidden="true">·</span> Waver <span aria-hidden="true">·</span> sinds 1998
+          </p>
+          <h1 class="pak-kop reveal" style="--d:220ms">Wij weten wat er in het pakje moet.</h1>
+          <p class="pak-etiket-sub reveal" style="--d:340ms">
+            Zevenentwintig jaar Belgische chocolade, koekjes en snoep —
+            met het logo van iemand anders erop.
+          </p>
+        </div>
       </div>
+    </div>
 
-      <div class="ab-story-col" data-reveal style="--rd:120ms">
+    <div class="wrap-wide">
+      <div class="pak-brief reveal" style="--d:480ms">
+        <!-- Het zegel sluit de kaart aan het papier. Rond, roze, met het
+             woordmerk erin: het is de badge uit §4.1 op de plek waar een
+             zegel hoort te zitten — over de rand heen, niet ernaast.
+             Niet geroteerd en niet herkleurd (§4.3). -->
+        <img class="pak-zegel" src="assets/logo/Logo-Icon_pink.svg" alt="" aria-hidden="true">
+
+        <p class="pak-brief-lede">
+          In 1998 begonnen we met twee mensen, één bestelwagen en een
+          handvol Belgische chocolatiers. We kenden de makers bij naam.
+          Dat is nooit veranderd.
+        </p>
         <p>
           Wat toen doorverkoop was, is uitgegroeid tot meer dan
-          honderdvijftig artikelen — van pralines tot adventskalenders,
-          allemaal bestemd voor bedrijven die iets weggeven en willen dat
-          het klopt.
+          honderdvijftig artikelen: van pralines tot adventskalenders.
+          Allemaal voor bedrijven die iets weggeven en willen dat het
+          klopt: het juiste moment, de juiste hoeveelheid, en een logo
+          dat erop gedrukt staat in plaats van erover geplakt.
         </p>
         <p>
-          Wat niet veranderde: elke aanvraag wordt door één persoon
-          opgevolgd, van offerte tot levering. Dat is de reden dat klanten
-          van het eerste uur er vandaag nog zijn.
+          Wat níét veranderde: elke aanvraag wordt door één persoon
+          opgevolgd, van offerte tot levering. Geen ticketnummer, geen
+          doorverbinden. Dat is de reden dat klanten van het eerste uur
+          er vandaag nog zijn.
         </p>
-      </div>
 
+        <!-- Ondertekend met het woordmerk. Het logo is handgetekende
+             letters (§3.4) — hier staat het dus niet als merkteken maar
+             als wat het van huis uit is: een handtekening onder een
+             brief. 168px breed, ruim boven de 120px van §4.2. -->
+        <div class="pak-onder">
+          <img class="pak-handtekening" src="assets/logo/Logo-Dark.svg"
+               alt="Belgosweet" width="294" height="63">
+          <p class="pak-onder-regel">Het team van Belgosweet, Waver</p>
+        </div>
+      </div>
     </div>
+
   </section>
 
-  <!-- ============ TIJDLIJN ============
-       De verticale lijn vult zich mee met de scrollpositie: de vorm van
-       het onderdeel ís de boodschap, dus daar mag de beweging zitten.
+  <!-- ============ DE INHOUD — wat er per jaar in het pakje kwam ============
+       De tijdlijn als zes verpakkingen in plaats van zes stippen op een
+       lijn. Elke opname staat op crème met object-fit:contain (.ph.contain),
+       dus het object staat vrij en niet in een fotokadertje.
 
-       Deze sectie draagt sinds deze herziening ook de cijfers. Er stond
-       hierboven een register op de patroonband — 27 / 500+ / 16 / één,
-       overgenomen van de bewijsband op de home — en dat zei niets wat de
-       laatste regel hier niet beter zegt, mét de jaartallen erbij. Twee keer
-       dezelfde cijfers op één pagina maakt ze allebei zwakker. -->
-  <section class="ab-timeline">
+       Het raster is bewust ONgelijk: twaalf kolommen, zes stappen van
+       verschillende breedte, elk met een eigen verticale verspringing.
+       Zes gelijke tegels naast elkaar zouden precies het kaartraster
+       opleveren dat deze herziening kwijt wilde; een ongelijke loop leest
+       als een rij dozen op een plank en niet als een productoverzicht.
+
+       De jaartallen dragen de rangorde: 41-66px op gewicht 300 zijn het
+       enige grote lichte element van de pagina. Geen kleurverschil nodig
+       (er is er ook geen, colors.css §2). -->
+  <section class="pak-lijn">
     <div class="wrap-wide">
 
       <div class="section-lead" data-reveal>
-        <h2 class="h-lg">Wat we sindsdien deden</h2>
+        <h2 class="h-lg">Wat er sindsdien in het pakje kwam</h2>
       </div>
 
-      <div class="tl" data-timeline>
-        <div class="tl-rail" aria-hidden="true"><span data-tl-fill></span></div>
+      <div class="pak-loop">
 
-        <div class="tl-item" data-reveal>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <div class="tl-year">1998</div>
-          <h3 class="tl-title">Opgericht in Waver</h3>
-          <p class="tl-text">Twee mensen, één bestelwagen en een handvol Belgische chocolatiers.</p>
-        </div>
+        <article class="pak-stap" data-reveal style="--c:1; --s:4; --r:1;">
+          <p class="pak-jaar">1998</p>
+          <div class="ph has-img pak-beeld" style="--ar:4/5">
+            <img src="assets/img/pralines-blik.jpg"
+                 alt="Klein wit doosje met het woordmerk als patroon, open, met losse pralines ernaast"
+                 loading="lazy" decoding="async">
+          </div>
+          <h3 class="pak-stap-kop">Het eerste doosje</h3>
+          <p class="pak-stap-tekst">Twee mensen, één bestelwagen en een handvol Belgische chocolatiers.</p>
+        </article>
 
-        <div class="tl-item" data-reveal>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <div class="tl-year">2003</div>
-          <h3 class="tl-title">Eerste vaste merkpartners</h3>
-          <p class="tl-text">Leonidas, Jules Destrooper en Galler komen in het vaste assortiment.</p>
-        </div>
+        <article class="pak-stap" data-reveal style="--c:7; --s:5; --r:1; --z:clamp(34px, 5vw, 88px);">
+          <p class="pak-jaar">2003</p>
+          <div class="ph has-img pak-beeld" style="--ar:5/4">
+            <img src="assets/img/verpakking-repen.jpg"
+                 alt="Bordeaux blik met gestreepte chocoladerepen, het deksel ernaast met het woordmerk erop"
+                 loading="lazy" decoding="async">
+          </div>
+          <h3 class="pak-stap-kop">Vaste merken in huis</h3>
+          <p class="pak-stap-tekst">Leonidas, Jules Destrooper en Galler komen in het vaste assortiment.</p>
+        </article>
 
-        <div class="tl-item" data-reveal>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <div class="tl-year">2009</div>
-          <h3 class="tl-title">Personalisatie met eigen logo</h3>
-          <p class="tl-text">Van sleeve tot volledige doosbedrukking — het verschil met een sticker erover.</p>
-        </div>
+        <article class="pak-stap" data-reveal style="--c:2; --s:5; --r:2;">
+          <p class="pak-jaar">2009</p>
+          <div class="ph has-img pak-beeld" style="--ar:1/1">
+            <img src="assets/img/verpakking-doos-wit.jpg"
+                 alt="Blik met pralines, het deksel in donkerrood met het woordmerk erop gedrukt"
+                 loading="lazy" decoding="async">
+          </div>
+          <h3 class="pak-stap-kop">Het logo op het deksel</h3>
+          <p class="pak-stap-tekst">Van sleeve tot volledige doosbedrukking. Het verschil met een sticker erover.</p>
+        </article>
 
-        <div class="tl-item" data-reveal>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <div class="tl-year">2014</div>
-          <h3 class="tl-title">Samenwerking met Axedis</h3>
-          <p class="tl-text">Verpakken en assembleren gebeurt sindsdien samen met een sociale inschakelingsonderneming.</p>
-        </div>
+        <article class="pak-stap" data-reveal style="--c:9; --s:4; --r:2; --z:clamp(40px, 6vw, 104px);">
+          <p class="pak-jaar">2014</p>
+          <div class="ph has-img pak-beeld" style="--ar:4/5">
+            <img src="assets/img/geschenk-lint.jpg"
+                 alt="Gestreepte geschenkdoos met een met de hand gestrikt lint, erboven het open assortiment pralines"
+                 loading="lazy" decoding="async">
+          </div>
+          <h3 class="pak-stap-kop">Met de hand gestrikt</h3>
+          <p class="pak-stap-tekst">Verpakken en assembleren gebeurt sindsdien samen met Axedis.</p>
+        </article>
 
-        <div class="tl-item" data-reveal>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <div class="tl-year">2019</div>
-          <h3 class="tl-title">Adventskalenders als specialiteit</h3>
-          <p class="tl-text">De eindejaarsperiode groeit uit tot het drukste kwartaal van het jaar.</p>
-        </div>
+        <article class="pak-stap" data-reveal style="--c:1; --s:4; --r:3;">
+          <p class="pak-jaar">2019</p>
+          <div class="ph has-img pak-beeld" style="--ar:4/5">
+            <img src="assets/img/verpakking-koker.jpg"
+                 alt="Hoge gestreepte koker met het woordmerk, gevuld met repen"
+                 loading="lazy" decoding="async">
+          </div>
+          <h3 class="pak-stap-kop">Eindejaar wordt het drukste kwartaal</h3>
+          <p class="pak-stap-tekst">Adventskalenders groeien uit tot de specialiteit van het huis.</p>
+        </article>
 
-        <div class="tl-item" data-reveal>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <div class="tl-year">Vandaag</div>
-          <h3 class="tl-title">Meer dan 500 bedrijven</h3>
-          <p class="tl-text">Zestien categorieën, zeven merken, en nog altijd één aanspreekpunt per klant.</p>
+        <article class="pak-stap pak-stap-breed" data-reveal style="--c:6; --s:7; --r:3; --z:clamp(26px, 4vw, 70px);">
+          <p class="pak-jaar">Vandaag</p>
+          <div class="ph has-img pak-beeld" style="--ar:16/9">
+            <img src="assets/img/sfeer-geschenkdozen.jpg"
+                 alt="Blikken, kokers, repen en dozen uit het huisassortiment, elk bedrukt met het Belgosweet-woordmerk"
+                 loading="lazy" decoding="async">
+          </div>
+          <h3 class="pak-stap-kop">Meer dan 500 bedrijven</h3>
+          <p class="pak-stap-tekst">Zestien categorieën, zeven merken, en nog altijd één aanspreekpunt per klant.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AXEDIS — donkergroen ============
+       De footer linkt naar over-ons.html#engagement; het anker staat op
+       de sectie zelf.
+
+       Dit is het enige donkere vlak van de pagina, en het staat hier met
+       opzet: het zwaarste onderwerp krijgt het zwaarste vlak. Op
+       donkergroen bestaat als enige de tekstrangorde uit twee kleuren
+       (crème 14,83:1 primair, salie 8,45:1 secundair) — colors.css §5.
+       Overal elders op licht is er maar één inktkleur.
+
+       De opname staat op een lichte grond, dus op donkergroen wordt het
+       vanzelf een oplichtend crème vlak: dezelfde etiket-op-papier vorm
+       als de kop bovenaan, alleen omgekeerd. -->
+  <section class="pak-axedis" id="engagement">
+    <div class="wrap-wide pak-axedis-inner">
+
+      <div class="pak-axedis-media" data-reveal>
+        <div class="ph has-img pak-axedis-beeld">
+          <img src="assets/img/sfeer-geschenkdozen-2.jpg"
+               alt="Afgewerkte geschenkdozen, blikken en kokers naast elkaar klaargezet, elk gestrikt en bedrukt"
+               loading="lazy" decoding="async">
         </div>
+      </div>
+
+      <div class="pak-axedis-tekst" data-reveal style="--rd:140ms">
+        <h2 class="h-lg">Samen met Axedis</h2>
+        <p class="pak-axedis-lede">
+          Het verpakken en assembleren van onze geschenken gebeurt in
+          samenwerking met een sociale inschakelingsonderneming.
+        </p>
+        <p class="pak-axedis-body">
+          Dat loopt al meer dan tien jaar. Het is geen project en geen
+          proefopstelling: het is hoe elke doos die hier vertrekt in
+          elkaar gezet wordt. Het is ook een van de weinige dingen waar
+          we bewust nooit op besparen.
+        </p>
       </div>
 
     </div>
   </section>
 
-  <!-- ============ TEAM — roze band ============
-       De hele site belooft "één aanspreekpunt". Dan hoor je hier ook te
-       zien wie dat is, en waarvoor je bij wie moet zijn.
+  <!-- ============ HET TEAM — de vakverdeling van een pralinedoos ============
+       Eén crème vlak, vier vakjes, roze scheidingen van 1px. Dat is de
+       binnenkant van de doos die de rest van deze pagina inpakt, en het
+       is meteen het antwoord op het probleem dat de vorige versie niet
+       oploste: er zijn nog geen portretten.
 
-       Het roze vlak doet twee dingen tegelijk. Het is het zachte moment
-       van de pagina — dit is het menselijke stuk, en dat mag er anders
-       uitzien dan de rest. En het lost het beeldprobleem op: er zijn nog
-       geen portretten, dus de vier vlakken staan leeg met het merkteken
-       erin. Op wit zijn dat vier lege crème kaders; op roze zijn het vier
-       crème vlakken die eruitzien alsof ze zo bedoeld zijn. -->
-  <section class="ab-band ab-team">
+       Vier lege vlakken van 3:4 verkopen die leegte als ontwerp. Hier is
+       het portret een vierkantje van hooguit 150px — roze vlak met het
+       merkteken in crème, exact zoals BRANDING.md §6 het lege beeldvlak
+       voorschrijft — en draagt de REGEL de persoon. Iemand die zegt
+       "bel me in september voor december" is aanwezig; een leeg kader
+       met "portret" erin is dat niet.
+
+       De onderste regel van elk vakje staat met margin-top:auto tegen de
+       bodem, zodat de vier namen op één lijn eindigen ook als de citaten
+       verschillend lang zijn. Dat is wat een vakverdeling doet.
+
+       LET OP — namen, portretten en citaten zijn nog niet aangeleverd.
+       De vier regels hieronder zijn geschreven voor het prototype, in de
+       toon die de rest van de site aanhoudt, zodat de vorm getest kan
+       worden. Ze worden vervangen door de echte woorden van de vier. -->
+  <section class="pak-team">
     <div class="wrap-wide">
 
       <div class="section-lead" data-reveal>
         <div>
           <h2 class="h-lg">Wie je aan de lijn krijgt</h2>
           <p class="lede">
-            Elke aanvraag wordt door één persoon opgevolgd, van offerte tot
-            levering. Dit zijn ze.
+            Elke aanvraag wordt door één persoon opgevolgd, van offerte
+            tot levering. Dit zijn ze, en dit is waarvoor je bij wie moet
+            zijn.
           </p>
         </div>
         <a class="ulink" href="#contact">Rechtstreeks contact</a>
       </div>
 
-      <div class="team-grid">
-        <div class="team-member" data-reveal>
-          <div class="ph">portret</div>
-          <div class="team-name">Naam Achternaam</div>
-          <div class="team-role">Zaakvoerder</div>
-          <div class="team-focus">Inkoop en merkpartners</div>
+      <div class="pak-vakken">
+
+        <div class="pak-vak" data-reveal>
+          <div class="ph pak-portret">portret</div>
+          <p class="pak-rol">Zaakvoerder</p>
+          <p class="pak-stem">“Ik ken elke chocolatier in dit assortiment persoonlijk. Daarom staat er niets in dat ik zelf niet zou weggeven.”</p>
+          <div class="pak-vak-voet">
+            <p class="pak-naam">Naam Achternaam</p>
+            <p class="pak-waarvoor">Inkoop en merkpartners</p>
+          </div>
         </div>
 
-        <div class="team-member" data-reveal style="--rd:80ms">
-          <div class="ph">portret</div>
-          <div class="team-name">Naam Achternaam</div>
-          <div class="team-role">Accountmanager</div>
-          <div class="team-focus">Offertes en eindejaarsdossiers</div>
+        <div class="pak-vak" data-reveal style="--rd:90ms">
+          <div class="ph pak-portret">portret</div>
+          <p class="pak-rol">Accountmanager</p>
+          <p class="pak-stem">“Bel me in september voor december. In november kan het nog, maar dan kies je uit minder.”</p>
+          <div class="pak-vak-voet">
+            <p class="pak-naam">Naam Achternaam</p>
+            <p class="pak-waarvoor">Offertes en eindejaarsdossiers</p>
+          </div>
         </div>
 
-        <div class="team-member" data-reveal style="--rd:160ms">
-          <div class="ph">portret</div>
-          <div class="team-name">Naam Achternaam</div>
-          <div class="team-role">Personalisatie</div>
-          <div class="team-focus">Drukwerk, proefdrukken en stalen</div>
+        <div class="pak-vak" data-reveal style="--rd:180ms">
+          <div class="ph pak-portret">portret</div>
+          <p class="pak-rol">Personalisatie</p>
+          <p class="pak-stem">“Stuur je logo door, dan krijg je een proefdruk voor je beslist. Op papier, niet op scherm.”</p>
+          <div class="pak-vak-voet">
+            <p class="pak-naam">Naam Achternaam</p>
+            <p class="pak-waarvoor">Drukwerk, proefdrukken en stalen</p>
+          </div>
         </div>
 
-        <div class="team-member" data-reveal style="--rd:240ms">
-          <div class="ph">portret</div>
-          <div class="team-name">Naam Achternaam</div>
-          <div class="team-role">Logistiek</div>
-          <div class="team-focus">Planning en levering</div>
+        <div class="pak-vak" data-reveal style="--rd:270ms">
+          <div class="ph pak-portret">portret</div>
+          <p class="pak-rol">Logistiek</p>
+          <p class="pak-stem">“Vijfhonderd dozen op één adres of vijf op honderd adressen — zeg het erbij, dan plan ik erop.”</p>
+          <div class="pak-vak-voet">
+            <p class="pak-naam">Naam Achternaam</p>
+            <p class="pak-waarvoor">Planning en levering</p>
+          </div>
         </div>
+
       </div>
-
-    </div>
-  </section>
-
-  <!-- ============ SOCIAAL ENGAGEMENT ============
-       De footer linkt naar over-ons.html#engagement; het anker staat op
-       de sectie zelf.
-
-       Dit is de enige opname op de pagina, en de enige die iets bewijst:
-       dit is wat er uit de assemblage komt. Nog geen opname van de
-       werkplaats aangeleverd; het alt-attribuut zegt wat er te zien is en
-       belooft niets meer dan dat. -->
-  <section class="ab-social" id="engagement">
-    <div class="wrap-wide ab-social-inner">
-
-      <div class="ab-social-media" data-reveal>
-        <div class="ph has-img">
-          <img src="assets/img/sfeer-geschenkdozen.jpg"
-               alt="Blikken, kokers, repen en dozen uit het huisassortiment, elk bedrukt met het Belgosweet-woordmerk"
-               loading="lazy" decoding="async">
-        </div>
-      </div>
-
-      <div class="ab-social-text" data-reveal style="--rd:120ms">
-        <h2 class="h-lg">Samen met Axedis</h2>
-        <p class="lede">
-          Het verpakken en assembleren van onze geschenken gebeurt in
-          samenwerking met een sociale inschakelingsonderneming.
-        </p>
-        <p class="ab-social-body">
-          Dat loopt al meer dan tien jaar. Het is geen project en geen
-          proefopstelling: het is hoe elke doos die hier vertrekt in elkaar
-          gezet wordt. Het is ook een van de weinige dingen waar we bewust
-          nooit op besparen.
-        </p>
-      </div>
-
     </div>
   </section>
 
   <!-- ============ CONTACT — crème band ============
-       Het formulier zag eruit als een formulier: acht witte doosjes met een
-       rand eromheen en een rij micro-kapitalen erboven — de standaardopmaak
-       van een browser met een kleurtje eroverheen. Op een pagina die verder
-       uit typografie bestaat viel dat er als een ander document in.
+       Ongewijzigd overgenomen uit de vorige versie, en met opzet: dit
+       onderdeel was al herzien en werkt.
 
-       Het is nu een schrijflijn en geen doos: alleen een onderrand, de tekst
-       op leesmaat, en het label ONDER het veld als bijschrift in plaats van
+       Het formulier zag er ooit uit als een formulier — acht witte
+       doosjes met een rand en een rij micro-kapitalen erboven. Het is nu
+       een schrijflijn en geen doos: alleen een onderrand, de tekst op
+       leesmaat, en het label ONDER het veld als bijschrift in plaats van
        erboven als instructie. Zie de toelichting in styles.css bij
        .ab-contact .form-row.
 
-       De adresregels zijn links geworden (tel:, mailto:). Ze stonden er als
-       vette tekst bij, en dan is het nummer van een bedrijf iets om over te
+       De adresregels zijn links (tel:, mailto:). Ze stonden er als vette
+       tekst bij, en dan is het nummer van een bedrijf iets om over te
        typen in plaats van iets om aan te tikken. -->
   <section class="ab-band ab-contact" id="contact">
     <div class="wrap-wide ab-contact-grid">

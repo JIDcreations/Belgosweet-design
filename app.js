@@ -1562,7 +1562,10 @@ ${p.variants.map((v, i) => `
 
     /* --- Opklaren bij in beeld komen ---
        Valt de observer weg, dan wordt alles meteen getoond. Een reveal
-       die niet afvuurt mag nooit inhoud verbergen. */
+       die niet afvuurt mag nooit inhoud verbergen. Wat de onderdelen
+       dóén bij het opklaren staat in styles.css en verschilt per soort:
+       een tijdlijnstap, een portretvakje en het Axedisbeeld leggen elk
+       een andere weg af. Dit stuk zet alleen het sein. */
     if (stil || !("IntersectionObserver" in window)) {
       reveals.forEach((el) => el.classList.add("in"));
     } else {
@@ -1581,39 +1584,37 @@ ${p.variants.map((v, i) => `
 
     if (stil) return;
 
-    /* --- Parallax op het portret + tijdlijn die zich vult ---
-       Eén scroll-handler voor beide, via requestAnimationFrame. */
-    const media = $("[data-parallax]");
-    const tl = $("[data-timeline]");
-    const fill = $("[data-tl-fill]");
-    const items = $$(".tl-item");
-    if (!media && !tl) return;
+    /* --- Het papier schuift onder het etiket door ---
+       De banen van het streepveld staan verticaal. Een verticale
+       parallax zou je daar dus NIET zien — een verticaal streeppatroon
+       dat omhoog schuift ziet er identiek uit. Zijdelings wél, en dat
+       is bovendien de juiste beweging: een vel dat onder een etiket
+       doorschuift, niet een foto die achterblijft.
 
+       Het papier ligt 12% breder dan zijn doos (zie .pak-papier), dus
+       de uitslag van ± 34px kan er nooit een rand in trekken. De maat
+       is met opzet klein: het veld mag bewegen, het mag niet opvallen.
+
+       Geen transition op de transform — die wordt hier per frame gezet,
+       en een overgang van .8s eroverheen maakt van een parallax een
+       slepende vertraging. */
+    const papier = $("[data-parallax]");
+    if (!papier) return;
+
+    const veld = papier.parentElement;
     let ticking = false;
+
     const update = () => {
       ticking = false;
       const vh = window.innerHeight;
+      const r = veld.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
 
-      if (media) {
-        const hero = media.parentElement.getBoundingClientRect();
-        if (hero.bottom > 0 && hero.top < vh) {
-          // beeld beweegt trager dan de pagina; de bak is 12% overhoog
-          // gezet zodat er nooit een rand in beeld komt
-          media.style.transform = `translate3d(0, ${(-hero.top * 0.14).toFixed(1)}px, 0)`;
-        }
-      }
-
-      if (tl && fill) {
-        const r = tl.getBoundingClientRect();
-        const anker = vh * 0.55;                       // meetlijn iets onder het midden
-        const done = Math.min(1, Math.max(0, (anker - r.top) / r.height));
-        fill.style.height = (done * 100).toFixed(2) + "%";
-        items.forEach((it) => {
-          const d = it.querySelector(".tl-dot");
-          if (!d) return;
-          it.classList.toggle("passed", d.getBoundingClientRect().top < anker);
-        });
-      }
+      /* -1 helemaal onderin beeld, +1 helemaal bovenin: de verschuiving
+         loopt dus door nul heen ergens in het midden van de sectie, en
+         niet pas als je hem uit beeld scrollt. */
+      const t = 1 - 2 * ((r.top + r.height / 2) / (vh + r.height));
+      papier.style.transform = `translate3d(${(t * 34).toFixed(1)}px, 0, 0)`;
     };
 
     const onScroll = () => {
