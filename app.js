@@ -1631,11 +1631,41 @@ ${p.variants.map((v, i) => `
      Boot
      ============================================================ */
 
+  /* Een ankersprong bij het LADEN van een pagina komt niet aan. De footer
+     linkt vanaf elke pagina naar over-ons.html#contact en #engagement, en
+     die landden allemaal bovenaan.
+
+     Twee oorzaken tegelijk: html staat op scroll-behavior:smooth, dus de
+     browser animeert de sprong in plaats van hem te zetten, en ondertussen
+     schuift de inhoud nog omdat de beeldvlakken hun hoogte pas krijgen als
+     de foto binnen is. Die animatie wordt dan afgebroken en de pagina
+     blijft op 0 staan.
+
+     Daarom zetten we de sprong zelf, na het laden van de shell en met de
+     vloeiende beweging tijdelijk uit. scrollIntoView respecteert
+     scroll-margin-top, dus de sectie landt onder de sticky header en niet
+     erachter. Een sprong binnen dezelfde pagina (op een link klikken)
+     blijft gewoon vloeiend — dit raakt alleen het moment van laden. */
+  function jumpToHash() {
+    if (!location.hash || location.hash.length < 2) return;
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (!target) return;
+    const root = document.documentElement;
+    const was = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    target.scrollIntoView();
+    root.style.scrollBehavior = was;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     mountShell();
     const page = document.body.dataset.page;
     if (pages[page]) pages[page]();
     quote.sync();
+    jumpToHash();
+    // Nog één keer als alle beeldvlakken hun hoogte hebben: tot dat moment
+    // kan de sectie nog een paar honderd pixel verschuiven.
+    window.addEventListener("load", jumpToHash, { once: true });
   });
 
   return { quote, recent, productGrid, productCard, esc };

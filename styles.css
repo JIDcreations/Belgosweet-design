@@ -322,9 +322,12 @@ p:last-child{ margin-bottom:0; }
   gap:clamp(20px, 2.4vw, 44px);
   padding:clamp(22px, 2.4vw, 34px) 0 clamp(24px, 2.6vw, 36px);
 }
+/* Geen lijn onder de kolomkop. Vier kapitalenkoppen naast elkaar zijn al
+   vier keer herkenbaar als kop; de lijn eronder maakte er vier streepjes
+   bij in een paneel dat toch al vol staat. Het verschil zit in de ruimte
+   eronder, niet in een streep. */
 .mega-col-title{
-  display:block; padding-bottom:12px; margin-bottom:6px;
-  border-bottom:1px solid var(--rule);
+  display:block; padding-bottom:14px; margin-bottom:4px;
   font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; color:var(--ink);
 }
@@ -339,8 +342,7 @@ p:last-child{ margin-bottom:0; }
 .mega-foot{
   display:flex; justify-content:space-between; align-items:center;
   gap:20px; flex-wrap:wrap;
-  border-top:1px solid var(--rule);
-  padding:16px 0 clamp(26px, 2.8vw, 38px);
+  padding:26px 0 clamp(26px, 2.8vw, 38px);
   font-size:var(--fs-xs); color:var(--ink-3);
 }
 
@@ -896,9 +898,13 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .cc-slide:hover .ph,
 .cc-slide:focus-visible .ph{ transform:scale(1.045); }
+/* Geen lijn tussen beeld en bijschrift. De onderrand van de foto ís de
+   scheiding; een haarlijn een centimeter daaronder herhaalt alleen wat
+   het beeld al doet, en over een rij van acht slides worden dat acht
+   streepjes onder elkaar. */
 .cc-body{
   display:flex; justify-content:space-between; align-items:baseline; gap:12px;
-  padding-top:12px; margin-top:12px; border-top:1px solid var(--rule);
+  padding-top:14px; margin-top:0;
 }
 .cc-name{
   font-size:var(--fs-body); color:var(--ink);
@@ -957,8 +963,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* De deadline op één regel: bij seizoensgebonden gifting is niet het
    product het nieuws maar wanneer je moet beslissen. */
 .season-facts{
-  display:flex; flex-wrap:wrap; gap:6px 22px; margin:22px 0 0; padding:16px 0 0;
-  border-top:2px solid var(--accent);
+  display:flex; flex-wrap:wrap; gap:6px 22px; margin:26px 0 0;
   font-size:var(--fs-xs); color:var(--ink-3);
 }
 .season-facts b{ color:var(--ink); font-weight:500; }
@@ -1220,7 +1225,19 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    HOME — merkenband & afsluiter
    ============================================================ */
 
-.brand-band{ background:var(--paper); border-bottom:1px solid var(--rule); }
+/* Geen lijnen in deze band — niet onderaan en niet tussen de cellen.
+
+   BRANDING.md §2.6 beschrijft de merkenband als "wit, roze scheidingen";
+   dit wijkt daarvan af, op verzoek. De reden dat het werkt: zeven
+   merktekens naast elkaar zijn zelf al zeven vormen op een rij, en die
+   lezen als een reeks zonder dat er iets tussen hoeft. Wat de scheiding
+   maakte was nooit de lijn maar de ruimte eromheen — de lijn stond
+   alleen in het midden van die ruimte. De band staat pal onder de
+   donkere hero, en op die overgang is elke extra streep er een te veel.
+
+   Wat je aanwijst lees je af aan het merkteken zelf, niet aan de cel —
+   zie de hover-regel hieronder. */
+.brand-band{ background:var(--paper); }
 .brand-band-inner{
   display:grid; grid-template-columns:repeat(7,1fr);
   align-items:stretch;
@@ -1231,16 +1248,34 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
      Ademt mee met de breedte, zoals de padding daarvoor deed. */
   min-height:clamp(84px, 8vw, 116px);
   padding:14px clamp(12px, 1.6vw, 22px);
-  border-left:1px solid var(--accent);
   font-size:var(--fs-xs); letter-spacing:var(--tr-ui); color:var(--ink);
   text-align:center;
-  transition:background .4s var(--ease), color .4s var(--ease);
 }
-.brand-band-inner a:first-child{ border-left:none; }
-.brand-band-inner a:hover{
-  background:var(--pink); color:var(--ink);
-  box-shadow:inset 0 -3px 0 var(--ink);
-}
+
+/* --- Hover: het logo wordt een slag groter ---
+   Was: de hele cel liep vol roze met een donkerrode onderlijn. Dat klopte
+   niet meer op een band die geen cellen meer TEKENT — er verscheen een
+   vlak van 210x130 rond een logo van 34px hoog. Het sprong bovendien: de
+   achtergrond stond in de transition, de onderlijn niet (die was een
+   box-shadow, en box-shadow stond er niet bij), dus het vlak vervaagde in
+   .4s terwijl de lijn er in één frame bij klapte.
+
+   Nu gebeurt er precies één ding: het merkteken wordt 8% groter. Geen
+   vlak, geen lijn, geen kleurwissel — op een band zonder scheidingen is de
+   maat het enige wat je nodig hebt om te zien wat je aanwijst.
+
+   De schaal zit op het LOGO en niet op de cel. Een transform maakt van zijn
+   element een stapelcontext, en zet je die op de <a>, dan wordt de
+   mix-blend-mode van het logo daarbinnen geïsoleerd: het witte kader in de
+   Galler- en Jules Destrooper-bestanden zou dan bij hover terugkomen. Op
+   het logo zelf speelt dat niet — dat blendt nog steeds tegen de band.
+
+   Het merk zonder logobestand staat er als tekst en heeft geen kind om te
+   schalen; die cel schaalt daarom zelf. Daar zit geen beeld in, dus geen
+   blend en geen bezwaar. */
+.brand-band-inner a:not(:has(img)){ transition:transform .4s var(--ease); }
+.brand-band-inner a:not(:has(img)):hover,
+.brand-band-inner a:not(:has(img)):focus-visible{ transform:scale(1.08); }
 
 /* --- Merklogo's ---
    Aangeleverde logo's komen in alle vormen: brede woordmerken, vierkante
@@ -1252,26 +1287,26 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    mix-blend-mode:multiply veegt het witte kader weg dat in een paar
    aangeleverde bestanden zit (Galler, Jules Destrooper hebben geen
    transparantie). Wit vermenigvuldigd met de ondergrond ís de ondergrond,
-   dus het logo staat op wit én op het roze hovervlak zonder wit blokje
-   eromheen. Donkere merkkleuren blijven ongemoeid.
+   dus het logo staat op de witte band zonder wit blokje eromheen. Donkere
+   merkkleuren blijven ongemoeid.
 
    Merklogo's vallen buiten de contrastregels van BRANDING.md §2: het zijn
    andermans merktekens, geen tekst van ons. De naam staat als alt-tekst in
    de link, dus de betekenis hangt niet aan de kleur. */
 .brand-logo{
   --logo-h:clamp(26px, 2.4vw, 34px);
-  /* max-width houdt de brede woordmerken van de scheidingslijn af; zonder
-     die rem lopen Mentos en Jules Destrooper tot tegen de rand van hun cel. */
-  width:auto; max-width:78%;
+  /* Zonder scheidingslijnen doet deze rem het werk dat de lijn deed: hij
+     houdt de brede woordmerken uit elkaar. Van 78% naar 72%, want nu is de
+     tussenruimte het énige wat Mentos van Jules Destrooper scheidt en die
+     mag dus niet krapper worden dan de logo's zelf hoog zijn. */
+  width:auto; max-width:72%;
   height:calc(var(--logo-h) * var(--logo-scale, 1));
   object-fit:contain; object-position:center;
   mix-blend-mode:multiply;
+  transition:transform .4s var(--ease);
 }
-/* Op een gekleurde hover blijft multiply kloppen, maar Safari valt terug op
-   normal zodra het element zelf een blendcontext krijgt; expliciet herhalen
-   houdt het gedrag gelijk. */
-.brand-band-inner a:hover .brand-logo{ mix-blend-mode:multiply; }
-
+.brand-band-inner a:hover .brand-logo,
+.brand-band-inner a:focus-visible .brand-logo{ transform:scale(1.08); }
 @media (prefers-reduced-transparency: reduce){
   .brand-logo{ mix-blend-mode:normal; }
 }
@@ -1651,10 +1686,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .team-member:hover .ph{ transform:scale(1.035); }
 .team-name{ font-size:var(--fs-body-2); color:var(--accent-on); font-weight:500; }
 .team-role{ font-size:var(--fs-xs); font-weight:300; color:var(--accent-on); margin-top:3px; }
-/* De haarlijn staat hier in donkerrood en niet in de gewone --rule:
-   --rule is roze, en roze op een roze band is geen lijn. */
+/* Geen lijn tussen de functie en waarvoor je bij die persoon moet zijn:
+   vier portretten leverden vier streepjes op dezelfde hoogte op, en dat
+   is precies het tabelgevoel dat een team niet moet hebben. */
 .team-focus{
-  margin-top:12px; padding-top:11px; border-top:1px solid var(--accent-on);
+  margin-top:14px;
   font-size:var(--fs-xs); font-weight:300; color:var(--accent-on);
 }
 
@@ -1713,12 +1749,13 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   gap:clamp(28px, 5vw, 80px); align-items:start;
 }
 .ab-contact-list{ list-style:none; margin:0; padding:0; }
+/* Vier regels met vijf lijnen eromheen. Label links, waarde rechts en
+   ruimte ertussen is genoeg om de paren te lezen. */
 .ab-contact-list li{
   display:flex; justify-content:space-between; gap:16px;
-  padding:12px 0; border-top:1px solid var(--rule);
+  padding:0 0 14px;
   font-size:var(--fs-body-2); font-weight:300; color:var(--ink-2);
 }
-.ab-contact-list li:last-child{ border-bottom:1px solid var(--rule); }
 .ab-contact-list b{ color:var(--ink); font-weight:500; }
 /* Het kaartvlak is roze en niet crème: op een crème band zou een crème
    vlak niet bestaan. */
@@ -1900,13 +1937,18 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    gewicht 250 te ijl en zakt de leesbaarheid.
    ============================================================ */
 
-/* De lijn boven het minimumaantal loopt over élke producttegel, dus dit
-   is de goedkoopste manier om het accent over het hele raster te krijgen
-   zonder één letter magenta te maken. */
+/* De lijn boven het minimumaantal is eruit. Hij liep over élke
+   producttegel, dus op een raster van twaalf kaarten stonden er twaalf
+   streepjes op dezelfde hoogte en las het overzicht als een tabel in
+   plaats van als een reeks producten.
+
+   Er is niets voor in de plaats gekomen behalve ruimte, en dat volstaat:
+   het getal staat op --fs-num (30-40px) boven een titel van 16px. Dat
+   maatverschil scheidt de twee al ruimschoots — precies de rangorde via
+   grootte die BRANDING §3.3 voorschrijft. */
 .ledger{
   display:flex; align-items:baseline; gap:9px;
-  border-top:1px solid var(--accent);
-  margin-top:14px; padding-top:11px;
+  margin-top:16px;
 }
 /* Het getal stond in magenta en staat nu donkerrood — een minimumaantal
    is informatie, geen actie. Het gewicht blijft op 300: die keuze kwam
@@ -1925,11 +1967,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
 /* Op de productpagina staan beide getallen: het minimum en het
    veelvoud waarin besteld wordt. */
+/* Twee lijnen om twee getallen heen was een kader om iets wat al het
+   grootste element op de pagina is. Alleen ruimte nu. */
 .ledger-pair{
   display:flex; gap:clamp(32px, 5vw, 68px);
-  border-top:2px solid var(--accent);
-  border-bottom:1px solid var(--accent);
-  padding:24px 0; margin:26px 0;
+  margin:30px 0;
 }
 .ledger-col{ display:flex; flex-direction:column; gap:12px; }
 .ledger-k{
@@ -1956,10 +1998,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .tile{ display:block; }
 .tile .ph{ margin:0; border:none; }
 .tile:hover .ph{ background-size:min(28%, 112px); }
+/* Zelfde afweging als bij .cc-body: de onderrand van het beeldvlak is
+   de scheiding, de haarlijn eronder was een tweede. */
 .tile-body{
-  padding:14px 0 0; display:flex; justify-content:space-between;
+  padding:16px 0 0; display:flex; justify-content:space-between;
   align-items:baseline; gap:12px;
-  border-top:1px solid var(--rule); margin-top:14px;
 }
 .tile-name{ font-size:var(--fs-body); font-weight:400; letter-spacing:var(--tr-body); }
 .tile-count{
@@ -2010,7 +2053,6 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   /* tekstkolom iets ruimer dan het beeld, zodat de feitenregel
      op één lijn past in plaats van te breken */
   display:grid; grid-template-columns:1fr 1.15fr; gap:0;
-  border-bottom:1px solid var(--rule);
   margin-top:10px;
 }
 .cat-hero-media .ph{ height:100%; min-height:280px; border:none; }
@@ -2031,9 +2073,13 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* Wat een aankoper als eerste wil weten. De minimumafname verschilt
    per categorie van 1 tot 1000 stuks — dat hoort hier, niet pas op
    de productpagina. */
+/* De feitenregel stond tussen twee lijnen: een boven zichzelf en de
+   onderrand van de hero eronder. Twee strepen op vijftig pixel van
+   elkaar, met één regel van 13px ertussen. Allebei weg; de regel hangt
+   nu gewoon onder de titel. */
 .cat-hero-facts{
   display:flex; flex-wrap:wrap; gap:6px 22px;
-  margin:18px 0 0; padding-top:14px; border-top:1px solid var(--rule);
+  margin:20px 0 0;
   font-size:var(--fs-xs); color:var(--ink-3);
 }
 .cat-hero-facts b{ color:var(--ink); font-weight:500; }
@@ -2042,15 +2088,18 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    geen bestemming, dus daar is een beeldband pure vertraging. */
 .cat-hero.plain{ grid-template-columns:1fr; }
 .cat-hero.plain .cat-hero-media{ display:none; }
-.cat-hero.plain .cat-hero-body{ padding:0 0 24px; }
+.cat-hero.plain .cat-hero-body{ padding:0 0 34px; }
 
 /* ============================================================
    Catalogus-balk: filter tonen/verbergen + telling + sortering
    ============================================================ */
 
+/* Deze balk stond pal onder de onderrand van de categoriehero: twee
+   lijnen binnen twintig pixel van elkaar, wat als één dikke streep las.
+   De hero-lijn is weg en deze ook — de balk staat op zijn eigen ruimte. */
 .catalog-bar{
   display:flex; justify-content:space-between; align-items:center; gap:20px;
-  padding:6px 0 22px; border-top:2px solid var(--accent); flex-wrap:wrap;
+  padding:22px 0; flex-wrap:wrap;
 }
 .catalog-bar-right{ display:flex; align-items:center; gap:20px; font-size:var(--fs-xs); color:var(--ink-soft); flex-wrap:wrap; }
 /* Het aantal treffers is het enige getal op deze balk dat verandert als je
@@ -2078,9 +2127,13 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* Geen omkaderd blok maar haarlijnen: het paneel hoort bij de pagina
    en leest niet als een tweede doos naast het raster. */
 .filters{ position:sticky; top:calc(var(--header-h) + 20px); }
+/* De lijn onder "Verfijnen" is weg; de eerste filtergroep heeft er zelf
+   al een onder zich. De groepslijnen blijven wél staan — die scheiden
+   categorie van merk van gelegenheid, en dat is de enige plek in het
+   paneel waar een streep werk doet. */
 .filters-head{
   display:flex; justify-content:space-between; align-items:baseline;
-  padding:0 0 12px; border-bottom:2px solid var(--accent);
+  padding:0 0 4px;
 }
 .filters-head strong{ font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); }
 /* De padding hier heft de negatieve marge van .filter-opt op: de
@@ -2185,7 +2238,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .chip .x{ font-size:var(--fs-sm); line-height:1; color:var(--ink); }
 .chip:hover{ background:var(--pink); }
 
-.empty-state{ border:1px solid var(--line-soft); padding:40px 24px; text-align:center; color:var(--ink-soft); font-size:var(--fs-xs); }
+/* Kader eruit, vlak ervoor in de plaats. Een omkaderd blok is een doos
+   op een pagina die verder geen dozen kent; een crème vlak is hetzelfde
+   vlak waar elders een product op staat. Zie BRANDING §2.6: kleur in
+   vlakken, niet in versieringen. */
+.empty-state{ background:var(--surface); padding:44px 24px; text-align:center; color:var(--ink-soft); font-size:var(--fs-xs); }
 .empty-state strong{ display:block; color:var(--ink); font-size:var(--fs-body-2); margin-bottom:6px; }
 
 /* ============================================================
@@ -2262,8 +2319,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    te werken — een onderstreping, een badge, de rand van een bedienbaar
    element — staat in donkerrood. */
 .pdp-price{
-  margin-bottom:26px; padding-bottom:26px;
-  border-bottom:2px solid var(--accent);
+  margin-bottom:30px;
 }
 
 .variant-block{ margin-bottom:20px; }
@@ -2290,17 +2346,30 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .field-error{ font-size:var(--fs-xs); color:var(--ink); border-left:2px solid var(--ink); padding-left:9px; margin-top:8px; }
 
 .stock-table{ width:100%; border-collapse:collapse; font-size:var(--fs-xs); margin:18px 0 22px; }
-.stock-table th, .stock-table td{ border:1px solid var(--line-soft); padding:8px 12px; text-align:left; }
-.stock-table th{ background:var(--bg-alt); font-weight:600; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); }
+/* Alleen horizontale regels. Een volledig raster tekent bij zes cellen
+   zeventien lijnen; met alleen de rijscheiding lees je dezelfde tabel
+   met vier. De kolommen worden door de uitlijning al gescheiden.
+
+   De roze grond onder de koppenkolom moest daarbij ook weg. Met een rand
+   om elke cel was dat drie losse vlakjes; zonder rand liepen ze aan
+   elkaar tot één roze balk dwars door de tabel. De kapitalen doen het
+   werk nu zelf — dat is dezelfde afspraak als overal elders: rangorde
+   via maat en gewicht, niet via een vlak. */
+.stock-table th, .stock-table td{ border-bottom:1px solid var(--line-soft); padding:11px 24px 11px 0; text-align:left; vertical-align:top; }
+.stock-table th{ font-weight:600; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink); white-space:nowrap; }
 
 .cta-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
 .cta-feedback{ font-size:var(--fs-xs); color:var(--ink-soft); }
 
-.trust-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; padding-top:18px; border-top:1px solid var(--accent); }
-.trust-row span{ font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink); border:1px solid var(--accent); padding:6px 10px; }
+/* Drie geruststellingen op één regel, elk in een eigen roze kadertje en
+   het geheel onder een roze lijn: vier lijnen om zes woorden heen. Nu
+   drie stukjes kapitaal met ruimte ertussen. */
+.trust-row{ display:flex; gap:clamp(18px, 2.4vw, 34px); flex-wrap:wrap; margin-top:26px; }
+.trust-row span{ font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink); }
 
 /* accordion — productinfo gebundeld i.p.v. één lange lap tekst */
-.acc{ border-top:2px solid var(--accent); }
+/* Alleen de scheidingen tússen de panelen. De lijn boven het eerste
+   paneel was er een te veel: hij markeerde een kop die er niet is. */
 .acc-item{ border-bottom:1px solid var(--line-soft); }
 .acc-head{
   width:100%; display:flex; justify-content:space-between; align-items:center; gap:12px;
@@ -2329,9 +2398,16 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .quote-remove{ background:none; border:none; border-bottom:1px solid var(--line); font-size:var(--fs-label); color:var(--ink-soft); padding:1px 0; }
 .quote-remove:hover{ color:var(--ink); }
 
-.quote-side{ border:1px solid var(--line-soft); padding:20px; position:sticky; top:calc(var(--header-h) + 20px); }
+/* Zelfde ingreep als bij .empty-state en .panel: geen omkaderd blok maar
+   een crème vlak. De regels binnenin blijven — dat is een optelling en
+   die hoort regels te hebben. */
+.quote-side{ background:var(--surface); padding:24px; position:sticky; top:calc(var(--header-h) + 20px); }
 .quote-side h3{ font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:var(--tr-ui); margin:0 0 14px; }
 .quote-side .row{ display:flex; justify-content:space-between; font-size:var(--fs-xs); padding:7px 0; border-bottom:1px solid var(--line-soft); }
+/* De lijn scheidt twee regels van elkaar; onder de laatste scheidt hij
+   niets meer. Bij één enkele regel — de bevestigingspagina heeft er maar
+   één — bleef er zo een streepje onder een zin hangen. */
+.quote-side .row:last-of-type{ border-bottom:none; }
 .quote-side .cta-btn{ width:100%; margin-top:16px; }
 
 /* Eén pagina per stap; afgelegde stappen blijven klikbaar. */
@@ -2339,10 +2415,12 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   display:flex; gap:0; margin:24px 0 clamp(28px, 3vw, 44px);
   border-top:1px solid var(--ink);
 }
+/* De verticale scheidingen zijn eruit: drie gelijke kolommen onder één
+   doorlopende lijn lezen ook zonder hekjes als drie stappen. De lijn
+   erboven blijft — die is de balk zelf. */
 .step{
   flex:1; padding:14px 18px 14px 0;
   font-size:var(--fs-sm); color:var(--ink-3);
-  border-right:1px solid var(--rule);
 }
 .step + .step{ padding-left:18px; }
 .step:last-child{ border-right:none; }
@@ -2360,8 +2438,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .quote-recap{
   display:flex; justify-content:space-between; align-items:center;
   gap:20px; flex-wrap:wrap;
-  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
-  padding:18px 0; margin-bottom:clamp(28px, 3vw, 40px);
+  padding:0 0 clamp(28px, 3vw, 40px);
 }
 .quote-recap strong{ display:block; font-size:var(--fs-body-2); color:var(--ink); font-weight:500; }
 .quote-recap span{ display:block; margin-top:4px; font-size:var(--fs-xs); color:var(--ink-3); }
@@ -2372,11 +2449,13 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   gap:clamp(28px, 4vw, 64px); align-items:start;
 }
 .sent-next{ list-style:none; margin:clamp(28px, 3vw, 40px) 0; padding:0; }
+/* Drie stappen "wat er nu gebeurt", elk met een lijn erboven plus een
+   afsluitende lijn onderaan: vier strepen om drie zinnen. Het bovenschrift
+   in kapitalen markeert elke stap al. */
 .sent-next li{
-  padding:16px 0; border-top:1px solid var(--rule);
+  padding:0 0 22px;
   font-size:var(--fs-body-2); color:var(--ink-2);
 }
-.sent-next li:last-child{ border-bottom:1px solid var(--rule); }
 .sent-next b{
   display:block; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   color:var(--ink-3); font-weight:500; margin-bottom:5px;
@@ -2429,7 +2508,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    ============================================================ */
 
 .account-layout{ display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:start; margin-top:24px; }
-.panel{ border:1px solid var(--line-soft); padding:24px; }
+.panel{ background:var(--surface); padding:28px; }
 .panel h2{ font-size:var(--fs-body); font-weight:600; margin:0 0 4px; }
 .panel .panel-sub{ font-size:var(--fs-xs); color:var(--ink-soft); margin:0 0 18px; }
 
@@ -2502,9 +2581,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   .season-media{ margin-inline:calc(-1 * var(--gutter)); }
   .season-media .ph{ height:auto; min-height:0; aspect-ratio:16/9; }
   .proof{ grid-template-columns:repeat(2,1fr); gap:32px 24px; }
-  .brand-band-inner{ grid-template-columns:repeat(4,1fr); }
-  .brand-band-inner a:nth-child(4n+1){ border-left:none; }
-  .brand-band-inner a:nth-child(n+5){ border-top:1px solid var(--rule); }
+  /* Gewikkeld over twee rijen scheidde een lijn de rijen. Nu doet ruimte
+     dat: een rij extra hoogte weegt op tegen de streep die eruit is. */
+  .brand-band-inner{ grid-template-columns:repeat(4,1fr); row-gap:clamp(8px, 1.6vw, 20px); }
 }
 
 @media (max-width: 620px){
@@ -2518,9 +2597,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   .hero-facts{ gap:18px; font-size:var(--fs-xs); }
   .scroll-cue{ display:none; }
   .season-media .ph{ aspect-ratio:4/3; }
-  .brand-band-inner{ grid-template-columns:repeat(2,1fr); }
-  .brand-band-inner a:nth-child(2n+1){ border-left:none; }
-  .brand-band-inner a:nth-child(n+3){ border-top:1px solid var(--rule); }
+  .brand-band-inner{ grid-template-columns:repeat(2,1fr); row-gap:14px; }
   /* Twee kolommen op telefoon: de cel is nu breed genoeg om het logo
      wat groter te zetten dan op de krappe kolommen daarboven. */
   .brand-logo{ --logo-h:32px; }
