@@ -16,122 +16,54 @@
 
 <main>
 
-  <!-- ============ HERO — lichte split ============
-       De home heeft de donkere hero: twee opnames onder een groene sluier,
-       het woordmerk dat in de balk dokt. Over ons herhaalt dat bewust NIET.
-       Twee donkere heroes na elkaar in één sessie lezen als één pagina die
-       twee keer begint — en de pagina die moet laten zien wie Belgosweet is
-       heeft geen sluier nodig, ze heeft licht nodig.
+  <!-- ============ OPENING — kop en verhaal op één crème vlak ============
+       Hier stond een split: de kop links, een productopname rechts die van
+       de pagina af liep. Dat beeld bewees niets. Het is een doos met een
+       strik, op de pagina die over de mensen erachter gaat — en een
+       sfeerbeeld naast een belofte is decoratie, precies wat een "over ons"
+       ongeloofwaardig maakt. Er is geen opname van Waver, van de werkplaats
+       of van het team; tot die er is, opent de pagina met wat ze wél heeft.
 
-       Vandaar een lichte split: crème vlak met de kop links, en rechts een
-       staande opname die van de pagina af loopt. Dat laatste is dezelfde
-       ingreep als .usp-split-media op de home — één gutter negatief — dus
-       ook dezelfde maat.
+       Het verhaal staat op hetzelfde vlak, onder een haarlijn. Het had een
+       eigen kop ("Van één bestelwagen naar vijfhonderd bedrijven") en die is
+       weg: een groeicijfer als kop belooft een succesverhaal in plaats van
+       een bedrijf, en dezelfde bestelwagen stond een sectie lager al in de
+       tijdlijn. De H1 hierboven is de kop.
 
-       De opname is het merk zelf: een gestreepte deksel met het woordmerk
-       erop, de doos ernaast open. Dat is letterlijk het antwoord op de kop
-       erboven, en daarom staat er geen sfeerbeeld maar dít beeld. -->
-  <section class="ab-hero">
-    <div class="wrap-wide ab-hero-inner">
+       De .eyebrow staat er als paginabepaling — wie, waar, sinds wanneer —
+       en niet als sectiekop. Het is de enige op de pagina; de home heeft er
+       nul. -->
+  <section class="ab-open">
+    <div class="wrap-wide">
 
-      <div class="ab-hero-body">
+      <div class="ab-open-head" data-reveal>
         <p class="eyebrow">Belgosweet — Waver, sinds 1998</p>
-        <h1 class="display">Wij weten wat er in het pakje moet.</h1>
-        <p class="ab-hero-sub">
+        <h1>Wij weten wat er in het pakje moet.</h1>
+        <p class="ab-open-sub">
           Zevenentwintig jaar Belgische chocolade, koekjes en snoep — met
           het logo van iemand anders erop.
         </p>
       </div>
 
-      <!-- De parallax zit op de <img>, niet op de kolom: de kolom bepaalt
-           de maat van het beeldvlak en mag dus niet bewegen. Het beeld
-           zelf staat overhoog in zijn doos (zie .ab-hero-media img), zodat
-           de beweging nooit een rand kan tonen. -->
-      <div class="ab-hero-media" aria-hidden="true">
-        <img data-parallax src="assets/img/geschenk-lint.jpg"
-             alt="" loading="eager" decoding="async">
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============ STATEMENT + REGISTER ============
-       De vraag links, het antwoord in cijfers rechts. Op de home staat
-       hetzelfde register in de bewijsband; hier hoort het thuis, want dit
-       is de pagina waar de cijfers de inhoud zijn en niet het bewijs
-       onderaan een verkooppagina.
-
-       Zelfde component (.usp-facts), ander vlak. Daar op vol roze, hier op
-       wit — de haarlijnen staan in donkerrood en halen op allebei ruim de
-       norm. "één" staat met opzet als laatste: .usp-fact:last-child geeft
-       dat woord een trap meer gewicht, omdat een woord in deze lichte snit
-       uit elkaar valt op de plek van een getal. -->
-  <section class="ab-proof">
-    <div class="wrap-wide ab-proof-grid">
-      <p class="ab-statement" data-reveal>
-        Zevenentwintig jaar lang dezelfde vraag: wat geef je een klant
-        waar hij zich volgend jaar nog iets van herinnert?
-      </p>
-
-      <dl class="usp-facts" data-reveal style="--rd:120ms">
-        <div class="usp-fact">
-          <dt class="usp-n">27</dt>
-          <dd class="usp-l">jaar in Waver</dd>
-        </div>
-        <div class="usp-fact">
-          <dt class="usp-n">500<span class="usp-plus">+</span></dt>
-          <dd class="usp-l">bedrijven bediend</dd>
-        </div>
-        <div class="usp-fact">
-          <dt class="usp-n">16</dt>
-          <dd class="usp-l">categorieën in de catalogus</dd>
-        </div>
-        <div class="usp-fact">
-          <dt class="usp-n">één</dt>
-          <dd class="usp-l">vast aanspreekpunt per klant</dd>
-        </div>
-      </dl>
-    </div>
-  </section>
-
-  <!-- ============ VERHAAL — crème band ============
-       Deze pagina bestond uit acht witte secties met een roze haarlijn
-       ertussen. Dat is geen ritme maar een lijst, en het is precies wat
-       BRANDING.md §2.6 verbiedt: kleur hoort in grote vlakken, niet in
-       versieringen. De pagina krijgt daarom om en om een vlak — crème
-       hier, roze bij het team, crème weer bij contact — met wit ertussen,
-       want dát is wat de kleur laat werken.
-
-       Het beeld staat ONDER de tekst en over de volle breedte van de band,
-       niet ernaast. Het verhaal is een alinea, geen split; een kolom beeld
-       ernaast zou de tekst tot een bijschrift maken.
-
-       Drie kolommen en niet twee: kop, opening, vervolg. Met twee kolommen
-       liep de tekst op 52ch dood halverwege de bladspiegel en bleef rechts
-       een derde van de band leeg staan — een maat die op deze breedte als
-       een fout leest en niet als lucht. -->
-  <section class="ab-band ab-story-band">
-    <div class="wrap-wide">
-
       <div class="ab-story">
-        <div data-reveal>
-          <p class="eyebrow">Ons verhaal</p>
-          <h2 class="h-lg">Van één bestelwagen naar vijfhonderd bedrijven.</h2>
-        </div>
-
-        <div class="ab-story-col" data-reveal style="--rd:100ms">
-          <p class="ab-story-lead">
-            Belgosweet begon in 1998 als een tweemansbedrijf in Waver, met
-            één bestelwagen en een handvol Belgische chocolatiers.
+        <div data-reveal style="--rd:120ms">
+          <p class="lede">
+            Belgosweet begon in 1998 in Waver, met twee mensen en een handvol
+            Belgische chocolatiers. We kenden de makers bij naam, en dat is
+            nooit veranderd.
           </p>
+          <!-- De ondertekening sluit de opening van het verhaal af. Zelfde
+               streepje-en-kapitalen als .eyebrow, alleen omgekeerd gebruikt:
+               niet als aankondiging vooraf maar als handtekening achteraf. -->
+          <p class="ab-sign">Het team van Belgosweet, Waver</p>
         </div>
 
-        <div class="ab-story-col" data-reveal style="--rd:180ms">
+        <div class="ab-story-col" data-reveal style="--rd:200ms">
           <p>
-            Wat toen doorverkoop was, is uitgegroeid tot een catalogus van
-            meer dan honderdvijftig artikelen — van pralines tot
-            adventskalenders, allemaal bestemd voor bedrijven die iets
-            weggeven en willen dat het klopt.
+            Wat toen doorverkoop was, is uitgegroeid tot meer dan
+            honderdvijftig artikelen — van pralines tot adventskalenders,
+            allemaal bestemd voor bedrijven die iets weggeven en willen dat
+            het klopt.
           </p>
           <p>
             Wat niet veranderde: elke aanvraag wordt door één persoon
@@ -141,18 +73,6 @@
         </div>
       </div>
 
-      <figure class="ab-story-figure" data-reveal style="--rd:260ms">
-        <div class="ph has-img">
-          <img src="assets/img/sfeer-pralines-cacao.jpg"
-               alt="Belgische pralines en een veeg cacaopoeder op een crème ondergrond"
-               loading="lazy" decoding="async">
-        </div>
-        <figcaption>
-          Het vaste assortiment begint waar het in 1998 begon: bij Belgische
-          chocolatiers, niet bij een catalogus.
-        </figcaption>
-      </figure>
-
     </div>
   </section>
 
@@ -160,76 +80,64 @@
        De verticale lijn vult zich mee met de scrollpositie: de vorm van
        het onderdeel ís de boodschap, dus daar mag de beweging zitten.
 
-       De kop staat links en blijft staan terwijl de jaartallen langs de
-       rechterkolom schuiven. Dat lost twee dingen tegelijk op: de tijdlijn
-       vulde op een breed scherm maar de linkerhelft van de bladspiegel en
-       liet de rechterhelft leeg, en je wist halverwege de rij jaartallen
-       niet meer waar je naar keek. Nu staat het antwoord op allebei nog in
-       beeld. -->
+       Deze sectie draagt sinds deze herziening ook de cijfers. Er stond
+       hierboven een register op de patroonband — 27 / 500+ / 16 / één,
+       overgenomen van de bewijsband op de home — en dat zei niets wat de
+       laatste regel hier niet beter zegt, mét de jaartallen erbij. Twee keer
+       dezelfde cijfers op één pagina maakt ze allebei zwakker. -->
   <section class="ab-timeline">
-    <div class="wrap-wide ab-timeline-grid">
-      <div class="tl-head" data-reveal>
-        <p class="eyebrow">1998 — vandaag</p>
+    <div class="wrap-wide">
+
+      <div class="section-lead" data-reveal>
         <h2 class="h-lg">Wat we sindsdien deden</h2>
       </div>
 
-      <div class="tl-body" data-timeline>
+      <div class="tl" data-timeline>
         <div class="tl-rail" aria-hidden="true"><span data-tl-fill></span></div>
 
         <div class="tl-item" data-reveal>
           <span class="tl-dot" aria-hidden="true"></span>
           <div class="tl-year">1998</div>
-          <div class="tl-text">
-            <h3>Opgericht in Waver</h3>
-            <p>Twee mensen, één bestelwagen en een handvol Belgische chocolatiers.</p>
-          </div>
+          <h3 class="tl-title">Opgericht in Waver</h3>
+          <p class="tl-text">Twee mensen, één bestelwagen en een handvol Belgische chocolatiers.</p>
         </div>
 
         <div class="tl-item" data-reveal>
           <span class="tl-dot" aria-hidden="true"></span>
           <div class="tl-year">2003</div>
-          <div class="tl-text">
-            <h3>Eerste vaste merkpartners</h3>
-            <p>Leonidas, Jules Destrooper en Galler komen in het vaste assortiment.</p>
-          </div>
+          <h3 class="tl-title">Eerste vaste merkpartners</h3>
+          <p class="tl-text">Leonidas, Jules Destrooper en Galler komen in het vaste assortiment.</p>
         </div>
 
         <div class="tl-item" data-reveal>
           <span class="tl-dot" aria-hidden="true"></span>
           <div class="tl-year">2009</div>
-          <div class="tl-text">
-            <h3>Personalisatie met eigen logo</h3>
-            <p>Van sleeve tot volledige doosbedrukking — het verschil met een sticker erover.</p>
-          </div>
+          <h3 class="tl-title">Personalisatie met eigen logo</h3>
+          <p class="tl-text">Van sleeve tot volledige doosbedrukking — het verschil met een sticker erover.</p>
         </div>
 
         <div class="tl-item" data-reveal>
           <span class="tl-dot" aria-hidden="true"></span>
           <div class="tl-year">2014</div>
-          <div class="tl-text">
-            <h3>Samenwerking met Axedis</h3>
-            <p>Verpakken en assembleren gebeurt sindsdien samen met een sociale inschakelingsonderneming.</p>
-          </div>
+          <h3 class="tl-title">Samenwerking met Axedis</h3>
+          <p class="tl-text">Verpakken en assembleren gebeurt sindsdien samen met een sociale inschakelingsonderneming.</p>
         </div>
 
         <div class="tl-item" data-reveal>
           <span class="tl-dot" aria-hidden="true"></span>
           <div class="tl-year">2019</div>
-          <div class="tl-text">
-            <h3>Adventskalenders als specialiteit</h3>
-            <p>De eindejaarsperiode groeit uit tot het drukste kwartaal van het jaar.</p>
-          </div>
+          <h3 class="tl-title">Adventskalenders als specialiteit</h3>
+          <p class="tl-text">De eindejaarsperiode groeit uit tot het drukste kwartaal van het jaar.</p>
         </div>
 
         <div class="tl-item" data-reveal>
           <span class="tl-dot" aria-hidden="true"></span>
           <div class="tl-year">Vandaag</div>
-          <div class="tl-text">
-            <h3>Meer dan 500 bedrijven</h3>
-            <p>Zestien categorieën, zeven merken, en nog altijd één aanspreekpunt per klant.</p>
-          </div>
+          <h3 class="tl-title">Meer dan 500 bedrijven</h3>
+          <p class="tl-text">Zestien categorieën, zeven merken, en nog altijd één aanspreekpunt per klant.</p>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -242,15 +150,12 @@
        uitzien dan de rest. En het lost het beeldprobleem op: er zijn nog
        geen portretten, dus de vier vlakken staan leeg met het merkteken
        erin. Op wit zijn dat vier lege crème kaders; op roze zijn het vier
-       crème vlakken die eruitzien alsof ze zo bedoeld zijn.
-
-       De haarlijn onder de naam staat hier in donkerrood en niet in de
-       gewone --rule: roze op roze is geen lijn. -->
+       crème vlakken die eruitzien alsof ze zo bedoeld zijn. -->
   <section class="ab-band ab-team">
     <div class="wrap-wide">
-      <div class="team-head" data-reveal>
+
+      <div class="section-lead" data-reveal>
         <div>
-          <p class="eyebrow">Het team</p>
           <h2 class="h-lg">Wie je aan de lijn krijgt</h2>
           <p class="lede">
             Elke aanvraag wordt door één persoon opgevolgd, van offerte tot
@@ -289,28 +194,18 @@
           <div class="team-focus">Planning en levering</div>
         </div>
       </div>
+
     </div>
   </section>
 
   <!-- ============ SOCIAAL ENGAGEMENT ============
-       De footer linkt al naar over-ons.html#engagement; dat anker stond
-       hier niet en de link landde dus bovenaan de pagina. Nu staat hij op
+       De footer linkt naar over-ons.html#engagement; het anker staat op
        de sectie zelf.
 
-       Beeld LINKS van de pagina af, tegenover de hero die zijn beeld
-       rechts heeft. Twee splits met het beeld aan dezelfde kant laten de
-       pagina hakkelen — hetzelfde argument als bij .usp-split op de home.
-
-       Nog geen opname van de werkplaats aangeleverd. Tot dan staat hier
-       wat er uit de assemblage komt: het huisassortiment, verzendklaar. Het
-       alt-attribuut zegt wat er te zien is en belooft niets meer dan dat.
-
-       De opname staat op een witte grond, net als deze sectie. Daardoor
-       valt de rand van de foto weg tegen de pagina en lijken de dozen vrij
-       te staan — dezelfde reden waarom .ph.has-img.contain op crème staat.
-       Op de crème band hierboven zou dezelfde foto juist als een wit
-       vlakje op een gekleurde grond lezen; daar staat dan ook een opname
-       met een crème ondergrond. -->
+       Dit is de enige opname op de pagina, en de enige die iets bewijst:
+       dit is wat er uit de assemblage komt. Nog geen opname van de
+       werkplaats aangeleverd; het alt-attribuut zegt wat er te zien is en
+       belooft niets meer dan dat. -->
   <section class="ab-social" id="engagement">
     <div class="wrap-wide ab-social-inner">
 
@@ -323,7 +218,6 @@
       </div>
 
       <div class="ab-social-text" data-reveal style="--rd:120ms">
-        <p class="eyebrow">Sociaal engagement</p>
         <h2 class="h-lg">Samen met Axedis</h2>
         <p class="lede">
           Het verpakken en assembleren van onze geschenken gebeurt in
@@ -341,83 +235,61 @@
   </section>
 
   <!-- ============ CONTACT — crème band ============
-       Het formulier staat op crème en niet op wit. Alles wat het nodig
-       heeft klopt daar vanzelf: donkerrood op crème is 14,22:1 en de rand
-       van een invoerveld is --control, dus ook donkerrood. Op een donker
-       vlak had elk veld een uitzondering nodig gehad.
+       Het formulier zag eruit als een formulier: acht witte doosjes met een
+       rand eromheen en een rij micro-kapitalen erboven — de standaardopmaak
+       van een browser met een kleurtje eroverheen. Op een pagina die verder
+       uit typografie bestaat viel dat er als een ander document in.
 
-       De kop staat bovenaan over de volle breedte, niet in de linkerkolom.
-       Zo begint de band met een zin en niet met een adreslijst. -->
+       Het is nu een schrijflijn en geen doos: alleen een onderrand, de tekst
+       op leesmaat, en het label ONDER het veld als bijschrift in plaats van
+       erboven als instructie. Zie de toelichting in styles.css bij
+       .ab-contact .form-row.
+
+       De adresregels zijn links geworden (tel:, mailto:). Ze stonden er als
+       vette tekst bij, en dan is het nummer van een bedrijf iets om over te
+       typen in plaats van iets om aan te tikken. -->
   <section class="ab-band ab-contact" id="contact">
-    <div class="wrap-wide">
+    <div class="wrap-wide ab-contact-grid">
 
-      <div class="ab-contact-head" data-reveal>
-        <p class="eyebrow">Contact</p>
+      <div class="ab-contact-intro" data-reveal>
         <h2 class="h-lg">Eén adres, één nummer, één persoon.</h2>
+        <p class="lede">
+          Bel gerust. Je krijgt geen keuzemenu maar iemand die je dossier
+          kent.
+        </p>
+        <ul class="ab-contact-list">
+          <li><span>Adres</span><b>Boulevard de l'Europe 123, 1300 Waver</b></li>
+          <li><span>Telefoon</span><b><a href="tel:+3223515555">+32 2 351 55 55</a></b></li>
+          <li><span>E-mail</span><b><a href="mailto:info@belgosweet.be">info@belgosweet.be</a></b></li>
+          <li><span>Bereikbaar</span><b>Ma–vr 9:00–17:00</b></li>
+        </ul>
       </div>
 
-      <div class="ab-contact-grid">
-        <div data-reveal>
-          <ul class="ab-contact-list">
-            <li><span>Adres</span><b>Boulevard de l'Europe 123, 1300 Waver</b></li>
-            <li><span>Telefoon</span><b>+32 2 351 55 55</b></li>
-            <li><span>E-mail</span><b>info@belgosweet.be</b></li>
-            <li><span>Bereikbaar</span><b>Ma–vr 9:00–17:00</b></li>
-          </ul>
-          <!-- Het kaartvlak is roze en niet crème: op een crème band zou
-               een crème vlak niet bestaan. -->
-          <div class="ab-map"><div class="ph">kaart — Boulevard de l'Europe 123, Waver</div></div>
+      <div data-reveal style="--rd:120ms">
+        <h3 class="ab-form-title">Stel je vraag</h3>
+        <p class="ab-form-sub">
+          Geen offerte nodig maar wel een vraag? Dit formulier komt bij
+          dezelfde persoon terecht.
+        </p>
+
+        <div class="form-success hidden" data-success>
+          <strong>Verzonden.</strong> Je krijgt binnen twee werkdagen antwoord.
         </div>
 
-        <div data-reveal style="--rd:100ms">
-          <h3 class="ab-form-title">Stel je vraag</h3>
-          <p class="ab-form-sub">
-            Geen offerte nodig maar wel een vraag? Dit formulier komt bij
-            dezelfde persoon terecht.
-          </p>
-
-          <div class="form-success hidden" data-success>
-            <strong>Verzonden.</strong> Je krijgt binnen twee werkdagen antwoord.
+        <form class="form-grid" data-demo-form>
+          <div class="form-row"><label for="c-naam">Naam</label><input id="c-naam" type="text" required></div>
+          <div class="form-row"><label for="c-bedrijf">Bedrijf</label><input id="c-bedrijf" type="text"></div>
+          <div class="form-row"><label for="c-mail">E-mail</label><input id="c-mail" type="email" required></div>
+          <div class="form-row"><label for="c-tel">Telefoon</label><input id="c-tel" type="tel"></div>
+          <div class="form-row full"><label for="c-bericht">Bericht</label><textarea id="c-bericht" required></textarea></div>
+          <div class="form-row full">
+            <button class="cta-btn primary" type="submit">Verzenden</button>
           </div>
-
-          <form class="form-grid" data-demo-form>
-            <div class="form-row"><label for="c-naam">Naam</label><input id="c-naam" type="text" required></div>
-            <div class="form-row"><label for="c-bedrijf">Bedrijf</label><input id="c-bedrijf" type="text"></div>
-            <div class="form-row"><label for="c-mail">E-mail</label><input id="c-mail" type="email" required></div>
-            <div class="form-row"><label for="c-tel">Telefoon</label><input id="c-tel" type="tel"></div>
-            <div class="form-row full"><label for="c-bericht">Bericht</label><textarea id="c-bericht" required></textarea></div>
-            <div class="form-row full">
-              <button class="cta-btn primary" type="submit">Verzenden</button>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
 
     </div>
   </section>
-
-  <!-- ============ NIEUWSBRIEF ============
-       Blijft wit en blijft klein. Dit is een hulpmiddel vlak voor de
-       footer, geen afsluiter — de echte laatste actie van de site staat op
-       de home en heet "Offerte aanvragen". Een tweede afsluiter hier zou
-       daarmee concurreren. -->
-  <div class="wrap-wide">
-    <section class="ab-news">
-      <div data-reveal>
-        <h2 class="ab-news-title">Blijf op de hoogte</h2>
-        <p class="meta">Seizoensselecties en nieuwe artikelen, een paar keer per jaar.</p>
-      </div>
-      <div data-reveal style="--rd:100ms">
-        <div class="form-success hidden" data-success>
-          <strong>Ingeschreven.</strong> Bevestigingsmail onderweg.
-        </div>
-        <form class="inline-form" data-demo-form>
-          <input type="email" placeholder="E-mailadres" required aria-label="E-mailadres">
-          <button class="cta-btn" type="submit">Inschrijven</button>
-        </form>
-      </div>
-    </section>
-  </div>
 
 </main>
 
