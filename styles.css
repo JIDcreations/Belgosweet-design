@@ -1548,66 +1548,134 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .ab-band{ background:var(--surface); padding:var(--section-y) 0; }
 
 /* ============================================================
-   Opening — kop en verhaal op één crème vlak
+   Hero — volvlak beeld
    ------------------------------------------------------------
-   Geen beeld. Er is geen opname van Waver, van de werkplaats of
-   van de mensen; wat er wél is, is verpakking, en die hoort op de
-   home en in de shop. Een productfoto naast "wij weten wat er in
-   het pakje moet" bewijst die zin niet, hij illustreert hem — en
-   dat is het verschil tussen een pagina die iets zegt en een
-   pagina die iets etaleert.
+   De opname is cacaopoeder, over de volle sectie. Bewust GEEN
+   product: op de pagina die over de mensen achter Belgosweet gaat
+   is een doos met een strik decoratie, en dat was precies wat er
+   aan de vorige hero mankeerde. Cacao is de grondstof waar het in
+   1998 mee begon — het is de enige opname op deze site die staat
+   voor "waar het vandaan komt" in plaats van "wat je krijgt".
 
-   Wat de opening in plaats daarvan draagt is maat: een kop van
-   --fs-display over drie regels, met lucht eromheen en het
-   verhaal er meteen onder. Zodra er een echte opname van het huis
-   of het team is, hoort die hier — niet eerder.
+   Het is bovendien een TEXTUUR en geen tafereel: er is geen
+   onderwerp dat door de kop wordt afgesneden en geen crop die op
+   een andere schermmaat scheef valt. Dat is wat een beeld geschikt
+   maakt als ondergrond voor tekst.
 
-   De kop staat in EXTRA LIGHT en niet in het vette van h1.display.
-   Dat is een bewuste uitzondering op de regel in het hoofd van dit
-   bestand: het ene zware element van de site is de hero van de
-   home. Deze pagina opent zachter, en op een pagina die over
-   mensen gaat is dat het juiste volume.
+   Verschil met de home, die ook een donkere hero heeft: daar staan
+   twee panelen naast elkaar onder een GROENE sluier, met het
+   woordmerk dat in de balk dokt. Hier is het één vlak onder een
+   DONKERRODE sluier, de kop links onderin, en de header blijft de
+   gewone witte balk. Twee donkere heroes, twee verschillende
+   gebaren.
    ============================================================ */
 
 .ab-open{
-  background:var(--surface);
-  padding:clamp(72px, 9vw, 150px) 0 var(--section-y);
+  position:relative;
+  overflow:hidden;
+  background:var(--ink);              /* grond zolang de foto laadt */
+  color:var(--on-void);
+  display:flex; align-items:flex-end;
+  min-height:min(80svh, 800px);
+  padding-block:clamp(96px, 12vw, 168px) clamp(56px, 7vw, 104px);
 }
+
+.ab-open-media{ position:absolute; inset:0; z-index:0; overflow:hidden; }
+/* 136% hoog en 18% omhoog: app.js verschuift het beeld bij het scrollen
+   over 14% van de sectiehoogte (`-hero.top * 0.14`), en die speling moet
+   er aan allebei de kanten zijn — anders schuift er een rand in beeld op
+   het moment dat de beweging juist onzichtbaar hoort te zijn. 18 tegen 14
+   is de marge; bij 15 tegen 14 stond de bovenrand er onderaan de sectie
+   nog maar acht pixel vanaf.
+
+   Geen transition: app.js zet de transform per frame. Een overgang van
+   .8s eroverheen maakt van een parallax een slepende vertraging. */
+.ab-open-media img{
+  position:absolute; left:0; top:-18%;
+  width:100%; height:136%;
+  object-fit:cover; display:block;
+  will-change:transform;
+}
+
+/* Donkerrode sluier. Twee taken, net als de groene op de home: het beeld
+   naar één toon trekken en de tekst een gegarandeerde ondergrond geven.
+
+   Gemeten, niet geschat. De maat is genomen tegen de ALLERLICHTSTE pixel
+   in het hele bronbestand — rgb(141,100,87) — en niet tegen het stuk dat
+   op één schermmaat toevallig achter de kop valt. Zo blijft de uitkomst
+   gelden bij elke crop, en de opname is portret (1282×1600) tegen een
+   liggend vlak, dus die crop verschilt per venster fors.
+
+     sluier   crème erop
+      .25       6,3:1
+      .30       6,7:1
+      .35       7,1:1   ← gekozen, AAA
+      .45       8,0:1
+      .55       8,9:1   het poeder dooft tot een vlak
+
+   Bij .55 was er van de korrel niets meer over en las de hero als een
+   effen donkerrood vlak — dan kun je de foto net zo goed weglaten.
+   Wissel je van opname, meet dan opnieuw. */
+.ab-open-media::after{
+  content:""; position:absolute; inset:0;
+  background:var(--ink); opacity:.35;
+}
+
+.ab-open-inner{ position:relative; z-index:1; }
+
+/* Op donker is crème de tekstkleur — donkerrood haalt daar niets. Dat
+   geldt ook voor het streepje van de .eyebrow, dat zijn kleur van --ink
+   krijgt en anders onzichtbaar op de sluier staat. */
+.ab-open .eyebrow{ color:var(--on-void); }
+.ab-open .eyebrow::before{ background:var(--on-void); }
+
 /* Overschrijft h1.display uit het hoofd van dit bestand. Bij 200 gaat
    de letterafstand OMHOOG (minder negatief): dunne stokken op krappe
-   afstand lopen optisch in elkaar over. Zie de toelichting bij
-   .display.
+   afstand lopen optisch in elkaar over. Zie de toelichting bij .display.
+
+   Waarom niet het vette h1.display van de home: het ene zware element
+   van de site is de hero daar. Deze pagina gaat over mensen en opent
+   zachter — en op een volvlak beeld doet de maat het werk toch al.
 
    De max-width staat op de H1 zelf en niet op de doos eromheen. `ch`
-   rekent af tegen de font-size van het element waar het op staat: op
-   de doos is dat 16px en werd de kop tot een kolom van 230px geknepen,
-   op de kop zelf is het de displaymaat en klopt de regelmaat. */
-.ab-open-head h1{
+   rekent af tegen de font-size van het element waar het op staat: op de
+   doos is dat 16px en wordt de kop tot een kolom van 230px geknepen, op
+   de kop zelf is het de displaymaat en klopt de regelmaat. */
+.ab-open h1{
   font-size:var(--fs-display);
   font-weight:200;
   line-height:1.02;
   letter-spacing:var(--tr-tight);
+  color:var(--on-void);
   margin:0;
   max-width:15ch;
 }
 .ab-open-sub{
-  margin:clamp(20px, 2.6vw, 34px) 0 0;
+  margin:clamp(20px, 2.6vw, 32px) 0 0;
   font-size:var(--fs-lede);
   font-weight:200;
   line-height:1.6;
-  color:var(--ink-2);
+  color:var(--on-void);
   max-width:46ch;
   text-wrap:pretty;
 }
 
-/* De haarlijn tussen de kop en het verhaal is de enige op de pagina.
-   Ze staat in donkerrood en niet in --rule: roze op crème is 1,47:1 en
-   fluistert daar zó zacht dat de scheiding niet aankomt. Een lijn die
-   je moet zoeken kun je beter weglaten. */
+/* ============================================================
+   Verhaal — crème band
+   ------------------------------------------------------------
+   Twee kolommen: de opening links op ledemaat, het vervolg rechts
+   een trap kleiner. Dezelfde trap als .usp-split-text op de home —
+   lede, dan body-2 — alleen naast elkaar in plaats van onder
+   elkaar.
+
+   Geen kop. Er stond er een ("Van één bestelwagen naar vijfhonderd
+   bedrijven") en die is weg: een groeicijfer als kop belooft een
+   succesverhaal in plaats van een bedrijf, en dezelfde bestelwagen
+   staat een sectie lager in de tijdlijn. De H1 in de hero erboven
+   is de kop; dit is de alinea eronder.
+   ============================================================ */
+
 .ab-story{
-  margin-top:clamp(48px, 6vw, 96px);
-  padding-top:clamp(40px, 4.6vw, 68px);
-  border-top:1px solid var(--ink);
   display:grid; grid-template-columns:1fr 1fr;
   gap:clamp(28px, 5vw, 80px); align-items:start;
 }
@@ -1918,7 +1986,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   .ab-story, .ab-social-inner, .ab-contact-grid{
     grid-template-columns:1fr;
   }
-  .ab-open-head h1{ max-width:none; }
+  .ab-open h1{ max-width:none; }
   .ab-social-media{
     margin-inline:calc(-1 * var(--gutter));
     order:-1;

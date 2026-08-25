@@ -16,61 +16,79 @@
 
 <main>
 
-  <!-- ============ OPENING — kop en verhaal op één crème vlak ============
-       Hier stond een split: de kop links, een productopname rechts die van
-       de pagina af liep. Dat beeld bewees niets. Het is een doos met een
-       strik, op de pagina die over de mensen erachter gaat — en een
-       sfeerbeeld naast een belofte is decoratie, precies wat een "over ons"
-       ongeloofwaardig maakt. Er is geen opname van Waver, van de werkplaats
-       of van het team; tot die er is, opent de pagina met wat ze wél heeft.
+  <!-- ============ HERO — volvlak beeld ============
+       De opname is cacaopoeder over de volle sectie. Bewust geen product:
+       op de pagina die over de mensen achter Belgosweet gaat is een doos
+       met een strik decoratie, en dat was precies wat er aan de vorige
+       hero mankeerde. Cacao is de grondstof waar het in 1998 mee begon.
 
-       Het verhaal staat op hetzelfde vlak, onder een haarlijn. Het had een
-       eigen kop ("Van één bestelwagen naar vijfhonderd bedrijven") en die is
-       weg: een groeicijfer als kop belooft een succesverhaal in plaats van
-       een bedrijf, en dezelfde bestelwagen stond een sectie lager al in de
-       tijdlijn. De H1 hierboven is de kop.
+       Het is bovendien een textuur en geen tafereel — geen onderwerp dat
+       door de kop wordt afgesneden, geen crop die op een andere schermmaat
+       scheef valt. Dat is wat een beeld geschikt maakt als ondergrond voor
+       tekst. De sluier eroverheen staat in styles.css, met de meting.
+
+       aria-hidden op het beeldvlak en een leeg alt: de opname zegt niets
+       wat de kop er niet al zegt, dus voor een schermlezer is ze ruis.
+
+       De parallax zit op de <img> en niet op het vlak: het vlak bepaalt
+       de maat en mag dus niet bewegen. Het beeld staat overhoog in zijn
+       doos (zie .ab-open-media img), zodat de beweging nooit een rand
+       kan tonen.
 
        De .eyebrow staat er als paginabepaling — wie, waar, sinds wanneer —
-       en niet als sectiekop. Het is de enige op de pagina; de home heeft er
-       nul. -->
+       en niet als sectiekop. Het is de enige op de pagina; de home heeft
+       er nul. -->
   <section class="ab-open">
-    <div class="wrap-wide">
 
-      <div class="ab-open-head" data-reveal>
-        <p class="eyebrow">Belgosweet — Waver, sinds 1998</p>
-        <h1>Wij weten wat er in het pakje moet.</h1>
-        <p class="ab-open-sub">
-          Zevenentwintig jaar Belgische chocolade, koekjes en snoep — met
-          het logo van iemand anders erop.
+    <div class="ab-open-media" aria-hidden="true">
+      <img data-parallax src="assets/img/sfeer-cacaopoeder.jpg"
+           alt="" loading="eager" decoding="async">
+    </div>
+
+    <div class="wrap-wide ab-open-inner">
+      <p class="eyebrow reveal" style="--d:80ms">Belgosweet — Waver, sinds 1998</p>
+      <h1 class="reveal" style="--d:160ms">Wij weten wat er in het pakje moet.</h1>
+      <p class="ab-open-sub reveal" style="--d:260ms">
+        Zevenentwintig jaar Belgische chocolade, koekjes en snoep — met
+        het logo van iemand anders erop.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ============ VERHAAL — crème band ============
+       Geen kop. Er stond er een ("Van één bestelwagen naar vijfhonderd
+       bedrijven") en die is weg: een groeicijfer als kop belooft een
+       succesverhaal in plaats van een bedrijf, en dezelfde bestelwagen
+       staat een sectie lager in de tijdlijn. De H1 in de hero hierboven
+       is de kop; dit is de alinea eronder. -->
+  <section class="ab-band">
+    <div class="wrap-wide ab-story">
+
+      <div data-reveal>
+        <p class="lede">
+          Belgosweet begon in 1998 in Waver, met twee mensen en een handvol
+          Belgische chocolatiers. We kenden de makers bij naam, en dat is
+          nooit veranderd.
         </p>
+        <!-- De ondertekening sluit de opening van het verhaal af. Zelfde
+             streepje-en-kapitalen als .eyebrow, alleen omgekeerd gebruikt:
+             niet als aankondiging vooraf maar als handtekening achteraf. -->
+        <p class="ab-sign">Het team van Belgosweet, Waver</p>
       </div>
 
-      <div class="ab-story">
-        <div data-reveal style="--rd:120ms">
-          <p class="lede">
-            Belgosweet begon in 1998 in Waver, met twee mensen en een handvol
-            Belgische chocolatiers. We kenden de makers bij naam, en dat is
-            nooit veranderd.
-          </p>
-          <!-- De ondertekening sluit de opening van het verhaal af. Zelfde
-               streepje-en-kapitalen als .eyebrow, alleen omgekeerd gebruikt:
-               niet als aankondiging vooraf maar als handtekening achteraf. -->
-          <p class="ab-sign">Het team van Belgosweet, Waver</p>
-        </div>
-
-        <div class="ab-story-col" data-reveal style="--rd:200ms">
-          <p>
-            Wat toen doorverkoop was, is uitgegroeid tot meer dan
-            honderdvijftig artikelen — van pralines tot adventskalenders,
-            allemaal bestemd voor bedrijven die iets weggeven en willen dat
-            het klopt.
-          </p>
-          <p>
-            Wat niet veranderde: elke aanvraag wordt door één persoon
-            opgevolgd, van offerte tot levering. Dat is de reden dat klanten
-            van het eerste uur er vandaag nog zijn.
-          </p>
-        </div>
+      <div class="ab-story-col" data-reveal style="--rd:120ms">
+        <p>
+          Wat toen doorverkoop was, is uitgegroeid tot meer dan
+          honderdvijftig artikelen — van pralines tot adventskalenders,
+          allemaal bestemd voor bedrijven die iets weggeven en willen dat
+          het klopt.
+        </p>
+        <p>
+          Wat niet veranderde: elke aanvraag wordt door één persoon
+          opgevolgd, van offerte tot levering. Dat is de reden dat klanten
+          van het eerste uur er vandaag nog zijn.
+        </p>
       </div>
 
     </div>
