@@ -124,6 +124,52 @@ const BS = (() => {
     arrow: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8h11M9.5 4l4 4-4 4"/></svg>'
   };
 
+  /* ---------- Iconen bij de feitenregels ----------
+     De feitenregels op home ("Bestellen vóór 30 september"), shop,
+     categorie en productdetail zijn korte, harde gegevens die je scant en
+     niet leest. Een icoon ervoor geeft elk feit een ankerpunt, zodat je
+     de regel in één blik uit elkaar haalt in plaats van hem woord voor
+     woord door te nemen.
+
+     Hier staan alleen de PADEN. De <svg> eromheen komt uit fico()
+     hieronder, zodat viewBox, streekdikte en aria-hidden op één plek
+     staan en niet tien keer overgetypt worden. Dezelfde conventie als
+     ICON hierboven: 20x20, geen vulling, stroke op currentColor, 1.4.
+
+     currentColor is hier het hele punt. Het icoon erft de kleur van de
+     regel waar het in staat, dus er komt geen kleurwaarde in beeld en er
+     valt niets uit de pas als de tekst van vlak wisselt. */
+  const FACT_ICON = {
+    // Bestellen vóór <datum> — een datum, dus een kalender.
+    calendar: '<rect x="3.2" y="5" width="13.6" height="11.8" rx="1.2"/><path d="M3.2 8.6h13.6M7 3.2v3.2M13 3.2v3.2"/>',
+    // Levering — bestelwagen, het beeld waar het bedrijf mee begon.
+    truck:    '<path d="M2.6 5.8h8.2v7.6H2.6z"/><path d="M10.8 8.8h3.1l2.5 2.7v1.9h-5.6z"/><circle cx="6.1" cy="15.2" r="1.5"/><circle cx="13.5" cy="15.2" r="1.5"/>',
+    // Personalisatie, eigen logo — een label dat je op de verpakking legt.
+    tag:      '<path d="M3.4 3.4h6.3l7 7-6.3 6.3-7-7z"/><circle cx="6.7" cy="6.7" r="1.15"/>',
+    // Doorlooptijd, "binnen 48 u".
+    clock:    '<circle cx="10" cy="10" r="6.7"/><path d="M10 6V10l2.7 1.7"/>',
+    // Aantal producten.
+    box:      '<path d="m10 3.2 6.5 3.3v7l-6.5 3.3-6.5-3.3v-7z"/><path d="m3.5 6.5 6.5 3.3 6.5-3.3M10 9.8v6.9"/>',
+    // Aantal categorieën.
+    grid:     '<rect x="3.4" y="3.4" width="5.7" height="5.7" rx=".9"/><rect x="10.9" y="3.4" width="5.7" height="5.7" rx=".9"/><rect x="3.4" y="10.9" width="5.7" height="5.7" rx=".9"/><rect x="10.9" y="10.9" width="5.7" height="5.7" rx=".9"/>',
+    // Merken — een keurmerk.
+    seal:     '<circle cx="10" cy="8.1" r="4.7"/><path d="m6.9 12.2-.8 4.6 3.9-2.1 3.9 2.1-.8-4.6"/>',
+    // Minimumafname — een stapel.
+    layers:   '<path d="m10 3.3 6.5 3.2-6.5 3.2-6.5-3.2z"/><path d="m3.5 10 6.5 3.2 6.5-3.2"/><path d="m3.5 13.4 6.5 3.2 6.5-3.2"/>',
+    // Uit voorraad — staat er, klaar.
+    check:    '<circle cx="10" cy="10" r="6.7"/><path d="m6.9 10.1 2.2 2.2 4.1-4.6"/>',
+    // Prijs op aanvraag — de offerte zelf.
+    doc:      '<path d="M5.2 3.3h5.6l4 4v9.4H5.2z"/><path d="M10.6 3.3v4.2h4.2"/><path d="M7.6 11h4.8M7.6 13.4h3.2"/>'
+  };
+
+  function fico(name) {
+    const d = FACT_ICON[name];
+    if (!d) return "";
+    return '<svg class="fact-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor"' +
+           ' stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+           d + '</svg>';
+  }
+
   function renderHeader(page) {
     const active = NAV_PARENT[page] || page;
 
@@ -1050,10 +1096,10 @@ ${renderBar(list.length, from, to)}
 
     const meta = $("#shop-hero-meta");
     if (meta) meta.innerHTML = `
-<span><b>${D.PRODUCTS.length}</b> producten</span>
-<span><b>${D.CATEGORIES.length}</b> categorieën</span>
-<span><b>${D.BRANDS.length - 1}</b> merken</span>
-<span>Prijs steeds <b>op aanvraag</b></span>`;
+<span>${fico("box")}<b>${D.PRODUCTS.length}</b> producten</span>
+<span>${fico("grid")}<b>${D.CATEGORIES.length}</b> categorieën</span>
+<span>${fico("seal")}<b>${D.BRANDS.length - 1}</b> merken</span>
+<span>${fico("doc")}Prijs steeds <b>op aanvraag</b></span>`;
 
     makeCatalog({ root: "#shop-catalog" });
   };
@@ -1087,10 +1133,10 @@ ${renderBar(list.length, from, to)}
       const hi = Math.max.apply(null, mins);
       const opVoorraad = inCat.filter((p) => p.availability === "voorraad").length;
       m.innerHTML = `
-<span><b>${cat.count}</b> producten</span>
-<span>Minimumafname <b>${lo === hi ? lo : lo + "–" + hi}</b> st.</span>
-<span><b>${opVoorraad}</b> uit voorraad</span>
-<span>Prijs steeds <b>op aanvraag</b></span>`;
+<span>${fico("box")}<b>${cat.count}</b> producten</span>
+<span>${fico("layers")}Minimumafname <b>${lo === hi ? lo : lo + "–" + hi}</b> st.</span>
+<span>${fico("check")}<b>${opVoorraad}</b> uit voorraad</span>
+<span>${fico("doc")}Prijs steeds <b>op aanvraag</b></span>`;
     }
 
     makeCatalog({ root: "#cat-catalog", lockedCat: cat.slug });
@@ -1198,7 +1244,7 @@ ${p.variants.map((v, i) => `
 </div>
 
 <div class="trust-row">
-  <span>Belgisch product</span><span>Eigen logo mogelijk</span><span>B2B-levering</span><span>Offerte binnen 48 u</span>
+  <span>${fico("seal")}Belgisch product</span><span>${fico("tag")}Eigen logo mogelijk</span><span>${fico("truck")}B2B-levering</span><span>${fico("clock")}Offerte binnen 48 u</span>
 </div>`;
 
     const acc = $("#pdp-accordion");
@@ -1657,10 +1703,23 @@ ${p.variants.map((v, i) => `
     root.style.scrollBehavior = was;
   }
 
+  /* Feitenregels die als vaste HTML in de pagina staan — de seizoensregel
+     op home — dragen data-icon="<naam>" en krijgen hun icoon hier. Zo staat
+     de icoonset op één plek in plaats van als overgetypte SVG in de markup.
+     Het icoon is decoratief (aria-hidden, de tekst zegt het al), dus zonder
+     JavaScript mist er niets dan een streepje. */
+  function paintFactIcons(root) {
+    $$("[data-icon]", root || document).forEach((el) => {
+      if (el.querySelector(".fact-ico")) return;      // niet twee keer
+      el.insertAdjacentHTML("afterbegin", fico(el.dataset.icon));
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     mountShell();
     const page = document.body.dataset.page;
     if (pages[page]) pages[page]();
+    paintFactIcons();
     quote.sync();
     jumpToHash();
     // Nog één keer als alle beeldvlakken hun hoogte hebben: tot dat moment

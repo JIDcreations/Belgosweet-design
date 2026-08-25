@@ -15,7 +15,12 @@
 <div id="shell-header"></div>
 
 <main>
-  <div class="wrap">
+  <!-- .wrap-wide en niet .wrap: de zijmarges lopen hier gelijk met de home.
+       .wrap kapt af op 1280px en .wrap-wide op 1600, dus boven 1280 stond de
+       catalogus smaller ingesprongen dan de pagina waar je vandaan kwam. De
+       gutter is in allebei dezelfde clamp(20px, 4vw, 56px); alleen de
+       bovengrens verschilde. -->
+  <div class="wrap-wide">
     <div class="breadcrumb" id="shop-crumbs"></div>
 
     <!-- KOP — zonder beeld: dit is de index, geen bestemming -->

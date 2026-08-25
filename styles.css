@@ -962,11 +962,84 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
 /* De deadline op één regel: bij seizoensgebonden gifting is niet het
    product het nieuws maar wanneer je moet beslissen. */
+/* Drie kolommen naast elkaar, niet één doorlopende regel.
+
+   Op één regel kan niet meer: de drie labels meten samen 647px en de
+   tekstkolom naast het seizoensbeeld is er 595. Dat is niet met een
+   krappere tussenruimte op te lossen — de tekst alleen past al niet, met
+   nul gap ertussen. Het icoon kost daar 69px van; de regel zat daarvóór
+   al op 578 van de 595.
+
+   Dus: elk feit een eigen kolom, en de tekst mag binnen die kolom
+   omlopen. Dat blijft horizontaal — je leest ze naast elkaar, van links
+   naar rechts — en het is bestand tegen een smaller venster, want de
+   kolommen krimpen mee in plaats van dat er een feit onderuit valt.
+
+   Loopt een label om naar twee regels, dan blijft het icoon bij de eerste
+   regel staan en springt de tweede in tot onder de tekst — zie de
+   hangende inspring bij .fact-ico. */
 .season-facts{
-  display:flex; flex-wrap:wrap; gap:6px 22px; margin:26px 0 0;
+  display:grid; grid-template-columns:repeat(3, 1fr);
+  /* Krappe tussenruimte met opzet. Het breedste feit vraagt 199px en de
+     kolom is er (631 - 2 gaps) / 3. Bij 24px gap komt dat op 194 en loopt
+     "Levering vanaf half november" om; bij 15px op 200 en past alles op
+     zijn eigen regel. Op een smaller venster loopt het alsnog om, en dat
+     mag — daar is de kolomvorm juist voor. */
+  gap:12px clamp(12px, 1vw, 16px);
+  margin:26px 0 0;
   font-size:var(--fs-xs); color:var(--ink-3);
 }
+
 .season-facts b{ color:var(--ink); font-weight:500; }
+
+/* ============================================================
+   Iconen bij de feitenregels
+   ------------------------------------------------------------
+   Vier regels op de site dragen hetzelfde soort inhoud: korte, harde
+   gegevens die je scant en niet leest. De seizoensregel op home, de
+   metaregel onder de shop- en categoriekop, en de geruststellingen
+   onder de knop op productdetail. Ze krijgen daarom één behandeling.
+
+   Het icoon geeft elk feit een ankerpunt, zodat je de regel in één blik
+   uit elkaar haalt in plaats van hem woord voor woord door te nemen. Dat
+   werd sinds de haarlijnen eruit gingen belangrijker: die regels stonden
+   eerst tussen strepen en zijn nu vrij op de pagina.
+
+   ROZE, niet donkerrood. BRANDING §2.5 wijst --ink-4 precies hiervoor
+   aan: "enkel lijnen en iconen, nooit tekst". Op wit haalt roze 1,40:1
+   en dat is te weinig om iets te betekenen — wat hier klopt, want de
+   tekst ernaast zegt het al. Het icoon markeert waar een feit begint,
+   het draagt de betekenis niet. Zou het donkerrood zijn, dan stond er
+   naast elke regel iets dat even hard roept als de regel zelf.
+
+   15px en niet groter: het icoon moet onder de x-hoogte van de regel
+   blijven. Wordt het even hoog als de tekst, dan is het geen markering
+   meer maar een tweede element per feit.
+
+   currentColor staat in de SVG en wordt hier gezet; zo erft het icoon
+   het vlak waar het op staat en is er nergens een tweede kleurwaarde. */
+/* Het icoon staat in de TEKSTSTROOM, niet als flex-item ernaast. Dat is
+   geen detail: met display:inline-flex op het item werden de losse tekst
+   en de <b> eromheen twee aparte flex-items, en die braken onafhankelijk
+   van elkaar af — "Bestellen / vóór" naast "30 / september". Als gewone
+   inline-inhoud loopt het label af als één zin, precies zoals het hoort.
+
+   De negatieve text-indent met dezelfde padding-left geeft een hangende
+   inspring: de eerste regel begint bij het icoon, elke volgende regel
+   lijnt uit onder de TEKST in plaats van onder het icoon. 15px icoon plus
+   7px marge is 22px, en dat is dus ook de inspring. */
+.season-facts span,
+.cat-hero-facts span,
+.trust-row span{ padding-left:22px; text-indent:-22px; }
+.fact-ico{
+  display:inline-block;
+  width:15px; height:15px;
+  margin-right:7px;
+  /* Optisch op de regel: het vierkant van een icoon staat hoger dan de
+     x-hoogte van de letters ernaast. */
+  vertical-align:-0.2em;
+  color:var(--ink-4);
+}
 
 .season-cards{
   display:grid; grid-template-columns:repeat(2, 1fr);
@@ -1303,6 +1376,43 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   height:calc(var(--logo-h) * var(--logo-scale, 1));
   object-fit:contain; object-position:center;
   mix-blend-mode:multiply;
+  /* --- Zwart, geen merkkleur ---
+     De aangeleverde logo's staan in hun eigen merkkleur: Mentos-blauw,
+     Tic Tac-groen, Leonidas-marine. Zes vreemde kleuren naast elkaar zijn
+     op een pagina van crème en donkerrood het luidste wat er staat, en
+     deze band is een voetnoot onder de hero. Ze staan er nu zwart.
+
+     Er is geen tweede set bestanden voor nodig; dit is één filterregel.
+     De volgorde is wel bepalend, en brightness(0) — de voor de hand
+     liggende manier om iets zwart te maken — kan hier NIET. Vier van de
+     zes bestanden hebben geen transparantie: hun witte kader zit in de
+     pixels. brightness(0) maakt dat wit óók zwart en je houdt zes zwarte
+     rechthoeken over.
+
+     Ook contrast() kan het niet. Dat spreidt om 0.5 heen: donker wordt
+     donkerder, maar alles bóven het midden wordt juist lichter. Dat sloopt
+     lijnwerk. Het Leonidas-medaillon is fijne lijnen die bij het
+     verkleinen naar 65px uitmiddelen tot lichtgrijs — gemeten op de echte
+     weergavemaat: 0,7% donkere pixels tegen 26% middentoon. contrast()
+     duwt die 26% naar wit en dan is het logo wég.
+
+     Wat wél werkt is invert-brightness-invert:
+       grayscale(1)  haalt de kleur eruit; alles wordt een grijswaarde.
+       invert(1)     wit wordt 0, zwart wordt 1.
+       brightness(3) vermenigvuldigt. 0 blijft 0 — puur wit blijft dus
+                     exact wit — en al het andere loopt naar 1.
+       invert(1)     terug. Alles behalve wit is nu veel donkerder.
+
+     Dat is een vermenigvuldiging in plaats van een spreiding: het laat
+     wit met rust (multiply laat het daardoor nog steeds verdwijnen tegen
+     de band) en trekt élke andere toon naar zwart, hoe licht ook. Zo
+     wordt Mentos-blauw zwart én blijft het lijnwerk van Leonidas staan.
+
+     Merklogo's vallen buiten BRANDING.md §2 (het zijn andermans
+     merktekens, geen tekst van ons), dus dit zwart is geen zevende
+     kleur in het palet. Elders op de site bestaat zwart niet: het
+     donkerste dat de site tekent is donkergroen. */
+  filter:grayscale(1) invert(1) brightness(3) invert(1);
   transition:transform .4s var(--ease);
 }
 .brand-band-inner a:hover .brand-logo,
@@ -2078,9 +2188,21 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    elkaar, met één regel van 13px ertussen. Allebei weg; de regel hangt
    nu gewoon onder de titel. */
 .cat-hero-facts{
-  display:flex; flex-wrap:wrap; gap:6px 22px;
+  display:flex; flex-wrap:wrap; gap:9px 22px;
   margin:20px 0 0;
   font-size:var(--fs-xs); color:var(--ink-3);
+}
+/* Shop staat op de volle bladspiegel en houdt zijn vier feiten op één
+   regel. De categoriehero heeft een beeldkolom ernaast en houdt er 577px
+   over, terwijl vier feiten mét icoon er 655 vragen. Daar loopt de regel
+   dus om — en 3+1 leest als een ongeluk. Twee bij twee leest als een blok.
+
+   max-content en niet 1fr: de kolommen moeten om de tekst heen sluiten,
+   anders staat "15 uit voorraad" op een halve hero-breedte met een gat
+   erachter. */
+.cat-hero:not(.plain) .cat-hero-facts{
+  display:grid; grid-template-columns:repeat(2, max-content);
+  gap:9px clamp(20px, 2.4vw, 34px);
 }
 .cat-hero-facts b{ color:var(--ink); font-weight:500; }
 
@@ -2364,7 +2486,15 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* Drie geruststellingen op één regel, elk in een eigen roze kadertje en
    het geheel onder een roze lijn: vier lijnen om zes woorden heen. Nu
    drie stukjes kapitaal met ruimte ertussen. */
-.trust-row{ display:flex; gap:clamp(18px, 2.4vw, 34px); flex-wrap:wrap; margin-top:26px; }
+/* Twee bij twee, om dezelfde reden als bij de categoriehero: de kolom naast
+   het productbeeld is 558px en vier geruststellingen mét icoon vragen er
+   634. Als flexregel liep dat om naar 3+1, met de volle gap van 34px als
+   regelafstand — een losse regel onderaan met een gat erboven. */
+.trust-row{
+  display:grid; grid-template-columns:repeat(2, max-content);
+  gap:12px clamp(20px, 2.4vw, 34px);
+  margin-top:26px;
+}
 .trust-row span{ font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink); }
 
 /* accordion — productinfo gebundeld i.p.v. één lange lap tekst */
@@ -2597,6 +2727,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   .hero-facts{ gap:18px; font-size:var(--fs-xs); }
   .scroll-cue{ display:none; }
   .season-media .ph{ aspect-ratio:4/3; }
+  /* Drie kolommen van een derde telefoonbreedte is per feit nog geen
+     honderd pixel; dan wordt elk label vier regels hoog. Onder elkaar. */
+  .season-facts{ grid-template-columns:1fr; gap:9px; }
   .brand-band-inner{ grid-template-columns:repeat(2,1fr); row-gap:14px; }
   /* Twee kolommen op telefoon: de cel is nu breed genoeg om het logo
      wat groter te zetten dan op de krappe kolommen daarboven. */
@@ -2660,6 +2793,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   /* Gestapeld: beeld boven, kop eronder. Nog lager, want op mobiel
      telt elke pixel voor het eerste product. */
   .cat-hero{ grid-template-columns:1fr; }
+  /* Gestapeld is de kolom weer volle breedte; het blok van twee bij twee
+     mag dan terug naar de gewone omloopregel. */
+  .cat-hero:not(.plain) .cat-hero-facts{ display:flex; }
   .cat-hero-media .ph{ min-height:0; aspect-ratio:16/9; }
   .cat-hero-body{ padding:20px 0 22px; }
 
@@ -2682,6 +2818,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 
 @media (max-width: 560px){
+  /* max-content-kolommen kunnen hier niet meer naast elkaar: twee labels in
+     kapitalen zijn samen breder dan de telefoon. Onder elkaar dus. */
+  .trust-row{ grid-template-columns:1fr; }
   .grid.cols-2, .grid.cols-3, .grid.cols-4, .grid.cols-5, .grid.cols-6{ grid-template-columns:1fr; }
   .brand-row{ grid-template-columns:repeat(3,1fr); }
   /* op telefoon blijft het grid 2-koloms: 1 kolom maakt de lijst eindeloos */

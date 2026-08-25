@@ -100,10 +100,12 @@ const BS_DATA = (() => {
   const BRANDS = [
     { slug: "galler",           name: "Galler",           logo: "galler.png",           logoScale: 2 },
     { slug: "jules-destrooper", name: "Jules Destrooper", logo: "jules-destrooper.png", logoScale: 1    },
-    // Aangeleverd als vol donkerblauw vlak, niet als vrijstaand merkteken:
-    // dit blok blijft in de band een gekleurd tegeltje tussen losse logo's.
-    // Vraag Leonidas om een versie met transparante achtergrond.
-    { slug: "leonidas",         name: "Leonidas",         logo: "leonidas.png",         logoScale: 1.9 },
+    // Was een vol donkerblauw vlak en dus een gekleurd tegeltje tussen losse
+    // merktekens. Vervangen door het vrijstaande medaillon in lijnwerk. Nog
+    // steeds zonder transparantie (JPEG op wit), maar dat hoeft ook niet:
+    // mix-blend-mode:multiply op .brand-logo laat wit tegen de band
+    // verdwijnen. Zie styles.css bij .brand-logo.
+    { slug: "leonidas",         name: "Leonidas",         logo: "leonidas.jpg",         logoScale: 1.9 },
     { slug: "mentos",           name: "Mentos",           logo: "mentos.png",           logoScale: 1    },
     { slug: "tic-tac",          name: "Tic Tac",          logo: "tic-tac.png",          logoScale: 1.9 },
     // Nog geen bruikbaar logo aangeleverd — valt terug op de naam in tekst.
