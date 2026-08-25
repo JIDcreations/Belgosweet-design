@@ -17,6 +17,7 @@ Alle merkbestanden staan in deze repo, onder `assets/`:
 | Pad | Inhoud |
 |---|---|
 | `assets/css/colors.css` | **De enige bron voor kleur.** De zes basiskleuren + alle afgeleide tokens |
+| `assets/css/type.css` | **De enige bron voor grootte en spatiëring.** Dertien stappen + acht spatiëringen |
 | `assets/color/Colors.png` | Het aangeleverde kleurenblad |
 | `assets/fonts/` | Manrope variable + statics, incl. `OFL.txt` |
 | `assets/logo/` | Woordmerk (licht/donker), badge-varianten, twee use-cases |
@@ -265,23 +266,42 @@ De rangorde komt dus van **grootte**, niet van gewicht. Een sectiekop van 50 px
 extra light staat boven lopende tekst van 16 px regular; het formaatverschil
 doet het werk dat vroeger het gewichtsverschil deed.
 
-| Rol | Klasse | Grootte | Gewicht |
+De schaal staat als tokens in [`assets/css/type.css`](assets/css/type.css).
+`styles.css` bevat **geen enkele losse font-size** meer — wie een grootte nodig
+heeft kiest een token, wie vindt dat er een stap ontbreekt voegt hem daar toe.
+Dat is dezelfde regel als bij kleur, en om dezelfde reden: zonder die regel liep
+het uit op 41 groottes en 34 spatiëringen, waarvan een deel dezelfde letter was
+in twee eenheden opgeschreven (`13px` én `0.8125rem`).
+
+Laadvolgorde: `colors.css` → `fonts.css` → `type.css` → `styles.css`.
+
+| Rol | Token | Grootte | Gewicht |
 |---|---|---|---|
-| Display (hero) | `h1.display` | `clamp(2.7rem, 6.6vw, 5.6rem)` | **700** — de enige |
-| Display (niet-H1) | `.display` op h2 | idem | **200** |
-| Paginakop | `.cat-hero-title` / `.page-title` | `clamp(2.5rem, 5.4vw, 4.4rem)` | **200** |
-| Productnaam (PDP) | `.pdp-title` | `clamp(1.9rem, 3vw, 2.7rem)` | **200** |
-| Sectiekop | `.h-lg` / `.section-title` | `clamp(2rem, 3.6vw, 3.1rem)` | **200** |
-| Subkop | `.h-md` | `clamp(1.5rem, 2.2vw, 2.1rem)` | **200** |
-| Statement (over ons) | `.ab-statement p` | `clamp(1.6rem, 3.6vw, 3rem)` | **200** |
-| Lede | `.lede` | `clamp(1.15rem, 1.4vw, 1.35rem)` | **200** |
-| Registergetal | `.ledger-n`, `.usp-n` | `clamp(1.9rem, 2.6vw, 2.5rem)` | 300 |
-| Prijsuitspraak | `.pdp-price-v` | `clamp(1.6rem, 2.4vw, 2.1rem)` | **200** |
-| Citaat | `.ts-body blockquote` | `clamp(1.05rem, 1.5vw, 1.35rem)` | 300 |
-| Jaartal, kleine kop | `.tl-year`, `.tl-text h3` | 17–26px | 300 / 500 |
-| Lopende tekst | `body` | 16px | 400 |
-| Details, meta | `.card-meta`, `.meta`, `.pdp-sku` | 13px | 300 |
-| Labels, units | `.label`, `.eyebrow`, `.ledger-u` | 11px kapitalen | 600 |
+| Display (hero) | `--fs-display` | `clamp(2.7rem, 6.6vw, 5.6rem)` | **700** — de enige, via `h1.display` |
+| Display (niet-H1) | `--fs-display` | idem | **200** |
+| Paginakop | `--fs-title` | `clamp(2.5rem, 5.4vw, 4.4rem)` | **200** |
+| Sectiekop, productnaam, statement | `--fs-head` | `clamp(1.9rem, 3.4vw, 3rem)` | **200** |
+| Subkop, prijs, zoekveld | `--fs-sub` | `clamp(1.5rem, 2.2vw, 2.1rem)` | **200** |
+| Lede, citaat, jaartal | `--fs-lede` | `clamp(1.15rem, 1.4vw, 1.35rem)` | **200** (citaat/jaartal 300) |
+| Lopende tekst | `--fs-body` | 16px | 400 |
+| Secundaire tekst | `--fs-body-2` | 15px | 400 |
+| Formulier, tekstlink | `--fs-sm` | 14px | 400 |
+| Details, meta | `--fs-xs` | 13px | 300 |
+| Labels, kapitalen | `--fs-label` | 11px | 600 |
+| Tellers, merktekens | `--fs-micro` | 10px | 600 |
+| Registergetal | `--fs-num` | `clamp(1.9rem, 2.6vw, 2.5rem)` | 300 |
+| Registergetal groot | `--fs-num-lg` | `clamp(2.6rem, 5vw, 4.1rem)` | 300 |
+
+**Gewichten: zes, elk met een eigen rol.** 200 koppen en lede, 300 details en
+register, 400 lopende tekst, 500 nadruk *binnen* lopende tekst (`<b>` in feiten,
+attributies, actieve staten), 600 de kapitalenfamilie en actieve UI-staten, 700
+uitsluitend `h1.display`. 500 en 600 lijken dubbelop maar zijn het niet — de
+eerste is nadruk in een zin, de tweede is een tekstsoort.
+
+**Spatiëring hangt aan de grootte, niet aan het component.** Acht tokens:
+`--tr-display` (-0.042em), `--tr-tight` (-0.022em), `--tr-head` (-0.018em),
+`--tr-num` (-0.045em), `--tr-body` (-0.012em), `--tr-flat` (0), `--tr-ui`
+(0.05em, kapitalen 12px+) en `--tr-label` (0.14em, kapitalen 11px en kleiner).
 
 **Spatiëring gaat mee omhoog.** Een vette kop mag krap staan — dikke stokken
 onderscheiden zich toch wel. Bij 200 lopen dunne stokken op krappe afstand

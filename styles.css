@@ -40,7 +40,7 @@ body{
   font-family:var(--font-sans);
   color:var(--ink-2);
   background:var(--paper);
-  font-size:16px;
+  font-size:var(--fs-body);
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
@@ -60,33 +60,45 @@ input,select,textarea{ font-family:inherit; }
 }
 
 /* ---- Typografische schaal ----------------------------------
-   Eén familie: Manrope, gewichtsas 200–800. De hiërarchie loopt
-   niet in één richting, maar in twee:
+   Groottes en spatiëring staan in assets/css/type.css. Hier
+   staat alleen wat een token NIET kan uitdrukken: welk gewicht
+   bij welke rol hoort, en waarom.
 
-     koppen         700  bold, groot        — die bevestigen
-     subkoppen      600  semibold
+   REGEL: geen losse font-size in dit bestand. Kies een token.
+
+   De hiërarchie komt van GROOTTE, niet van gewicht:
+
+     h1.display     700  het enige zware element, één per pagina
+     koppen         200  extra light, groot — maat doet het werk
+     lede           200  extra light, 18px+
      lopende tekst  400  regular
-     lede           200  extra light, 18px+ — die ondersteunt
      details        300  light
-     getallen       200  extra light, groot — het register
+     nadruk in tekst 500 <b> in feiten, attributies, actieve staat
      labels/units   600  semibold, kapitalen
+     register       300  light, groot — de cijfers
 
-   Koppen dragen gewicht, alles eromheen laat los. Daardoor is het
-   aantallenregister het enige grote LICHTE element op de pagina —
-   en dat maakt het meteen het element dat opvalt.
+   Eén zwaar element werkt; twee maken er een wedstrijd van. Een
+   sectiekop van 50px extra light staat boven lopende tekst van
+   16px regular zonder dat er gewicht aan te pas komt.
+
+   Daardoor is het aantallenregister het enige grote LICHTE
+   element op de pagina — en dat maakt het het element dat opvalt.
 
    Waar de grens ligt: gewicht 200 heeft formaat nodig. Boven
-   ± 40px draagt het; daaronder worden de stokken te dun, zeker
+   ± 18px draagt het; daaronder worden de stokken te dun, zeker
    op een scherm zonder hoge pixeldichtheid. Lopende tekst blijft
    daarom 400 en kleine kapitalen blijven 600. Let op: een
    contrastcontrole vangt dit NIET — die rekent op kleur, niet op
-   streekdikte. Dit is een leesbaarheidsgrens, geen contrastgrens. */
+   streekdikte. Dit is een leesbaarheidsgrens, geen contrastgrens.
+
+   500 en 600 zijn geen dubbeling: 500 is nadruk BINNEN lopende
+   tekst, 600 is de kapitalenfamilie en actieve UI-staten. */
 
 h1,h2,h3{
   color:var(--ink);
   font-weight:200;
   line-height:1.1;
-  letter-spacing:-0.015em;
+  letter-spacing:var(--tr-head);
   text-wrap:balance;
   margin:0;
 }
@@ -105,19 +117,19 @@ h1,h2,h3{
    stokken op krappe afstand optisch in elkaar over. Vandaar -0.042em op de
    vette H1 en -0.022em op dezelfde maat in extra light. */
 .display{
-  font-size:clamp(2.7rem, 6.6vw, 5.6rem);
+  font-size:var(--fs-display);
   font-weight:200;
   line-height:1.0;
-  letter-spacing:-0.022em;
+  letter-spacing:var(--tr-tight);
 }
 h1.display{
   font-weight:700;
   line-height:0.96;
-  letter-spacing:-0.042em;
+  letter-spacing:var(--tr-display);
 }
 .h-lg{
-  font-size:clamp(2rem, 3.6vw, 3.1rem);
-  font-weight:200; letter-spacing:-0.018em; line-height:1.1;
+  font-size:var(--fs-head);
+  font-weight:200; letter-spacing:var(--tr-head); line-height:1.1;
 }
 /* Sectiekoppen stonden hier in magenta. Ze staan nu donkerrood, net als
    op elke andere pagina: magenta is voorbehouden aan de CTA. Een kop is
@@ -126,27 +138,27 @@ h1.display{
    gewicht — 32-50px vet tegenover 15px lopende tekst — precies zoals
    colors.css §2 het voorschrijft voor de rest van de site. */
 .h-md{
-  font-size:clamp(1.5rem, 2.2vw, 2.1rem);
-  font-weight:200; letter-spacing:-0.015em;
+  font-size:var(--fs-sub);
+  font-weight:200; letter-spacing:var(--tr-head);
 }
 
 .lede{
   /* Extra light kan hier, maar alleen omdat de ondergrens op 1.15rem
      (18.4px) ligt. Zakt dit onder ± 18px, dan moet het terug naar 300.
      Dit is de grens die bepaalt wat wél en niet op 200 mag. */
-  font-size:clamp(1.15rem, 1.4vw, 1.35rem);
+  font-size:var(--fs-lede);
   font-weight:200;
   line-height:1.6;
   color:var(--ink-2);
   max-width:52ch;
   text-wrap:pretty;
 }
-.meta{ font-size:0.8125rem; font-weight:300; color:var(--ink-3); letter-spacing:0.005em; }
+.meta{ font-size:var(--fs-xs); font-weight:300; color:var(--ink-3); letter-spacing:var(--tr-flat); }
 
 /* Sparingly. Niet boven elke sectie — dat is precies het
    sjabloon-signaal dat we hier wegwerken. */
 .label{
-  font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.14em;
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; color:var(--ink-3);
 }
 
@@ -164,7 +176,7 @@ p:last-child{ margin-bottom:0; }
    die als actie lezen zonder knop te worden. */
 .ulink{
   display:inline-block; position:relative; color:var(--ink);
-  font-size:0.875rem; padding-bottom:3px;
+  font-size:var(--fs-sm); padding-bottom:3px;
 }
 .ulink::after{
   background:var(--ink);
@@ -202,8 +214,8 @@ p:last-child{ margin-bottom:0; }
 .wordmark{
   grid-column:2; justify-self:center;
   display:flex; align-items:center;
-  font-size:clamp(1.05rem, 1.5vw, 1.3rem);
-  font-weight:700; letter-spacing:0.02em; color:var(--ink);
+  font-size:var(--fs-lede);
+  font-weight:700; letter-spacing:var(--tr-flat); color:var(--ink);
   white-space:nowrap;
 }
 /* Minimum 120px breed (BRANDING.md §4.2) — daaronder lopen de dunne
@@ -225,8 +237,8 @@ p:last-child{ margin-bottom:0; }
 
 .nav-left{ grid-column:1; display:flex; align-items:center; gap:clamp(16px, 2.2vw, 32px); }
 .nav-left a{
-  position:relative; font-size:0.8125rem; font-weight:500;
-  letter-spacing:0.08em; text-transform:uppercase; color:var(--ink);
+  position:relative; font-size:var(--fs-xs); font-weight:500;
+  letter-spacing:var(--tr-ui); text-transform:uppercase; color:var(--ink);
   padding:4px 0;
 }
 .nav-left a::after{
@@ -241,7 +253,7 @@ p:last-child{ margin-bottom:0; }
   grid-column:3; justify-self:end;
   display:flex; align-items:center; gap:clamp(12px, 1.6vw, 22px);
 }
-.lang-switch{ display:flex; align-items:center; gap:5px; font-size:0.75rem; letter-spacing:0.06em; color:var(--ink-3); }
+.lang-switch{ display:flex; align-items:center; gap:5px; font-size:var(--fs-xs); letter-spacing:var(--tr-ui); color:var(--ink-3); }
 .lang-switch a{ padding:2px; }
 .lang-switch a.active{ color:var(--ink); font-weight:600; }
 .lang-switch .div{ color:var(--ink-3); }
@@ -258,7 +270,7 @@ p:last-child{ margin-bottom:0; }
   position:absolute; top:1px; right:1px;
   min-width:15px; height:15px; padding:0 3px;
   background:var(--ink); color:var(--paper);
-  font-size:9px; font-weight:600; line-height:15px; text-align:center;
+  font-size:var(--fs-micro); font-weight:600; line-height:15px; text-align:center;
   border-radius:100px;
 }
 .icon-btn .count[data-empty="true"]{ display:none; }
@@ -299,10 +311,10 @@ p:last-child{ margin-bottom:0; }
 }
 .mega-season:hover{ background:var(--paper-2); }
 .mega-season-k{
-  font-size:0.6875rem; font-weight:700; text-transform:uppercase;
-  letter-spacing:.13em; white-space:nowrap;
+  font-size:var(--fs-label); font-weight:700; text-transform:uppercase;
+  letter-spacing:var(--tr-label); white-space:nowrap;
 }
-.mega-season-v{ font-size:0.9375rem; color:var(--ink-2); }
+.mega-season-v{ font-size:var(--fs-body-2); color:var(--ink-2); }
 .mega-season svg{ margin-left:auto; width:16px; height:16px; flex:0 0 auto; }
 
 .mega-inner{
@@ -313,23 +325,23 @@ p:last-child{ margin-bottom:0; }
 .mega-col-title{
   display:block; padding-bottom:12px; margin-bottom:6px;
   border-bottom:1px solid var(--rule);
-  font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.13em;
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; color:var(--ink);
 }
 .mega-col a:not(.mega-col-title){
   display:flex; justify-content:space-between; align-items:baseline; gap:12px;
-  padding:8px 0; font-size:0.9375rem; color:var(--ink-2);
+  padding:8px 0; font-size:var(--fs-body-2); color:var(--ink-2);
   transition:padding-left .4s var(--ease), color .3s var(--ease);
 }
 .mega-col a:not(.mega-col-title):hover{ color:var(--ink); padding-left:7px; }
-.mega-col a span{ font-size:0.75rem; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.mega-col a span{ font-size:var(--fs-xs); color:var(--ink-3); font-variant-numeric:tabular-nums; }
 
 .mega-foot{
   display:flex; justify-content:space-between; align-items:center;
   gap:20px; flex-wrap:wrap;
   border-top:1px solid var(--rule);
   padding:16px 0 clamp(26px, 2.8vw, 38px);
-  font-size:0.8125rem; color:var(--ink-3);
+  font-size:var(--fs-xs); color:var(--ink-3);
 }
 
 /* Zoeken schuift open onder de header i.p.v. permanent een veld
@@ -346,12 +358,12 @@ p:last-child{ margin-bottom:0; }
 .search-panel form{ display:flex; align-items:center; gap:14px; padding:22px 0 26px; }
 .search-panel input{
   flex:1 1 auto; border:none; border-bottom:1px solid var(--rule-2); background:none;
-  font-size:clamp(1.25rem, 2.6vw, 1.9rem); font-weight:500;
-  padding:8px 0; color:var(--ink); letter-spacing:-0.02em;
+  font-size:var(--fs-sub); font-weight:500;
+  padding:8px 0; color:var(--ink); letter-spacing:var(--tr-tight);
 }
 .search-panel input::placeholder{ color:var(--ink-3); }
 .search-panel input:focus{ outline:none; border-bottom-color:var(--ink); }
-.search-panel .hint{ font-size:0.8125rem; color:var(--ink-3); white-space:nowrap; }
+.search-panel .hint{ font-size:var(--fs-xs); color:var(--ink-3); white-space:nowrap; }
 
 /* Vaste offerte-CTA. Blijft altijd actief ogen, ook bij lege lijst —
    dit was expliciet een UX-probleem op de huidige site. */
@@ -370,8 +382,8 @@ p:last-child{ margin-bottom:0; }
 .cta-btn{
   display:inline-flex; align-items:center; justify-content:center; gap:9px;
   border:1.5px solid var(--cta); background:transparent; color:var(--ink);
-  padding:14px 26px; font-size:0.8125rem; font-weight:500;
-  letter-spacing:0.05em; text-transform:uppercase;
+  padding:14px 26px; font-size:var(--fs-xs); font-weight:500;
+  letter-spacing:var(--tr-ui); text-transform:uppercase;
   white-space:nowrap; text-align:center; border-radius:100px;
   transition:background .4s var(--ease), color .4s var(--ease),
              border-color .4s var(--ease), opacity .3s var(--ease);
@@ -379,12 +391,12 @@ p:last-child{ margin-bottom:0; }
 .cta-btn:hover{ background:var(--cta); color:var(--on-cta); border-color:var(--cta); }
 .cta-btn.primary{ background:var(--cta); color:var(--on-cta); border-color:var(--cta); }
 .cta-btn.primary:hover{ background:var(--ink); color:var(--on-cta); border-color:var(--ink); }
-.cta-btn.small{ padding:9px 18px; font-size:0.75rem; }
+.cta-btn.small{ padding:9px 18px; font-size:var(--fs-xs); }
 .cta-btn[disabled]{ opacity:.45; pointer-events:none; }
 
 .quote-count{
   display:inline-block; min-width:18px; padding:0 5px; margin-left:7px;
-  border:1px solid currentColor; font-size:10px; line-height:15px; text-align:center;
+  border:1px solid currentColor; font-size:var(--fs-micro); line-height:15px; text-align:center;
   border-radius:100px;
 }
 
@@ -406,8 +418,8 @@ p:last-child{ margin-bottom:0; }
 .mobile-drawer a{
   display:flex; justify-content:space-between; align-items:center;
   padding:20px 0; border-bottom:1px solid var(--rule);
-  font-size:1.35rem; font-weight:600; color:var(--ink);
-  letter-spacing:-0.02em;
+  font-size:var(--fs-lede); font-weight:600; color:var(--ink);
+  letter-spacing:var(--tr-tight);
 }
 .mobile-drawer .drawer-foot{ padding:28px 0; display:flex; flex-direction:column; gap:16px; }
 .mobile-drawer .cta-btn{ width:100%; }
@@ -416,7 +428,7 @@ p:last-child{ margin-bottom:0; }
    Breadcrumb — bestond nergens op de huidige site
    ============================================================ */
 
-.breadcrumb{ font-size:12px; color:var(--ink-soft); padding:16px 0 0; }
+.breadcrumb{ font-size:var(--fs-xs); color:var(--ink-soft); padding:16px 0 0; }
 .breadcrumb a:hover{ color:var(--ink); text-decoration:underline; }
 .breadcrumb .sep{ padding:0 6px; color:var(--ink-3); }
 
@@ -437,26 +449,26 @@ p:last-child{ margin-bottom:0; }
    twee pixels hoog, dus donkerrood roept hier niets — het markeert. */
 .eyebrow{
   display:flex; align-items:center; gap:10px;
-  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.16em;
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; color:var(--ink); margin:0 0 14px;
 }
 .eyebrow::before{
   content:""; flex:0 0 auto; width:22px; height:2px; background:var(--ink);
 }
 .section-title{
-  font-size:clamp(1.8rem, 3vw, 2.6rem); font-weight:200;
-  margin:0; letter-spacing:-.018em; line-height:1.1;
+  font-size:var(--fs-head); font-weight:200;
+  margin:0; letter-spacing:var(--tr-head); line-height:1.1;
 }
 .page-title{
-  font-size:clamp(2.5rem, 5.4vw, 4.4rem); font-weight:200;
-  margin:0; letter-spacing:-.022em; line-height:1.04;
+  font-size:var(--fs-title); font-weight:200;
+  margin:0; letter-spacing:var(--tr-tight); line-height:1.04;
 }
 .section-sub{
-  font-size:1rem; font-weight:300; line-height:1.62; color:var(--ink);
+  font-size:var(--fs-body); font-weight:300; line-height:1.62; color:var(--ink);
   margin:16px 0 0; max-width:50ch;
 }
 .link-more{
-  font-size:0.8125rem; letter-spacing:.02em; color:var(--ink);
+  font-size:var(--fs-xs); letter-spacing:var(--tr-flat); color:var(--ink);
   border-bottom:1px solid var(--ink); padding-bottom:3px;
 }
 
@@ -472,7 +484,7 @@ p:last-child{ margin-bottom:0; }
   background-size:min(24%, 96px);
   border:none;
   display:flex; align-items:flex-end; justify-content:center;
-  color:var(--ink-3); font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--ink-3); font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui);
   min-height:100px; text-align:center; padding:8px 8px 12px;
   transition:background-size .7s var(--ease), background-color .5s var(--ease);
 }
@@ -524,7 +536,7 @@ p:last-child{ margin-bottom:0; }
 /* De vulbalken uit de wireframe zijn weg. Waar de tekst echt nog van de
    klant moet komen (voorwaarden, privacy, cookies) staat dat er nu gewoon. */
 .copy-pending{
-  font-size:0.9375rem; color:var(--ink);
+  font-size:var(--fs-body-2); color:var(--ink);
   border-left:2px solid var(--rule-2); padding-left:14px; margin:10px 0 22px;
 }
 .line{ height:9px; background:var(--line-soft); margin:8px 0; }
@@ -683,19 +695,26 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
 .hero-eyebrow{
   margin:0 0 clamp(14px, 1.6vh, 22px);
-  font-size:0.75rem; font-weight:600;
-  text-transform:uppercase; letter-spacing:.18em;
+  font-size:var(--fs-xs); font-weight:600;
+  text-transform:uppercase; letter-spacing:var(--tr-label);
   color:var(--on-void-2);
 }
+/* Alleen kleur en regellengte. Grootte komt uit --fs-display en
+   regelafstand uit h1.display (0.96) — die stonden hier eerder
+   allebei overschreven. De font-size hield de hero op 4.6rem
+   terwijl de afsluiter-H2 op 5.6rem stond: de kop die het
+   zwaarst moest wegen was de kleinste van de twee. En omdat
+   `.hero-full .display` (0,2,0) het wint van `h1.display`
+   (0,1,1) kreeg de vette H1 bovendien 1.0 in plaats van 0.96. */
 .hero-full .display{
   color:var(--on-void);
-  font-size:clamp(2.4rem, 5vw, 4.6rem);
-  line-height:1.0;
   max-width:14ch;
 }
+/* Gewicht 300 in plaats van de 200 uit .lede: dit is het enige
+   lede-blok op een donkere ondergrond, en lichte tekst op donker
+   oogt door halatie dunner dan hij is. Bewuste uitzondering. */
 .hero-full .lede{
   color:var(--on-void); margin-top:clamp(18px, 2.4vh, 28px);
-  font-size:clamp(1.05rem, 1.25vw, 1.2rem);
   font-weight:300; max-width:44ch;
 }
 
@@ -703,7 +722,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   display:flex; justify-content:space-between; align-items:center; gap:20px;
   border-top:1px solid var(--rule-2);
   padding:20px 0 26px; flex-wrap:wrap;
-  font-size:0.8125rem; color:var(--ink-3);
+  font-size:var(--fs-xs); color:var(--ink-3);
 }
 .hero-facts{ display:flex; gap:clamp(20px, 3.5vw, 52px); flex-wrap:wrap; }
 .hero-facts b{ color:var(--ink); font-weight:500; }
@@ -757,12 +776,12 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* 15-18px is te klein voor 200. Van 700 naar 400 haalt het gewicht er
    wel uit zonder de naam te laten verdwijnen. */
 .fam-name{
-  font-size:clamp(0.95rem, 1.2vw, 1.1rem);
+  font-size:var(--fs-body);
   font-weight:400;
-  letter-spacing:0; color:var(--ink);
+  letter-spacing:var(--tr-flat); color:var(--ink);
 }
 .fam-total{
-  font-size:0.75rem; color:var(--ink-3);
+  font-size:var(--fs-xs); color:var(--ink-3);
   font-variant-numeric:tabular-nums; white-space:nowrap;
 }
 .fam-list{ list-style:none; margin:0; padding:0; }
@@ -774,13 +793,13 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .fam-list a:hover,
 .fam-list a:focus-visible{ padding-left:9px; }
 .fam-cat{
-  font-size:0.9375rem; color:var(--ink-2); line-height:1.35;
+  font-size:var(--fs-body-2); color:var(--ink-2); line-height:1.35;
   transition:color .3s var(--ease);
 }
 .fam-list a:hover .fam-cat,
 .fam-list a:focus-visible .fam-cat{ color:var(--ink); }
 .fam-n{
-  font-size:0.75rem; color:var(--ink-3);
+  font-size:var(--fs-xs); color:var(--ink-3);
   font-variant-numeric:tabular-nums; white-space:nowrap;
 }
 
@@ -849,10 +868,10 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   padding-top:12px; margin-top:12px; border-top:1px solid var(--rule);
 }
 .cc-name{
-  font-size:1rem; color:var(--ink);
-  font-weight:400; letter-spacing:-0.012em; line-height:1.3;
+  font-size:var(--fs-body); color:var(--ink);
+  font-weight:400; letter-spacing:var(--tr-body); line-height:1.3;
 }
-.cc-n{ font-size:0.75rem; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.cc-n{ font-size:var(--fs-xs); color:var(--ink-3); font-variant-numeric:tabular-nums; }
 .cc-slide:hover .cc-name{ text-decoration:underline; text-underline-offset:3px; }
 
 .cc-nav{
@@ -907,7 +926,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .season-facts{
   display:flex; flex-wrap:wrap; gap:6px 22px; margin:22px 0 0; padding:16px 0 0;
   border-top:2px solid var(--accent);
-  font-size:0.8125rem; color:var(--ink-3);
+  font-size:var(--fs-xs); color:var(--ink-3);
 }
 .season-facts b{ color:var(--ink); font-weight:500; }
 
@@ -920,7 +939,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   display:flex; align-items:baseline; justify-content:space-between;
   gap:16px; flex-wrap:wrap; margin-top:clamp(22px, 2.4vw, 30px);
 }
-.season-foot span{ font-size:0.8125rem; color:var(--ink-3); }
+.season-foot span{ font-size:var(--fs-xs); color:var(--ink-3); }
 
 /* ============================================================
    HOME — donker citaat
@@ -1028,8 +1047,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    gewicht meer nodig, en licht past bij de rest van de schaal. */
 .usp-eyebrow{
   margin:0 0 clamp(24px, 2.8vw, 38px);
-  font-size:clamp(0.95rem, 1.5vw, 1.25rem);
-  text-transform:uppercase; letter-spacing:.18em;
+  font-size:var(--fs-lede);
+  text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:400; color:var(--accent-on); line-height:1.3;
 }
 /* Twee kolommen die over alle drie de rijen gelijk lopen, zodat de
@@ -1066,32 +1085,32 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .usp-fact > dt,
 .usp-fact > dd{ margin:0; }
 .usp-n{
-  font-size:clamp(2.6rem, 5vw, 4.1rem);
-  font-weight:300; letter-spacing:-0.05em; line-height:0.86;
+  font-size:var(--fs-num-lg);
+  font-weight:300; letter-spacing:var(--tr-num); line-height:0.86;
   font-variant-numeric:tabular-nums;
   white-space:nowrap;
 }
 /* "één" is een woord op de plek van een getal. Het krijgt dezelfde maat maar
    iets meer gewicht, anders valt het in deze lichte snit uit elkaar. */
-.usp-fact:last-child .usp-n{ font-weight:400; letter-spacing:-0.035em; }
+.usp-fact:last-child .usp-n{ font-weight:400; letter-spacing:var(--tr-num); }
 .usp-plus{ font-size:0.55em; font-weight:400; vertical-align:0.5em; margin-left:0.04em; }
 .usp-l{
-  margin:0; font-size:0.6875rem; text-transform:uppercase;
-  letter-spacing:.13em; font-weight:600; line-height:1.3;
+  margin:0; font-size:var(--fs-label); text-transform:uppercase;
+  letter-spacing:var(--tr-label); font-weight:600; line-height:1.3;
 }
 
 /* Het citaat staat nu in de bewijsband en niet meer in een eigen sectie.
    De fotocirkel is vervallen — op een roze vlak was hij een lege vorm die
    alleen maar meedeed aan de drukte. */
 .proof-quote blockquote{
-  margin:0; font-size:clamp(1.15rem, 1.7vw, 1.5rem);
+  margin:0; font-size:var(--fs-lede);
   font-weight:300;
-  line-height:1.5; letter-spacing:-0.006em; color:var(--accent-on);
+  line-height:1.5; letter-spacing:var(--tr-body); color:var(--accent-on);
   text-wrap:pretty;
 }
 /* --ink-3 wijst naar donkerrood, net als --ink; op roze is er geen zachtere
    trap, dus het onderscheid tussen citaat en naamregel loopt via maat. */
-.ts-attr{ margin-top:18px; font-size:0.8125rem; color:var(--accent-on); }
+.ts-attr{ margin-top:18px; font-size:var(--fs-xs); color:var(--accent-on); }
 .ts-attr b{ color:var(--accent-on); font-weight:500; }
 
 /* ============================================================
@@ -1111,7 +1130,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   display:flex; align-items:center; justify-content:center;
   padding:clamp(24px, 3vw, 40px) 10px;
   border-left:1px solid var(--accent);
-  font-size:0.75rem; letter-spacing:0.06em; color:var(--ink);
+  font-size:var(--fs-xs); letter-spacing:var(--tr-ui); color:var(--ink);
   text-align:center;
   transition:background .4s var(--ease), color .4s var(--ease);
 }
@@ -1167,7 +1186,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .closer .display{ color:var(--ink); margin:0 auto; max-width:14ch; }
 .closer .lede{
   color:var(--ink); margin:24px auto 0; text-align:center;
-  font-size:clamp(1.5rem, 1.7vw, 1.6rem); font-weight:200; max-width:40ch;
+  font-size:var(--fs-sub); font-weight:200; max-width:40ch;
 }
 .closer .hero-actions{ justify-content:center; margin-top:38px; }
 
@@ -1211,7 +1230,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .ab-hero-body{ position:relative; z-index:1; padding-bottom:clamp(36px, 5vw, 68px); }
 .ab-hero-body .display{ max-width:15ch; }
 .ab-hero-sub{
-  margin-top:20px; font-size:0.8125rem; letter-spacing:.12em;
+  margin-top:20px; font-size:var(--fs-xs); letter-spacing:var(--tr-label);
   text-transform:uppercase; color:var(--ink-3);
 }
 
@@ -1219,9 +1238,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .ab-statement{ padding:var(--section-y) 0; }
 .ab-statement p{
   margin:0; max-width:24ch;
-  font-size:clamp(1.6rem, 3.6vw, 3rem);
+  font-size:var(--fs-head);
   font-weight:200;
-  line-height:1.22; letter-spacing:-.018em; color:var(--ink);
+  line-height:1.22; letter-spacing:var(--tr-head); color:var(--ink);
   text-wrap:balance;
 }
 
@@ -1233,7 +1252,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
      wegvegen, anders plakt de kop tegen de vensterrand. */
   padding:0 var(--gutter) var(--section-y);
 }
-.ab-story-col p{ font-size:0.9375rem; color:var(--ink-2); max-width:52ch; }
+.ab-story-col p{ font-size:var(--fs-body-2); color:var(--ink-2); max-width:52ch; }
 
 /* --- Tijdlijn ---
    De verticale lijn vult zich mee met je scrollpositie: de vorm
@@ -1259,9 +1278,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* 19-26px zit op de grens: 200 wordt hier al ijl, 300 houdt het jaartal
    herkenbaar zonder terug te vallen op vet. */
 .tl-year{
-  font-size:clamp(1.2rem, 1.9vw, 1.6rem);
+  font-size:var(--fs-lede);
   font-weight:300;
-  letter-spacing:-.01em; color:var(--ink);
+  letter-spacing:var(--tr-body); color:var(--ink);
   font-variant-numeric:tabular-nums; line-height:1.2;
 }
 .tl-dot{
@@ -1272,8 +1291,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   transition:background .4s var(--ease), border-color .4s var(--ease);
 }
 .tl-item.passed .tl-dot{ background:var(--ink); border-color:var(--ink); }
-.tl-text h3{ font-size:clamp(1.05rem, 1.4vw, 1.25rem); font-weight:500; margin-bottom:7px; }
-.tl-text p{ font-size:0.9375rem; color:var(--ink-2); max-width:54ch; margin:0; }
+.tl-text h3{ font-size:var(--fs-lede); font-weight:500; margin-bottom:7px; }
+.tl-text p{ font-size:var(--fs-body-2); color:var(--ink-2); max-width:54ch; margin:0; }
 
 /* --- Team ---
    Vier portretten in een rij. Onder elke naam staat waarvoor je bij
@@ -1295,11 +1314,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .team-member{ overflow:hidden; }
 .team-member:hover .ph{ transform:scale(1.035); }
-.team-name{ font-size:0.9375rem; color:var(--ink); font-weight:500; }
-.team-role{ font-size:0.8125rem; color:var(--ink-3); margin-top:3px; }
+.team-name{ font-size:var(--fs-body-2); color:var(--ink); font-weight:500; }
+.team-role{ font-size:var(--fs-xs); color:var(--ink-3); margin-top:3px; }
 .team-focus{
   margin-top:12px; padding-top:11px; border-top:1px solid var(--rule);
-  font-size:0.8125rem; color:var(--ink-2);
+  font-size:var(--fs-xs); color:var(--ink-2);
 }
 
 /* --- Sociaal engagement --- */
@@ -1320,7 +1339,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .ab-contact-list li{
   display:flex; justify-content:space-between; gap:16px;
   padding:12px 0; border-top:1px solid var(--rule);
-  font-size:0.9375rem; color:var(--ink-2);
+  font-size:var(--fs-body-2); color:var(--ink-2);
 }
 .ab-contact-list li:last-child{ border-bottom:1px solid var(--rule); }
 .ab-contact-list b{ color:var(--ink); font-weight:500; }
@@ -1353,7 +1372,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .hero-inner{ text-align:center; max-width:640px; margin:0 auto 26px; }
 .hero-inner .line{ margin-left:auto; margin-right:auto; }
 .hero-ctas{ display:flex; gap:12px; justify-content:center; margin-top:20px; flex-wrap:wrap; }
-.hero-usps{ display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); }
+.hero-usps{ display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink-soft); }
 .hero-usps span{ border:1px solid var(--line-soft); padding:6px 12px; }
 
 /* ============================================================
@@ -1377,8 +1396,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    een verloop in de inktkleur achter tekst van dezelfde kleur leest voor een
    contrastcontrole als 1:1, ook als het onzichtbaar is. */
 .card-title{
-  font-size:1rem; font-weight:400; line-height:1.35;
-  letter-spacing:-0.012em; color:var(--ink); margin:0;
+  font-size:var(--fs-body); font-weight:400; line-height:1.35;
+  letter-spacing:var(--tr-body); color:var(--ink); margin:0;
   text-decoration:underline;
   text-decoration-color:transparent;
   text-decoration-thickness:1px;
@@ -1387,9 +1406,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .card:hover .card-title{ text-decoration-color:var(--ink); }
 
-.card-meta{ font-size:0.8125rem; font-weight:300; color:var(--ink); margin-top:5px; }
-.card-price{ font-size:0.8125rem; color:var(--ink); margin-top:9px; }
-.card-min{ font-size:0.75rem; font-weight:300; color:var(--ink); margin-top:2px; }
+.card-meta{ font-size:var(--fs-xs); font-weight:300; color:var(--ink); margin-top:5px; }
+.card-price{ font-size:var(--fs-xs); color:var(--ink); margin-top:9px; }
+.card-min{ font-size:var(--fs-xs); font-weight:300; color:var(--ink); margin-top:2px; }
 
 /* De rustige tegel toont enkel beeld + naam; merk en prijsregel staan op
    de productpagina zelf. */
@@ -1412,7 +1431,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .mk{
   background:var(--paper); color:var(--ink);
-  font-size:0.625rem; text-transform:uppercase; letter-spacing:.1em;
+  font-size:var(--fs-micro); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; padding:4px 8px;
 }
 .mk-promo{ border:1.5px solid var(--ink); padding:3px 7px; }
@@ -1447,12 +1466,12 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    ook in donkerrood rustiger dan 200, en het getal moet het raster niet
    overstemmen. */
 .ledger-n{
-  font-size:clamp(1.9rem, 2.6vw, 2.5rem);
-  font-weight:300; letter-spacing:-0.045em; line-height:0.85;
+  font-size:var(--fs-num);
+  font-weight:300; letter-spacing:var(--tr-num); line-height:0.85;
   font-variant-numeric:tabular-nums; color:var(--ink);
 }
 .ledger-u{
-  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.13em;
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; color:var(--ink);
 }
 
@@ -1466,16 +1485,16 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .ledger-col{ display:flex; flex-direction:column; gap:12px; }
 .ledger-k{
-  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.14em;
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; color:var(--ink);
 }
-.ledger-col .ledger-n{ font-size:clamp(2.6rem, 4.4vw, 3.8rem); }
+.ledger-col .ledger-n{ font-size:var(--fs-num-lg); }
 
 /* Badges op productkaarten: enkel structureel (welke statussen bestaan),
    geen visuele styling-intentie. */
 .badges{ display:flex; gap:5px; flex-wrap:wrap; margin-bottom:6px; min-height:0; }
 .badge{
-  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.1em;
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:600; border:1px solid var(--rule-2);
   color:var(--ink); padding:4px 9px;
 }
@@ -1494,9 +1513,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   align-items:baseline; gap:12px;
   border-top:1px solid var(--rule); margin-top:14px;
 }
-.tile-name{ font-size:1rem; font-weight:400; letter-spacing:-.012em; }
+.tile-name{ font-size:var(--fs-body); font-weight:400; letter-spacing:var(--tr-body); }
 .tile-count{
-  font-size:0.75rem; color:var(--ink);
+  font-size:var(--fs-xs); color:var(--ink);
   white-space:nowrap; font-variant-numeric:tabular-nums;
 }
 
@@ -1514,16 +1533,16 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .split-media .ph{ height:100%; min-height:320px; border:none; }
 
 .usp-list{ margin:16px 0 0; padding:0; list-style:none; }
-.usp-list li{ padding:11px 0; border-top:1px solid var(--line-soft); font-size:13px; }
+.usp-list li{ padding:11px 0; border-top:1px solid var(--line-soft); font-size:var(--fs-xs); }
 .usp-list li:last-child{ border-bottom:1px solid var(--line-soft); }
 
 .testimonial{ padding:14px 0; border-top:1px solid var(--line-soft); }
 .testimonial:last-child{ border-bottom:1px solid var(--line-soft); }
-.testimonial .attr{ font-size:12px; color:var(--ink-soft); margin-top:6px; }
+.testimonial .attr{ font-size:var(--fs-xs); color:var(--ink-soft); margin-top:6px; }
 
 /* logo-rij */
 .brand-row{ display:grid; grid-template-columns:repeat(8,1fr); gap:12px; }
-.brand-row .ph{ min-height:58px; font-size:10px; }
+.brand-row .ph{ min-height:58px; font-size:var(--fs-micro); }
 .brand-row a:hover .ph{ border-color:var(--ink); }
 
 /* ============================================================
@@ -1552,12 +1571,12 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   display:flex; flex-direction:column; justify-content:center;
 }
 .cat-hero-eyebrow{
-  font-size:0.6875rem; text-transform:uppercase; letter-spacing:.14em;
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   color:var(--ink-3); margin:0 0 12px;
 }
 .cat-hero-title{
-  font-size:clamp(2.5rem, 5.4vw, 4.4rem); line-height:1.04;
-  letter-spacing:-.022em; margin:0;
+  font-size:var(--fs-title); line-height:1.04;
+  letter-spacing:var(--tr-tight); margin:0;
   font-weight:200; color:var(--ink);
 }
 
@@ -1567,7 +1586,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .cat-hero-facts{
   display:flex; flex-wrap:wrap; gap:6px 22px;
   margin:18px 0 0; padding-top:14px; border-top:1px solid var(--rule);
-  font-size:0.8125rem; color:var(--ink-3);
+  font-size:var(--fs-xs); color:var(--ink-3);
 }
 .cat-hero-facts b{ color:var(--ink); font-weight:500; }
 
@@ -1585,15 +1604,15 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   display:flex; justify-content:space-between; align-items:center; gap:20px;
   padding:6px 0 22px; border-top:2px solid var(--accent); flex-wrap:wrap;
 }
-.catalog-bar-right{ display:flex; align-items:center; gap:20px; font-size:12px; color:var(--ink-soft); flex-wrap:wrap; }
+.catalog-bar-right{ display:flex; align-items:center; gap:20px; font-size:var(--fs-xs); color:var(--ink-soft); flex-wrap:wrap; }
 /* Het aantal treffers is het enige getal op deze balk dat verandert als je
    filtert. Het mag dus zwaarder staan dan het woord ernaast. */
-.result-n b{ font-weight:700; font-size:13px; color:var(--ink); font-variant-numeric:tabular-nums; }
+.result-n b{ font-weight:700; font-size:var(--fs-xs); color:var(--ink); font-variant-numeric:tabular-nums; }
 
 .filter-toggle{
   display:inline-flex; align-items:center; gap:10px;
   background:none; border:none; padding:14px 0 0;
-  font-size:11px; text-transform:uppercase; letter-spacing:.11em; color:var(--ink);
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label); color:var(--ink);
 }
 .filter-toggle .ico{ display:block; width:13px; height:13px; }
 .filter-toggle:hover .label{ border-bottom-color:var(--ink); }
@@ -1615,7 +1634,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   display:flex; justify-content:space-between; align-items:baseline;
   padding:0 0 12px; border-bottom:2px solid var(--accent);
 }
-.filters-head strong{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+.filters-head strong{ font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); }
 /* De padding hier heft de negatieve marge van .filter-opt op: de
    hover-grond mag 10px buiten de kolom vallen zonder dat er binnen de
    body horizontaal gescrold kan worden. */
@@ -1626,7 +1645,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .filter-group{ padding:18px 0; border-bottom:1px solid var(--accent); }
 .filter-group:last-child{ border-bottom:none; padding-bottom:0; }
 .filter-title{
-  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em;
+  font-size:var(--fs-label); font-weight:600; text-transform:uppercase; letter-spacing:var(--tr-ui);
   margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;
   gap:8px;
 }
@@ -1636,8 +1655,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .filter-title .on-n{
   flex:0 0 auto; min-width:16px; height:16px; padding:0 4px;
   background:var(--ink); color:var(--paper);
-  font-size:10px; line-height:16px; text-align:center; font-weight:600;
-  letter-spacing:0; border-radius:100px;
+  font-size:var(--fs-micro); line-height:16px; text-align:center; font-weight:600;
+  letter-spacing:var(--tr-flat); border-radius:100px;
   font-variant-numeric:tabular-nums;
 }
 /* De rij loopt 10px buiten de kolom door en is ruimer van boven en onder:
@@ -1646,7 +1665,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    kolomlijn staan — alleen de grond steekt uit. */
 .filter-opt{
   display:flex; align-items:center; gap:12px;
-  font-size:0.875rem; color:var(--ink);
+  font-size:var(--fs-sm); color:var(--ink);
   padding:9px 10px; margin-inline:-10px; cursor:pointer;
   transition:background .2s var(--ease);
 }
@@ -1674,7 +1693,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* Kleur is nooit het enige signaal: de aangevinkte regel wordt ook zwaarder. */
 .filter-opt.is-on{ font-weight:600; }
 .filter-opt .n{
-  margin-left:auto; font-size:0.75rem; color:var(--ink);
+  margin-left:auto; font-size:var(--fs-xs); color:var(--ink);
   font-variant-numeric:tabular-nums;
 }
 /* Nul treffers: gedimd én echt uitgeschakeld (het `disabled`-attribuut zit
@@ -1682,20 +1701,20 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    er niets; met alleen `pointer-events:none` zou de muis geblokkeerd zijn
    maar het toetsenbord er nog gewoon bij kunnen. */
 .filter-opt.is-empty{ opacity:.4; cursor:default; }
-.filter-sub{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3); margin:10px 0 4px; }
-.filter-more{ font-size:12px; color:var(--ink-soft); border-bottom:1px solid var(--line); margin-top:6px; display:inline-block; background:none; border-top:none; border-left:none; border-right:none; padding:2px 0; }
+.filter-sub{ font-size:var(--fs-micro); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink-3); margin:10px 0 4px; }
+.filter-more{ font-size:var(--fs-xs); color:var(--ink-soft); border-bottom:1px solid var(--line); margin-top:6px; display:inline-block; background:none; border-top:none; border-left:none; border-right:none; padding:2px 0; }
 .filters-toggle{ display:none; width:100%; margin-bottom:16px; }
-.filters-clear{ font-size:11px; color:var(--ink); background:none; border:none; border-bottom:1px solid var(--control); padding:1px 0; }
+.filters-clear{ font-size:var(--fs-label); color:var(--ink); background:none; border:none; border-bottom:1px solid var(--control); padding:1px 0; }
 .filters-clear:hover{ border-bottom-width:2px; }
 
 .toolbar{
   display:flex; justify-content:space-between; align-items:center; gap:16px;
-  margin-bottom:16px; font-size:12px; color:var(--ink-soft); flex-wrap:wrap;
+  margin-bottom:16px; font-size:var(--fs-xs); color:var(--ink-soft); flex-wrap:wrap;
 }
 .sort-select{
   appearance:none; -webkit-appearance:none;
   border:1.5px solid var(--control); background:var(--paper);
-  padding:9px 34px 9px 13px; font-size:0.8125rem; color:var(--ink);
+  padding:9px 34px 9px 13px; font-size:var(--fs-xs); color:var(--ink);
   cursor:pointer; border-radius:0;
   /* Eigen pijltje: SVG als data-URI, in donkerrood uit het palet. */
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2344171B' stroke-width='1.3'/%3E%3C/svg%3E");
@@ -1710,16 +1729,16 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    rand als het vinkje waar ze uit voortkomen. */
 .chip{
   display:inline-flex; align-items:center; gap:8px;
-  border:1.5px solid var(--control); padding:5px 10px; font-size:11px; color:var(--ink);
+  border:1.5px solid var(--control); padding:5px 10px; font-size:var(--fs-label); color:var(--ink);
   background:var(--paper);
   transition:background .25s var(--ease);
 }
 .chip b{ font-weight:600; }
-.chip .x{ font-size:14px; line-height:1; color:var(--ink); }
+.chip .x{ font-size:var(--fs-sm); line-height:1; color:var(--ink); }
 .chip:hover{ background:var(--pink); }
 
-.empty-state{ border:1px solid var(--line-soft); padding:40px 24px; text-align:center; color:var(--ink-soft); font-size:13px; }
-.empty-state strong{ display:block; color:var(--ink); font-size:15px; margin-bottom:6px; }
+.empty-state{ border:1px solid var(--line-soft); padding:40px 24px; text-align:center; color:var(--ink-soft); font-size:var(--fs-xs); }
+.empty-state strong{ display:block; color:var(--ink); font-size:var(--fs-body-2); margin-bottom:6px; }
 
 /* ============================================================
    Asymmetrisch catalogus-grid
@@ -1742,7 +1761,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .catalog-grid.wide{ grid-template-columns:repeat(4,1fr); }
 
 /* Eén paginering-methode — de huidige site heeft er twee door elkaar. */
-.pagination{ display:flex; gap:7px; justify-content:center; align-items:center; margin-top:32px; font-size:13px; flex-wrap:wrap; }
+.pagination{ display:flex; gap:7px; justify-content:center; align-items:center; margin-top:32px; font-size:var(--fs-xs); flex-wrap:wrap; }
 .pagination button{
   border:1px solid var(--line-soft); background:var(--paper); padding:7px 13px; color:var(--ink-soft);
 }
@@ -1759,7 +1778,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    dit het enige zichtbare bewijs dat de variantkeuze werkt (overdracht §10.3),
    dus het blijft — maar als onderschrift, niet als label ín het beeld. */
 .pdp-caption{
-  margin-top:12px; font-size:0.8125rem; font-weight:300; letter-spacing:.02em;
+  margin-top:12px; font-size:var(--fs-xs); font-weight:300; letter-spacing:var(--tr-flat);
   color:var(--ink);
 }
 .pdp{ display:grid; grid-template-columns:1fr 1fr; gap:52px; margin-top:20px; }
@@ -1772,20 +1791,20 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .pdp-thumbs .ph.active{ outline:2px solid var(--control); outline-offset:-2px; }
 
 .pdp-title{
-  font-size:clamp(1.9rem, 3vw, 2.7rem); font-weight:200;
-  margin:0 0 8px; letter-spacing:-.018em; line-height:1.1;
+  font-size:var(--fs-head); font-weight:200;
+  margin:0 0 8px; letter-spacing:var(--tr-head); line-height:1.1;
 }
-.pdp-sku{ font-size:0.8125rem; font-weight:300; color:var(--ink); margin-bottom:22px; }
+.pdp-sku{ font-size:var(--fs-xs); font-weight:300; color:var(--ink); margin-bottom:22px; }
 .pdp-price-k{
-  display:block; font-size:0.6875rem; text-transform:uppercase;
-  letter-spacing:.14em; font-weight:600; color:var(--ink); margin-bottom:8px;
+  display:block; font-size:var(--fs-label); text-transform:uppercase;
+  letter-spacing:var(--tr-label); font-weight:600; color:var(--ink); margin-bottom:8px;
 }
 .pdp-price-v{
-  display:block; font-size:clamp(1.6rem, 2.4vw, 2.1rem);
-  font-weight:200; letter-spacing:-0.03em; line-height:1; color:var(--ink);
+  display:block; font-size:var(--fs-sub);
+  font-weight:200; letter-spacing:var(--tr-num); line-height:1; color:var(--ink);
 }
 .pdp-price-note{
-  font-size:0.9375rem; font-weight:300; line-height:1.62; color:var(--ink);
+  font-size:var(--fs-body-2); font-weight:300; line-height:1.62; color:var(--ink);
   margin:16px 0 0; max-width:46ch;
 }
 /* Op de productpagina is magenta de accentkleur, niet roze. Het zit
@@ -1801,36 +1820,36 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
 .variant-block{ margin-bottom:20px; }
 .variant-label{
-  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  font-size:var(--fs-label); font-weight:700; text-transform:uppercase; letter-spacing:var(--tr-ui);
   margin-bottom:9px; display:flex; gap:8px; align-items:baseline;
 }
-.variant-label .chosen{ font-weight:400; text-transform:none; letter-spacing:0; color:var(--ink-soft); font-size:12px; }
+.variant-label .chosen{ font-weight:400; text-transform:none; letter-spacing:var(--tr-flat); color:var(--ink-soft); font-size:var(--fs-xs); }
 .variant-options{ display:flex; gap:8px; flex-wrap:wrap; }
-.variant-opt{ border:1px solid var(--control); padding:8px 14px; font-size:13px; background:var(--paper); }
+.variant-opt{ border:1px solid var(--control); padding:8px 14px; font-size:var(--fs-xs); background:var(--paper); }
 .variant-opt:hover{ border-color:var(--ink); }
 .variant-opt.active{ border-color:var(--control); border-width:1.5px; background:var(--bg-alt); font-weight:600; }
 
 .qty-row{ display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; margin:20px 0 6px; }
-.qty-field label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:6px; }
+.qty-field label{ display:block; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink-soft); margin-bottom:6px; }
 .qty-input{ display:flex; border:1.5px solid var(--control); width:130px; }
-.qty-input button{ width:34px; border:none; background:var(--bg-alt); color:var(--ink); font-size:15px; }
-.qty-input input{ width:100%; border:none; text-align:center; font-size:14px; padding:8px 0; -moz-appearance:textfield; }
+.qty-input button{ width:34px; border:none; background:var(--bg-alt); color:var(--ink); font-size:var(--fs-body-2); }
+.qty-input input{ width:100%; border:none; text-align:center; font-size:var(--fs-sm); padding:8px 0; -moz-appearance:textfield; }
 .qty-input input::-webkit-outer-spin-button,
 .qty-input input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 
-.warn-box{ border:1px solid var(--ink); padding:11px 14px; font-size:13px; margin:16px 0; }
+.warn-box{ border:1px solid var(--ink); padding:11px 14px; font-size:var(--fs-xs); margin:16px 0; }
 .warn-box.soft{ border-color:var(--line); color:var(--ink-soft); }
-.field-error{ font-size:12px; color:var(--ink); border-left:2px solid var(--ink); padding-left:9px; margin-top:8px; }
+.field-error{ font-size:var(--fs-xs); color:var(--ink); border-left:2px solid var(--ink); padding-left:9px; margin-top:8px; }
 
-.stock-table{ width:100%; border-collapse:collapse; font-size:13px; margin:18px 0 22px; }
+.stock-table{ width:100%; border-collapse:collapse; font-size:var(--fs-xs); margin:18px 0 22px; }
 .stock-table th, .stock-table td{ border:1px solid var(--line-soft); padding:8px 12px; text-align:left; }
-.stock-table th{ background:var(--bg-alt); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+.stock-table th{ background:var(--bg-alt); font-weight:600; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); }
 
 .cta-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-.cta-feedback{ font-size:12px; color:var(--ink-soft); }
+.cta-feedback{ font-size:var(--fs-xs); color:var(--ink-soft); }
 
 .trust-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; padding-top:18px; border-top:1px solid var(--accent); }
-.trust-row span{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink); border:1px solid var(--accent); padding:6px 10px; }
+.trust-row span{ font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink); border:1px solid var(--accent); padding:6px 10px; }
 
 /* accordion — productinfo gebundeld i.p.v. één lange lap tekst */
 .acc{ border-top:2px solid var(--accent); }
@@ -1838,10 +1857,10 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .acc-head{
   width:100%; display:flex; justify-content:space-between; align-items:center; gap:12px;
   background:none; border:none; padding:15px 0; text-align:left;
-  font-size:13px; font-weight:600; color:var(--ink);
+  font-size:var(--fs-xs); font-weight:600; color:var(--ink);
 }
-.acc-head .sign{ font-size:16px; color:var(--ink-soft); font-weight:400; }
-.acc-body{ display:none; padding:0 0 18px; font-size:13px; color:var(--ink-soft); max-width:680px; }
+.acc-head .sign{ font-size:var(--fs-body); color:var(--ink-soft); font-weight:400; }
+.acc-body{ display:none; padding:0 0 18px; font-size:var(--fs-xs); color:var(--ink-soft); max-width:680px; }
 .acc-item.open .acc-body{ display:block; }
 
 /* ============================================================
@@ -1849,22 +1868,22 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    ============================================================ */
 
 .quote-layout{ display:grid; grid-template-columns:1fr 340px; gap:36px; align-items:start; margin-top:20px; }
-.quote-table{ width:100%; border-collapse:collapse; font-size:13px; }
+.quote-table{ width:100%; border-collapse:collapse; font-size:var(--fs-xs); }
 .quote-table th{
-  font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);
+  font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); color:var(--ink-soft);
   text-align:left; padding:0 12px 10px; border-bottom:1px solid var(--line);
 }
 .quote-table td{ padding:14px 12px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
 .quote-table .thumb{ width:70px; }
 .quote-table .thumb .ph{ min-height:64px; margin:0; }
-.quote-item-name{ font-size:13px; font-weight:600; }
-.quote-item-meta{ font-size:12px; color:var(--ink-soft); margin-top:3px; }
-.quote-remove{ background:none; border:none; border-bottom:1px solid var(--line); font-size:11px; color:var(--ink-soft); padding:1px 0; }
+.quote-item-name{ font-size:var(--fs-xs); font-weight:600; }
+.quote-item-meta{ font-size:var(--fs-xs); color:var(--ink-soft); margin-top:3px; }
+.quote-remove{ background:none; border:none; border-bottom:1px solid var(--line); font-size:var(--fs-label); color:var(--ink-soft); padding:1px 0; }
 .quote-remove:hover{ color:var(--ink); }
 
 .quote-side{ border:1px solid var(--line-soft); padding:20px; position:sticky; top:calc(var(--header-h) + 20px); }
-.quote-side h3{ font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; margin:0 0 14px; }
-.quote-side .row{ display:flex; justify-content:space-between; font-size:13px; padding:7px 0; border-bottom:1px solid var(--line-soft); }
+.quote-side h3{ font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:var(--tr-ui); margin:0 0 14px; }
+.quote-side .row{ display:flex; justify-content:space-between; font-size:var(--fs-xs); padding:7px 0; border-bottom:1px solid var(--line-soft); }
 .quote-side .cta-btn{ width:100%; margin-top:16px; }
 
 /* Eén pagina per stap; afgelegde stappen blijven klikbaar. */
@@ -1874,7 +1893,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .step{
   flex:1; padding:14px 18px 14px 0;
-  font-size:0.875rem; color:var(--ink-3);
+  font-size:var(--fs-sm); color:var(--ink-3);
   border-right:1px solid var(--rule);
 }
 .step + .step{ padding-left:18px; }
@@ -1883,7 +1902,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .step.done{ color:var(--ink-2); }
 .step.done:hover{ color:var(--ink); }
 .step b{
-  display:block; font-size:0.6875rem; text-transform:uppercase; letter-spacing:.12em;
+  display:block; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   font-weight:500; color:var(--ink-3); margin-bottom:4px;
 }
 .step.active b{ color:var(--ink); }
@@ -1896,8 +1915,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
   padding:18px 0; margin-bottom:clamp(28px, 3vw, 40px);
 }
-.quote-recap strong{ display:block; font-size:0.9375rem; color:var(--ink); font-weight:500; }
-.quote-recap span{ display:block; margin-top:4px; font-size:0.8125rem; color:var(--ink-3); }
+.quote-recap strong{ display:block; font-size:var(--fs-body-2); color:var(--ink); font-weight:500; }
+.quote-recap span{ display:block; margin-top:4px; font-size:var(--fs-xs); color:var(--ink-3); }
 
 /* Stap 3 */
 .sent-layout{
@@ -1907,11 +1926,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .sent-next{ list-style:none; margin:clamp(28px, 3vw, 40px) 0; padding:0; }
 .sent-next li{
   padding:16px 0; border-top:1px solid var(--rule);
-  font-size:0.9375rem; color:var(--ink-2);
+  font-size:var(--fs-body-2); color:var(--ink-2);
 }
 .sent-next li:last-child{ border-bottom:1px solid var(--rule); }
 .sent-next b{
-  display:block; font-size:0.6875rem; text-transform:uppercase; letter-spacing:.12em;
+  display:block; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-label);
   color:var(--ink-3); font-weight:500; margin-bottom:5px;
 }
 
@@ -1922,28 +1941,28 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .form-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 20px; max-width:640px; }
 .form-row{ margin-bottom:16px; }
 .form-row.full{ grid-column:1/-1; }
-.form-row label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; color:var(--ink-soft); }
+.form-row label{ display:block; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:var(--tr-ui); margin-bottom:6px; color:var(--ink-soft); }
 .form-row input, .form-row textarea, .form-row select{
-  width:100%; border:1px solid var(--control); padding:10px 12px; font-size:14px;
+  width:100%; border:1px solid var(--control); padding:10px 12px; font-size:var(--fs-sm);
   font-family:inherit; background:var(--paper); color:var(--ink);
 }
 .form-row textarea{ min-height:110px; resize:vertical; }
-.form-row .hint{ font-size:11px; color:var(--ink-3); margin-top:5px; }
+.form-row .hint{ font-size:var(--fs-label); color:var(--ink-3); margin-top:5px; }
 /* Hogere specificiteit dan `.form-row label`, anders wint daar
    display:block en springt het vinkje weg van zijn tekst. */
 .form-row label.form-check,
 .form-check{
   display:flex; gap:10px; align-items:flex-start;
-  font-size:0.8125rem; text-transform:none; letter-spacing:0;
+  font-size:var(--fs-xs); text-transform:none; letter-spacing:var(--tr-flat);
   color:var(--ink-2); margin:0 0 12px;
 }
 .form-check input{ accent-color:var(--ink); margin-top:2px; flex:0 0 auto; }
 .form-check a{ border-bottom:1px solid var(--rule-2); }
 .form-check + .cta-btn{ margin-top:14px; }
-.form-success{ border:1px solid var(--ink); padding:16px 18px; font-size:13px; margin-bottom:20px; }
+.form-success{ border:1px solid var(--ink); padding:16px 18px; font-size:var(--fs-xs); margin-bottom:20px; }
 
 .inline-form{ display:flex; gap:10px; max-width:440px; flex-wrap:wrap; }
-.inline-form input{ flex:1 1 220px; border:1px solid var(--control); padding:10px 12px; font-size:14px; }
+.inline-form input{ flex:1 1 220px; border:1px solid var(--control); padding:10px 12px; font-size:var(--fs-sm); }
 
 /* ============================================================
    Info-pagina (voorwaarden / privacy / cookies / print)
@@ -1951,10 +1970,10 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
 .doc-layout{ display:grid; grid-template-columns:220px 1fr; gap:44px; align-items:start; margin-top:20px; }
 .doc-nav{ position:sticky; top:calc(var(--header-h) + 20px); border-left:1px solid var(--line-soft); }
-.doc-nav a{ display:block; font-size:13px; color:var(--ink-soft); padding:8px 14px; border-left:2px solid transparent; margin-left:-1px; }
+.doc-nav a{ display:block; font-size:var(--fs-xs); color:var(--ink-soft); padding:8px 14px; border-left:2px solid transparent; margin-left:-1px; }
 .doc-nav a.active{ color:var(--ink); border-left-color:var(--ink); font-weight:600; }
 .doc-body{ max-width:680px; }
-.doc-body h2{ font-size:18px; font-weight:600; margin:28px 0 10px; }
+.doc-body h2{ font-size:var(--fs-body); font-weight:600; margin:28px 0 10px; }
 .doc-body h2:first-child{ margin-top:0; }
 
 /* ============================================================
@@ -1963,14 +1982,14 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 
 .account-layout{ display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:start; margin-top:24px; }
 .panel{ border:1px solid var(--line-soft); padding:24px; }
-.panel h2{ font-size:16px; font-weight:600; margin:0 0 4px; }
-.panel .panel-sub{ font-size:13px; color:var(--ink-soft); margin:0 0 18px; }
+.panel h2{ font-size:var(--fs-body); font-weight:600; margin:0 0 4px; }
+.panel .panel-sub{ font-size:var(--fs-xs); color:var(--ink-soft); margin:0 0 18px; }
 
 .reorder-item{ display:flex; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line-soft); }
 .reorder-item .ph{ width:56px; min-height:56px; flex:0 0 56px; margin:0; }
 .reorder-item .meta{ flex:1 1 auto; min-width:0; }
-.reorder-item .meta strong{ display:block; font-size:13px; font-weight:600; }
-.reorder-item .meta span{ font-size:12px; color:var(--ink-soft); }
+.reorder-item .meta strong{ display:block; font-size:var(--fs-xs); font-weight:600; }
+.reorder-item .meta span{ font-size:var(--fs-xs); color:var(--ink-soft); }
 
 /* ============================================================
    Footer
@@ -2000,16 +2019,16 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   gap:clamp(24px, 3vw, 48px); margin-bottom:clamp(40px, 5vw, 68px);
 }
 .footer-col-title{
-  font-size:0.6875rem; font-weight:600; text-transform:uppercase;
-  letter-spacing:0.14em; color:var(--ink); margin-bottom:18px;
+  font-size:var(--fs-label); font-weight:600; text-transform:uppercase;
+  letter-spacing:var(--tr-label); color:var(--ink); margin-bottom:18px;
 }
-.footer-col a{ display:block; font-size:0.9375rem; color:var(--ink); margin-bottom:11px; }
+.footer-col a{ display:block; font-size:var(--fs-body-2); color:var(--ink); margin-bottom:11px; }
 /* Hover kan hier niet van kleur veranderen — er is geen tweede kleur. Een
    onderstreping is het alternatief; dekking op tekst is uitdrukkelijk
    verboden (BRANDING.md §2.4) omdat je dan contrast verliest zonder dat het
    aan de kleurwaarde te zien is. */
 .footer-col a:hover{ text-decoration:underline; text-underline-offset:4px; }
-.footer-col p{ font-size:0.9375rem; color:var(--ink); margin:0 0 12px; line-height:1.7; }
+.footer-col p{ font-size:var(--fs-body-2); color:var(--ink); margin:0 0 12px; line-height:1.7; }
 /* De taalschakelaar erft de kleuren van de header. Die staan al op
    donkerrood, dus alleen het actieve gewicht hoeft hier bevestigd. */
 .site-footer .lang-switch{ color:var(--ink); }
@@ -2021,7 +2040,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .footer-bottom{
   border-top:1px solid var(--ink); padding-top:22px;
   display:flex; justify-content:space-between; align-items:center; gap:16px;
-  font-size:0.8125rem; color:var(--ink); flex-wrap:wrap;
+  font-size:var(--fs-xs); color:var(--ink); flex-wrap:wrap;
 }
 
 /* ============================================================
@@ -2048,7 +2067,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
      halve hero te smal om nog iets van een opname te laten zien. */
   .hero-media{ grid-template-columns:1fr; }
   .hero-media .hero-shot + .hero-shot{ display:none; }
-  .hero-facts{ gap:18px; font-size:0.75rem; }
+  .hero-facts{ gap:18px; font-size:var(--fs-xs); }
   .scroll-cue{ display:none; }
   .season-media .ph{ aspect-ratio:4/3; }
   .brand-band-inner{ grid-template-columns:repeat(2,1fr); }

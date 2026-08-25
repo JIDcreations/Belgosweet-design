@@ -1,0 +1,84 @@
+/* ============================================================
+   Belgosweet — typografische schaal
+   ------------------------------------------------------------
+   De tegenhanger van colors.css. Dat bestand bevat zes
+   hexwaarden en dwingt daarmee het palet af; dit bestand bevat
+   dertien groottes en acht spatiëringen en dwingt daarmee de
+   schaal af.
+
+   REGEL: styles.css bevat geen enkele losse font-size meer.
+   Wie een grootte nodig heeft, kiest een token. Wie vindt dat
+   er een stap ontbreekt, voegt hem HIER toe — met een reden.
+
+   Zonder deze regel liep het uit de hand: 151 losse
+   font-size-declaraties, 41 verschillende waarden, 22 aparte
+   clamp()-curves, 34 spatiëringen. Groottes stonden bovendien
+   in twee eenheden door elkaar (13px én 0.8125rem is dezelfde
+   letter, twee keer opgeschreven).
+
+   Laden NA fonts.css, VÓÓR styles.css. Zie BRANDING.md §3.
+   ============================================================ */
+
+:root{
+
+  /* ---- Koppen -------------------------------------------------
+     Vier stappen. Allemaal gewicht 200 (zie styles.css h1,h2,h3);
+     alleen h1.display staat op 700. De rangorde komt van grootte,
+     niet van gewicht. */
+
+  /* Hero. Eén per pagina. */
+  --fs-display:clamp(2.7rem, 6.6vw, 5.6rem);
+
+  /* Paginakop en categoriekop. */
+  --fs-title:clamp(2.5rem, 5.4vw, 4.4rem);
+
+  /* Sectiekop, productnaam, groot statement.
+     Vervangt vier bijna-identieke curves die naast elkaar op
+     één pagina als een wiebel lazen. */
+  --fs-head:clamp(1.9rem, 3.4vw, 3rem);
+
+  /* Subkop, prijsuitspraak, zoekveld, afsluiter-lede. */
+  --fs-sub:clamp(1.5rem, 2.2vw, 2.1rem);
+
+  /* ---- Ondersteunende tekst ----------------------------------
+     De ondergrens ligt bewust op 1.15rem (18.4px): dat is de
+     grens waaronder gewicht 200 niet meer draagt. Zie BRANDING
+     §3.3. Zakt deze token, dan moet het gewicht mee omhoog. */
+  --fs-lede:clamp(1.15rem, 1.4vw, 1.35rem);
+
+  /* ---- Lopende tekst ------------------------------------------
+     Blijft 400. Op 16px is 200 op een gewoon scherm te ijl. */
+  --fs-body:1rem;         /* 16 — lopende tekst, kaarttitels     */
+  --fs-body-2:0.9375rem;  /* 15 — footer, verhaalkolom, lijsten  */
+  --fs-sm:0.875rem;       /* 14 — formuliervelden, tekstlinks    */
+  --fs-xs:0.8125rem;      /* 13 — meta, bijschrift, prijsregel   */
+
+  /* ---- Kapitalen ----------------------------------------------
+     Blijven 600: uppercase op klein formaat heeft gewicht nodig,
+     geen elegantie. */
+  --fs-label:0.6875rem;   /* 11 — labels, eyebrows, tabelkoppen  */
+  --fs-micro:0.625rem;    /* 10 — tellers, merktekens            */
+
+  /* ---- Register ------------------------------------------------
+     Het enige grote LICHTE element op de pagina (gewicht 300),
+     en daardoor het element dat opvalt. Altijd tabular-nums. */
+  --fs-num:clamp(1.9rem, 2.6vw, 2.5rem);
+  --fs-num-lg:clamp(2.6rem, 5vw, 4.1rem);
+
+  /* ---- Spatiëring ---------------------------------------------
+     Hangt aan de GROOTTE, niet aan het component. Dat was de
+     tweede bron van drift: elk onderdeel koos zijn eigen waarde.
+
+     Let op de richting: bij dalend gewicht gaat de spatiëring
+     juist OMHOOG (minder negatief). Dikke stokken onderscheiden
+     zich vanzelf; dunne stokken lopen op krappe afstand optisch
+     in elkaar over. */
+  --tr-display:-0.042em;  /* alleen h1.display, 700              */
+  --tr-tight:-0.022em;    /* display 200, page-title             */
+  --tr-head:-0.018em;     /* head, sub                           */
+  --tr-num:-0.045em;      /* register — cijfers verdragen krap   */
+  --tr-body:-0.012em;     /* kaarttitels, tegelnamen             */
+  --tr-flat:0;            /* lopende tekst, bijschriften         */
+  --tr-ui:0.05em;         /* kapitalen 12px+: knoppen, velden    */
+  --tr-label:0.14em;      /* kapitalen 11px en kleiner           */
+}
