@@ -966,16 +966,35 @@ ${renderBar(list.length, from, to)}
       return `<a href="shop.html?brand=${b.slug}">${inner}</a>`;
     }).join(""));
 
-    /* --- Laatst bekeken: echte state, conditioneel --- */
+    /* --- Laatst bekeken: echte state, aangevuld ---
+       De sectie leest de echte kijkgeschiedenis (localStorage, gevuld op de
+       productpagina). Die geschiedenis is per domein: wie de site voor het
+       eerst opent — een klant op de live-URL — heeft er geen, en dan zou het
+       blok wegvallen. Dat kost de pagina een wit vlak tussen de bewijsband en
+       de afsluiter, en juist dat vlak geeft de afsluiter lucht.
+
+       Daarom vullen we aan tot vier tegels in plaats van te verbergen. De
+       aanvulling laat bewust de bestsellers en het seizoen weg: die staan
+       hierboven al, en drie keer dezelfde vier tegels leest als een fout.
+
+       Zonder échte geschiedenis klopt de kop "Verder waar je gebleven was"
+       niet — er is niets waar je gebleven bent. Dan staat er een kop die wél
+       klopt. Zodra je twee producten hebt bekeken, komt de oorspronkelijke
+       kop terug en is het blok weer wat het hoort te zijn.
+
+       NOTE — in productie is dit blok puur conditioneel: geen geschiedenis,
+       geen sectie. De aanvulling hieronder staat er zodat het ontwerp op de
+       eerste pagina-weergave compleet te zien is. Zie NOTES. */
     const rec = recent.list();
     const recSection = $("#home-recent-section");
-    if (rec.length >= 2) {
-      mount("#home-recent", `<div class="grid-editorial wide">${
-        rec.slice(0, 4).map(productCardQuiet).join("")
-      }</div>`);
-    } else if (recSection) {
-      recSection.classList.add("hidden");
-    }
+    const recTitle = recSection && $("h2", recSection);
+    // Vulling: alles wat niet al in "In de kijker" of het seizoensblok staat.
+    const filler = P.filter((p) => !p.bestseller && !p.seasonal);
+    const shown = rec.concat(filler.filter((p) => !rec.includes(p))).slice(0, 4);
+    if (rec.length < 2 && recTitle) recTitle.textContent = "Ook interessant voor jou";
+    mount("#home-recent", `<div class="grid-editorial wide">${
+      shown.map(productCardQuiet).join("")
+    }</div>`);
 
     heroWordmarkDock();
   };
