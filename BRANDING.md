@@ -38,23 +38,34 @@ grijs, geen los accent, geen semantische status-kleur uit een andere hoek.
 |---|---|---|---|---|
 | Off-white / Crème | `#F9F8ED` | 249, 248, 237 | 0/0/5/2 | Papier — de standaardachtergrond van de site |
 | Lichtroze / Poederroze | `#E4C8CA` | 228, 200, 202 | 0/12/11/11 | Zachte sectievlakken, beeldvlak-placeholder |
-| Donkerrood / Kastanjebruin | `#44171B` | 68, 23, 27 | 0/66/60/73 | Primaire inkt, woordmerk, primaire CTA |
+| Donkerrood / Kastanjebruin | `#44171B` | 68, 23, 27 | 0/66/60/73 | Primaire inkt, woordmerk, alles wat gezien moet worden |
 | Donkergroen / Zwartgroen | `#1C2518` | 28, 37, 24 | 24/0/35/85 | Volvlak donkere secties (`--void`) |
 | Saliegroen / Olijfgroen | `#B8C298` | 184, 194, 152 | 5/0/22/24 | Tweede zacht sectievlak, tegenwicht voor roze |
-| Felroze / Magenta | `#D33168` | 211, 49, 104 | 0/77/51/17 | Accent — promo, seizoen, highlight |
+| Felroze / Magenta | `#D33168` | 211, 49, 104 | 0/77/51/17 | **Uitsluitend de CTA** — zie §2.3 |
 
 ### 2.2 Contrastmatrix (WCAG 2.1, verhouding tegen achtergrond)
 
 Berekend, niet geschat. Vet = voldoet aan AA voor lopende tekst (≥ 4.5:1).
 
-| Tekst ↓ / Achtergrond → | Crème | Lichtroze | Salie | Donkerrood | Donkergroen | Magenta |
-|---|---|---|---|---|---|---|
-| Donkerrood `#44171B` | **14.22** | **9.69** | **8.10** | — | — | 3.19 |
-| Donkergroen `#1C2518` | **14.83** | **10.11** | **8.45** | — | — | 3.32 |
-| Crème `#F9F8ED` | — | — | — | **14.22** | **14.83** | 4.46 |
-| Lichtroze `#E4C8CA` | 1.47 | — | — | **9.69** | **10.11** | 3.04 |
-| Salie `#B8C298` | 1.76 | 1.20 | — | **8.10** | **8.45** | 2.54 |
-| Magenta `#D33168` | 4.46 | 3.04 | 2.54 | 3.19 | 3.32 | — |
+| Tekst ↓ / Achtergrond → | Wit | Crème | Lichtroze | Salie | Donkerrood | Donkergroen | Magenta |
+|---|---|---|---|---|---|---|---|
+| Donkerrood `#44171B` | **15.17** | **14.22** | **9.69** | **8.10** | — | — | 3.19 |
+| Donkergroen `#1C2518` | **15.82** | **14.83** | **10.11** | **8.45** | — | — | 3.32 |
+| Wit `#FFFFFF` | — | — | — | — | **15.17** | **15.82** | **4.76** |
+| Crème `#F9F8ED` | — | — | — | — | **14.22** | **14.83** | 4.46 |
+| Lichtroze `#E4C8CA` | 1.40 | 1.47 | — | — | **9.69** | **10.11** | 3.04 |
+| Salie `#B8C298` | 1.68 | 1.76 | 1.20 | — | **8.10** | **8.45** | 2.54 |
+| Magenta `#D33168` | 4.76 | 4.46 | 3.04 | 2.54 | 3.19 | 3.32 | — |
+
+Let op de regel voor **wit op magenta: 4.76**. Dat is de enige reden dat een
+knoplabel op een vol magenta vlak mag staan — crème haalt er 4.46 en zakt
+daarmee net onder de norm. Zie §2.3.
+
+Let ook op **roze op wit: 1.40**, iets lager nog dan de 1.47 op crème. Roze
+scheidingslijnen fluisteren op een witte pagina dus nóg zachter. Dat is de
+bedoeling voor decoratie, maar het is precies waarom alles wat gezien MOET
+worden — een onderstreping, een badge, de rand van een bedienbaar element —
+in donkerrood staat en niet in roze.
 
 ### 2.3 De magenta-regel — belangrijk
 
@@ -76,8 +87,16 @@ vlakkleur. Over een volle sectiebreedte wordt het meteen het luidste element
 van de pagina en leest het als een ander merk — het palet valt dan uiteen in
 "vijf gedempte tinten plus magenta".
 
-Magenta hoort dus klein te blijven: een badge, een markering, een rand. Op dit
-moment draagt het precies één ding, de promo-badge. Dat is de juiste schaal.
+Magenta hoort dus klein te blijven. Het draagt op dit moment precies één ding:
+**de CTA**. Verder niets — geen koppen, geen prijzen, geen vinkjes, geen
+scheidingslijnen, geen badges. Dat is de juiste schaal, en het is ook de reden
+dat de kleur werkt: één kleur die alleen op "hier klik je" staat, blijft dat
+betekenen. Dezelfde kleur op koppen, prijzen én lijnen betekent niets meer, en
+dan is de knop juist moeilijker te vinden dan wanneer hij donkerrood was
+geweest.
+
+De site draait op crème en roze. Magenta is het enige punt waar dat wordt
+doorbroken, en dat punt is altijd een actie.
 
 Daarbovenop komt de contrastbeperking:
 
@@ -89,18 +108,23 @@ formulieren lezen.
 Daarom:
 
 - Magenta draagt **nooit** lopende tekst, labels, filternamen of formuliertekst.
-- Magenta mag wél: volvlakken, grote displaytekst (≥ 24 px regulier of ≥ 18.7 px
-  bold — dan geldt de AA-grens van 3:1), badges, promo-/seizoensmarkering,
-  hover- en actief-accenten, en grafische elementen.
-- De **primaire CTA ("Offerte aanvragen") is donkerrood met crème tekst**
-  (14.22:1), niet magenta. Dat is hier geen smaakkwestie: het label is 13 px, en
-  op magenta haalt crème 4.46:1 en donkerrood 3.15:1 — allebei onder de 4.5:1
-  die tekst van die maat vraagt. De knop krijgt wél een magenta rand; een rand
-  is geen tekst en heeft genoeg aan 3:1.
+- Magenta staat uitsluitend op de **CTA**: het volvlak van de primaire knop en
+  de omtrek van de secundaire. Nergens anders.
+- Het label op een vol magenta knop is **wit**, niet crème. Crème op magenta is
+  4.46:1 en zakt daarmee onder de 4.5:1 die een knoplabel van 13 px vraagt; wit
+  op magenta is **4.76:1** en haalt het wel. Dat verschil van 0.3 is de hele
+  reden dat `--on-cta` bestaat.
+- De omtrek van de secundaire knop is magenta met het woord in donkerrood.
+  Magenta op wit is 4.46:1 en op roze 3.04:1 — allebei boven de 3:1 die voor de
+  rand van een bedienbaar element geldt. Een rand is geen tekst.
+- Op donkergroen haalt de magenta knopvorm 3.32:1. Ook dat is boven de grens,
+  en het is de achtergrond waarop de knop het hardst werkt — zie de afsluiter
+  op Home.
 
 Uit de audit (§3.1 van het overdrachtsdocument): de huidige CTA oogt inactief
-zolang de offertelijst leeg is. Donkerrood op crème lost dat op — die knop ziet
-er altijd actief uit.
+zolang de offertelijst leeg is. Een volvlak in de enige signaalkleur van het
+palet lost dat definitief op — die knop ziet er altijd actief uit, en hij is de
+enige plek op de pagina die er zo uitziet.
 
 ### 2.4 Geen varianten
 
@@ -154,7 +178,8 @@ Om te gebruiken, vóór `styles.css` inladen:
 | `--paper-2` `--surface` `--band-pink` | roze | zachte vlakken, beeldvlak |
 | `--band-sage` | salie | tweede zacht vlak |
 | `--void` `--on-void` `--on-void-2` | donkergroen / crème / salie | donkere secties |
-| `--accent` `--accent-on` | magenta / crème | accent — zie §2.3 |
+| `--accent` `--accent-on` | roze / donkerrood | decoratief accent: scheidingen, sectieranden |
+| `--cta` `--on-cta` | magenta / wit | uitsluitend de CTA — zie §2.3 |
 
 `styles.css` bevat zelf geen enkele kleurwaarde; alles loopt via deze namen.
 
@@ -167,33 +192,42 @@ krijgt er geen. Zo ziet de verdeling op Home eruit:
 | Sectie | Vlak |
 |---|---|
 | Hero | twee donkere opnames naast elkaar onder een donkergroene sluier |
-| Merkenband | wit, magenta scheidingen |
-| Catalogus | wit, kop magenta, beeldvlakken crème |
-| Seizoen | wit, kop magenta |
-| In de kijker | wit, kop magenta, beeldvlakken crème |
-| USP-band | **magenta** |
-| Testimonial | roze |
-| Afsluiter | wit, kop magenta |
-| Footer | donkergroen |
+| Merkenband | wit, roze scheidingen |
+| Catalogus | wit, kop donkerrood, beeldvlakken crème |
+| Seizoen | wit, kop donkerrood |
+| In de kijker | wit, kop donkerrood, beeldvlakken crème |
+| Bewijsband | streepveld, **roze blok** over de volle breedte: cijfers \| citaat |
+| Afsluiter | zelfde streepveld, **crème blok** gecentreerd, twee CTA's |
+| Footer | roze, woordmerk en tekst in donkerrood |
 
 De paginagrond is wit (§1b); crème is daarmee opgeschoven van "de grond" naar
 "het vlak waar een product op staat".
 
 De warme familie (crème, roze, donkerrood) draagt de pagina — het is een
-chocolade- en snoepmerk. Donkergroen verankert boven- en onderaan, en magenta
-is niet langer alleen de vonk: het draagt de sectiekoppen op Home en Shop, de
-USP-band, en de lijnen en randen door de hele interface.
+chocolade- en snoepmerk. Donkergroen verankert boven- en onderaan. Magenta is
+weer wat het hoort te zijn: de vonk, en niets anders. Het staat op de CTA en
+verder nergens.
+
+Dat betekent dat de rangorde nu volledig via **maat, gewicht en vlak** loopt en
+niet via kleur — precies zoals §2.4 dat voor tekst al voorschreef. Een sectiekop
+is groot en vet, geen kop is magenta. Een prijs is groot, geen prijs is magenta.
+Wat gezien MOET worden om te wérken — een onderstreping, een badge, de rand van
+een bedienbaar element — staat in donkerrood, want roze haalt op wit maar
+1.40:1.
 
 Vaste regels:
 
 - **Nooit twee gekleurde secties direct na elkaar** die dezelfde kleur dragen.
-  Wit staat er tussen; dat is wat de kleur laat werken.
-- **Magenta mag een volle sectie dragen.** Wat daar wél op moet kloppen is de
-  tekst erop: crème op magenta is 4.46:1, en dat haalt de norm alleen voor
-  displaytekst (≥ 24 px regulier of ≥ 18.7 px bold, grens 3:1). Wil je kleinere
-  tekst op een magenta vlak, dan komt die op een eigen crème- of donkerrood
-  vlak te staan — knoppen op de USP-band bijvoorbeeld. Dit is de reden dat de
-  band werkt: de kop is 44 px bold.
+  Wit staat er tussen; dat is wat de kleur laat werken. Let op de afsluiter: de
+  testimonial ervóór is roze, en "Laatst bekeken" ertussen verdwijnt bij een
+  eerste bezoek. Daarom is het blok in de afsluiter crème en niet roze.
+- **Magenta draagt geen sectie.** Dat mocht vroeger; nu niet meer. Een volle
+  magenta band maakt zichzelf het luidste element van de pagina en neemt die rol
+  af van de knop. Wil je een band die opvalt, gebruik dan het patroon met een
+  volvlak erop — zie de USP-band.
+- **Tekst gaat nooit rechtstreeks over een patroon.** Er komt een volvlak
+  overheen: crème, donkergroen of roze. Op roze is donkerrood 9.69:1, dus daar
+  geldt geen ondergrens voor de tekengrootte.
 - **Geen twee verwante kleuren op elkaar.** Donkergroen en salie zijn allebei
   groen; ze horen niet aan elkaar te grenzen.
 
@@ -202,7 +236,8 @@ Vaste regels:
 ### 3.1 Manrope
 
 Eén familie voor de hele interface: **Manrope**, variable, as `wght` **200–800**
-(defaultinstantie 200). Licentie SIL OFL 1.1 — vrij te gebruiken, ook
+(defaultinstantie 200). De schaal gebruikt daarvan 200, 300, 400, 500, 600 en
+700 — de hele bandbreedte, met het zwaartepunt aan de lichte kant. Licentie SIL OFL 1.1 — vrij te gebruiken, ook
 commercieel; `OFL.txt` moet meegeleverd worden bij distributie van de
 fontbestanden.
 
@@ -221,23 +256,38 @@ de vraag die §10.5 van het overdrachtsdocument openliet — hierbij beantwoord.
 
 ### 3.3 Schaal
 
-De hiërarchie loopt in **twee richtingen** tegelijk. Koppen dragen gewicht,
-alles eromheen laat los. Daardoor is het aantallenregister het enige grote
-LICHTE element op de pagina — en dat is precies wat het laat opvallen.
+**Eén zwaar element per pagina, en dat is de H1.** Alles daaronder staat licht.
+Dat is de kern van deze schaal: de hero drukt door, en vanaf daar laat de
+typografie los. Twee zware niveaus maken er een wedstrijd van, en dan wordt de
+pagina luid zonder dat iets belangrijker wordt.
+
+De rangorde komt dus van **grootte**, niet van gewicht. Een sectiekop van 50 px
+extra light staat boven lopende tekst van 16 px regular; het formaatverschil
+doet het werk dat vroeger het gewichtsverschil deed.
 
 | Rol | Klasse | Grootte | Gewicht |
 |---|---|---|---|
-| Display (hero) | `.display` | `clamp(2.7rem, 6.6vw, 5.6rem)` | **700** |
-| Paginakop | `.cat-hero-title` / `.page-title` | `clamp(2.5rem, 5.4vw, 4.4rem)` | **700** |
-| Productnaam (PDP) | `.pdp-title` | `clamp(1.9rem, 3vw, 2.7rem)` | **700** |
-| Sectiekop | `.h-lg` / `.section-title` | `clamp(2rem, 3.6vw, 3.1rem)` | **700** |
-| Subkop | `.h-md` | `clamp(1.5rem, 2.2vw, 2.1rem)` | 600 |
-| Lopende tekst | `body` | 16px | 400 |
+| Display (hero) | `h1.display` | `clamp(2.7rem, 6.6vw, 5.6rem)` | **700** — de enige |
+| Display (niet-H1) | `.display` op h2 | idem | **200** |
+| Paginakop | `.cat-hero-title` / `.page-title` | `clamp(2.5rem, 5.4vw, 4.4rem)` | **200** |
+| Productnaam (PDP) | `.pdp-title` | `clamp(1.9rem, 3vw, 2.7rem)` | **200** |
+| Sectiekop | `.h-lg` / `.section-title` | `clamp(2rem, 3.6vw, 3.1rem)` | **200** |
+| Subkop | `.h-md` | `clamp(1.5rem, 2.2vw, 2.1rem)` | **200** |
+| Statement (over ons) | `.ab-statement p` | `clamp(1.6rem, 3.6vw, 3rem)` | **200** |
 | Lede | `.lede` | `clamp(1.15rem, 1.4vw, 1.35rem)` | **200** |
-| Registergetal | `.ledger-n` | `clamp(1.9rem, 2.6vw, 2.5rem)` | **200** |
+| Registergetal | `.ledger-n`, `.usp-n` | `clamp(1.9rem, 2.6vw, 2.5rem)` | 300 |
 | Prijsuitspraak | `.pdp-price-v` | `clamp(1.6rem, 2.4vw, 2.1rem)` | **200** |
+| Citaat | `.ts-body blockquote` | `clamp(1.05rem, 1.5vw, 1.35rem)` | 300 |
+| Jaartal, kleine kop | `.tl-year`, `.tl-text h3` | 17–26px | 300 / 500 |
+| Lopende tekst | `body` | 16px | 400 |
 | Details, meta | `.card-meta`, `.meta`, `.pdp-sku` | 13px | 300 |
 | Labels, units | `.label`, `.eyebrow`, `.ledger-u` | 11px kapitalen | 600 |
+
+**Spatiëring gaat mee omhoog.** Een vette kop mag krap staan — dikke stokken
+onderscheiden zich toch wel. Bij 200 lopen dunne stokken op krappe afstand
+optisch in elkaar over. Daarom staat de display op `-0.042em` en alles wat licht
+is op ongeveer `-0.02em`. Wie het gewicht verlaagt zonder de spatiëring mee te
+nemen, krijgt een kop die van een afstand als een grijze streep leest.
 
 **Waar de grens ligt.** Gewicht 200 heeft formaat nodig. Boven ± 18px draagt
 het; daaronder worden de stokken te dun, zeker op een scherm zonder hoge
@@ -249,6 +299,23 @@ pixeldichtheid. Daarom:
   nodig, geen elegantie.
 - de lede staat op 200 **omdat de ondergrens op 1.15rem (18.4px) ligt**. Verlaag
   je die, dan moet het gewicht mee omhoog.
+- een kop die kleiner is dan de tekst eronder zwaar is, moet **omhoog** in
+  gewicht en niet omlaag. `.tl-text h3` is 17–20px boven lopende tekst van 400;
+  op 200 zou de kop lichter zijn dan zijn eigen alinea en draait de rangorde om.
+  Vandaar 500 daar.
+- `h1,h2,h3` staat als basis op **200**. Een kop zonder klasse erft dat, dus een
+  kleine kop moet zijn gewicht expliciet zetten. Twee deden dat niet en waren
+  na de omzetting te ijl; dat is de valkuil van deze regel.
+- Het vet van de display hangt aan het **element** (`h1.display`), niet aan de
+  klasse. `.display` staat op drie plekken en maar twee daarvan zijn een H1 —
+  de afsluiter op Home gebruikt dezelfde maat voor een H2. Hing het vet aan de
+  klasse, dan was die afsluiter net zo zwaar als de hero en had de pagina twee
+  zware elementen.
+
+**De statische fallbacks moeten meegroeien.** `fonts.css` levert nu ook
+ExtraLight (200) en Light (300). Zonder die twee valt een browser zonder
+variable-font-ondersteuning terug op het dichtstbijzijnde gewicht dat hij kent —
+400 — en dan verdwijnt het verschil tussen kop en lopende tekst volledig.
 
 > Let op: een contrastcontrole vangt dit **niet**. WCAG rekent op kleur, niet op
 > streekdikte — extra light in donkerrood haalt dezelfde 14.22:1 als bold. Dit is
@@ -341,9 +408,16 @@ lopende tekst.
 
 Regels:
 
-- **Eén patroon per scherm.** Twee patronen naast elkaar maken het rommelig.
+- **Eén patroon per scherm.** Twee verschíllende patronen naast elkaar maken
+  het rommelig. Hetzelfde patroon twee keer op één pagina mag wél, en doet de
+  home ook: de USP-band en de afsluiter dragen allebei de streepband. Het werkt
+  omdat het volvlak erop verschilt — roze links op de ene, crème gecentreerd op
+  de andere — en omdat de testimonial ertussen staat.
 - Tekst gaat er nooit direct overheen. Wil je tekst, leg dan een volvlak
-  (crème of donkergroen) over het patroon en zet de tekst daarop.
+  (crème, roze of donkergroen) over het patroon en zet de tekst daarop. Een
+  crème volvlak is exact de tussenruimte van het patroon: de banen stoppen
+  gewoon, wat leest als een etiket op inpakpapier. Een roze volvlak is voller
+  dan de banen (die op 55% staan) en leest daardoor als een eigen vlak.
 - Het streeppatroon draagt de **volledige breedte** van een sectie, niet een
   losse kaart — op kaartformaat leest het als ruis.
 - Het logopatroon blijft klein en rustig: het woordmerk mag daarin niet
@@ -355,20 +429,67 @@ Regels:
   banen over de breedte zoals in het bronbestand:
 
 ```css
-.hero-canvas{
-  --stripe:20px;                 /* baanbreedte; periode is dus 40px */
+.pattern-band::before{
+  --stripe:40px;                 /* baanbreedte; periode is dus 80px */
   background:repeating-linear-gradient(90deg,
-    var(--cream) 0 var(--stripe),
-    var(--pink) var(--stripe) calc(var(--stripe) * 2));
+    var(--pink) 0 var(--stripe),
+    transparent var(--stripe) calc(var(--stripe) * 2));
+  opacity:.55;
 }
 ```
 
-Het bronbestand `Vertical-pattern.svg` heeft acht brede banen over de
-artwork-breedte; op het scherm staan ze op een vaste **20px**, wat een veel
-fijner streepbeeld geeft — dichter bij inpakpapier dan bij kleurvlakken.
+De baanbreedte staat op **40px**, dus een periode van 80px. Brede banen lezen
+als inpakpapier; op 20px werd het een fijne streping die eerder als textuur dan
+als patroon overkwam. Eén getal verandert de hele look.
 
-Als achtergrond hoort het patroon te fluisteren, dus het staat op **55%
-dekking** in `var(--pink)`. Let op hoe dat is opgebouwd: de kleur in de CSS is
+Het bronbestand `Vertical-pattern.svg` heeft acht brede banen over de
+artwork-breedte; op het scherm staan ze op een vaste **40px**, wat het dichtst
+bij het bronbestand en bij inpakpapier blijft.
+
+Als achtergrond hoort het patroon te fluisteren. Kleur en dekking horen daarom
+bij elkaar — hoe donkerder de kleur, hoe lager het getal:
+
+Het patroon tekent met **crème en donkerrood**, en donkerrood staat op **15%**.
+
+| Baankleur | Dekking | Waar |
+|---|---|---|
+| `var(--ink)` | **15%** | het streepveld op Home — bewijsband én afsluiter |
+| `var(--pink)` | 55% | alternatief, nergens in gebruik |
+| `var(--sage)` | 40% | alternatief, nergens in gebruik |
+
+Die 15% is beproefd en met opzet laag. Sterkere versies zijn geprobeerd en
+afgevallen:
+
+- Op **100%** is het onmiskenbaar crème-en-donkerrood, maar dan is de band het
+  zwaarste beeldelement van de pagina en trekt hij de aandacht weg van het enige
+  wat er telt — het blok met de knop erop.
+- Op **30%** komt het uit op een warme taupe die nog steeds aandringt.
+- Op **15%** zakt het naar een bleke warme greige en doet het patroon wat een
+  patroon hoort te doen: de bladspiegel breken zonder zelf gelezen te worden.
+
+Donkerrood is bijna zwart (L\* ≈ 15) en rekent daardoor veel sneller aan dan
+roze of salie. Dat is de reden dat de dekking hier zoveel lager ligt dan de 55%
+van roze: kleur en dekking horen bij elkaar, en wie de kleur wisselt zonder de
+dekking mee te nemen krijgt geen patroon maar een gordijn.
+
+**Eén veld, niet twee banden.** De bewijsband en de afsluiter staan pal op
+elkaar, want "Laatst bekeken" ertussen verdwijnt bij een eerste bezoek. Kregen
+ze elk een eigen baankleur, dan botsten er twee verschillende patronen tegen
+elkaar en las de staart van de pagina als rommel. Ze delen daarom hetzelfde
+veld; het onderscheid zit in het BLOK dat erop ligt — eerst een roze, dan een
+crème. Dat is één idee met twee toepassingen in plaats van twee ideeën.
+
+Waarom donkerrood op 15% en niet roze: het roze blok moet erop kunnen liggen
+zonder te verdwijnen, en het veld eindigt tegen de roze footer. Roze banen
+zouden allebei die grenzen laten verwateren. Donkerrood op 15% zakt naar een
+warme greige — een andere waarde én een andere kleurfamilie dan het roze dat
+eroverheen en eronder ligt.
+
+Let op het verschil met donkergroen. Groen weggedimd leest als vuilgrijs (zie
+hieronder); donkerrood zakt naar taupe, en dat staat naast chocolade juist goed.
+Het is dezelfde constructie in allebei de gevallen — de kleurwaarde blijft een
+van de zes, alleen de laag is lichter — maar de uitkomst verschilt per kleur, en
+dat moet je op het scherm beoordelen en niet op de rekenmachine. Let op hoe dat is opgebouwd: de kleur in de CSS is
 een van de zes, en de `opacity` staat op de laag eromheen. De kleurwaarde
 blijft dus aanwijsbaar uit het palet; alleen de weergave is lichter. Eén getal
 aanpassen maakt het patroon sterker of zwakker.
@@ -390,8 +511,8 @@ is dan een SVG-achtergrond:
 .stripes{
   background:repeating-linear-gradient(
     90deg,
-    var(--cream) 0 60px,
-    var(--pink) 60px 120px
+    var(--cream) 0 40px,
+    var(--pink) 40px 80px
   );
 }
 ```
@@ -422,32 +543,58 @@ ontwerpkeuze — maar de lege vlakken moeten er wel verzorgd uitzien.
 ## 7. Toepassing per element
 
 **Header** — crème achtergrond, `--rule` haarlijn onderaan, woordmerk
-donkerrood. De CTA "Offerte aanvragen" is donkerrood vlak met crème tekst en
+donkerrood. De CTA "Offerte aanvragen" is een vol magenta vlak met wit label en
 blijft altijd volledig actief ogen, ook bij een lege offertelijst.
 
-**Knoppen**
+**Knoppen** — de knop ziet er overal op de site hetzelfde uit. Dat is het punt
+van magenta terugbrengen tot de CTA: je herkent hem overal, ook op een vlak dat
+je nog niet eerder zag. Er zijn dus geen sectie-uitzonderingen meer, op één na
+(zie de laatste rij).
 
 | Type | Vlak | Tekst | Contrast |
 |---|---|---|---|
-| Primair | donkerrood | crème | 14.22 ✅ |
-| Secundair | transparant, rand `--control` | `--ink` | 14.22 ✅ |
-| Op donkere sectie | crème | donkergroen | 14.83 ✅ |
-| Promo / seizoen | magenta | crème | 4.46 — **enkel bij ≥18.7px bold** |
+| Primair | magenta | wit | 4.76 ✅ |
+| Primair, hover | donkerrood | wit | 15.30 ✅ |
+| Secundair | transparant, rand magenta | `--ink` | 14.22 ✅ (rand 4.46 op wit) |
+| Secundair, hover | magenta | wit | 4.76 ✅ |
+| Secundair op donkere sectie | transparant, rand magenta | crème | 14.83 ✅ (rand 3.32) |
 
 **Filters en formulieren** — crème vlak, `--control` randen op alles wat
 bedienbaar is (§8.4), roze scheidingslijnen tussen filtergroepen. Alle tekst in
 donkerrood; tellers en hulptekst verschillen in grootte, niet in kleur (§2.4).
-Actieve filter: donkerrood onderstreept. Magenta komt hier niet voor.
+Actieve filter: donkerrood vinkje en donkerrode chip. Magenta komt hier niet
+voor — en sinds §2.3 komt magenta nergens voor behalve op de CTA.
 
 **Focus** — zichtbare focus is niet onderhandelbaar; B2B-gebruikers tabben door
 filters en formulieren. Blijft `2px solid var(--ink)` met 3px offset. Op donkere
 secties `var(--on-void)`.
 
 **Donkere secties** — donkergroen vlak, crème tekst, `--on-void-2` voor
-secundaire tekst. Woordmerk in de crème-versie. Eén tot twee per pagina.
+secundaire tekst. Woordmerk in de crème-versie. Op de home is dit nog uitsluitend
+de hero; de afsluiter en de footer zijn eruit gehaald ten gunste van roze en het
+streeppatroon. Donkergroen is daarmee de kleur van de opening, niet van de
+afsluiting.
+
+**Roze secties, en wat dat kost** — op donkergroen bestaat een tekstrap (crème
+14.83:1 voor primair, salie 8.45:1 voor secundair). Op roze bestaat die niet:
+donkerrood haalt er 9.69:1 en is de enige kleur die de norm haalt. Zet je een
+donkergroene sectie om naar roze, dan valt de secundaire tekstkleur dus weg en
+moet de rangorde over op maat, gewicht en spatiëring — precies zoals §2.4 dat
+voor lichte vlakken voorschrijft. De footer is daar het voorbeeld van: kolomkop
+11 px kapitalen met 0.14em spatiëring tegenover een link van 15 px in normale
+zetting, allebei in dezelfde kleur.
+
+Let ook op het woordmerk: de crème-versie haalt op roze 1.47:1 en verdwijnt
+daar. Een roze vlak krijgt `Logo-Dark.svg`, niet `Logo-Light.svg`.
 
 **Zachte secties** — lichtroze of salie volvlak met donkerrode tekst. Bedoeld
 om ritme te breken tussen twee crème-secties, niet om een kaart in te vullen.
+
+**Patroonsecties** — crème grond met het streeppatroon (§5) en de tekst op een
+volvlak erop. De USP-band is hiervan het voorbeeld: banen van 20px in roze op
+55% dekking, met de zin op een vol roze blok. Het blok leest omdat het VOL roze
+is en de banen eronder roze op 55% zijn — het is merkbaar donkerder dan zowel de
+baan als de tussenruimte. Eén patroon per scherm.
 
 ---
 

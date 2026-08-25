@@ -213,8 +213,9 @@ const BS = (() => {
 <footer class="site-footer">
   <div class="wrap-wide">
     <div class="footer-brand">
-      <!-- Crème-versie: de footer is een donkergroen vlak. -->
-      <img src="assets/logo/Logo-Light.svg" alt="Belgosweet" width="294" height="63">
+      <!-- Donkerrode versie: de footer is een roze vlak. De crème-versie
+           haalt op roze 1,47:1 en zou daar praktisch verdwijnen. -->
+      <img src="assets/logo/Logo-Dark.svg" alt="Belgosweet" width="294" height="63">
     </div>
     <div class="footer-cols">
       <div class="footer-col">
@@ -233,6 +234,13 @@ const BS = (() => {
         <div class="footer-col-title">Support</div>
         <a href="over-ons.html#contact">Contact</a>
         <a href="offerte.html">Offerte aanvragen</a>
+        <!-- "Contact & Catalogue" stond als hoofdmenu-item in de
+             klant-excel. Contact zit in Over ons; de catalogus staat nu
+             ook als tweede CTA in de afsluiter op de home. Zelfde woord
+             op allebei de plekken — twee namen voor hetzelfde ding laat
+             een bezoeker denken dat het twee dingen zijn. De PDF zelf is
+             nog niet aangeleverd, dus voorlopig naar de offertepagina. -->
+        <a href="offerte.html">Catalogus downloaden</a>
         <a href="info.html?p=voorwaarden">Voorwaarden</a>
         <a href="info.html?p=privacy">Privacybeleid</a>
         <a href="info.html?p=cookies">Cookiebeleid</a>
@@ -514,10 +522,17 @@ Prijs volgt uit de offerte en hangt af van je oplage.</p>`;
   // Elk facet toont standaard zes waarden; de rest komt achter
   // "toon alle". Vijf volledig uitgeklapte lijsten maken van het
   // paneel een muur van vinkjes.
+  //
+  // Uitzondering: gelegenheid staat volledig open. De lijst valt in drie
+  // subgroepen uiteen en HoReCa is de laatste — bij zes waarden zie je
+  // enkel "Gelegenheid" en blijven Toepassing en HoReCa onzichtbaar.
+  // HoReCa was in de klant-excel een eigen hoofdmenu-item; het achter
+  // een "toon alle" verstoppen is precies de verdwijntruc die we niet
+  // willen. Twaalf regels is het lijstje waard.
   const FACETS = [
     { key: "cat",   title: "Categorie",                 list: () => D.CATEGORIES,   field: "cat",          limit: 6 },
     { key: "brand", title: "Merk",                      list: () => D.BRANDS,       field: "brand",        limit: 6 },
-    { key: "occ",   title: "Gelegenheid &amp; toepassing", list: () => D.OCCASIONS, field: "occasions",    grouped: true, note: "incl. HoReCa", limit: 6 },
+    { key: "occ",   title: "Gelegenheid &amp; toepassing", list: () => D.OCCASIONS, field: "occasions",    grouped: true, note: "incl. HoReCa" },
     { key: "pack",  title: "Verpakking",                list: () => D.PACKAGING,    field: "packaging" },
     { key: "avail", title: "Beschikbaarheid",           list: () => D.AVAILABILITY, field: "availability" }
   ];

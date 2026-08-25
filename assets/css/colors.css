@@ -41,10 +41,15 @@
      Productbeelden staan nu op crème en dat crème leest alleen als
      vlak zolang de pagina eromheen wit is.
 
-     Wit draagt zelf geen tekst en trekt zelf geen lijn; het is
-     uitsluitend grond. Donkerrood haalt er 15.30:1 op (nog iets
-     meer dan de 14.22:1 op crème), dus de tekstregels uit §2
-     blijven onveranderd gelden. */
+     Wit is grond, en sinds de CTA een vol magenta vlak is ook
+     de tekstkleur van dat ene label: wit op magenta haalt 4.76:1
+     waar crème op 4.46:1 blijft steken. Zie §6.
+
+     Donkerrood haalt op wit 15.17:1 (nog iets meer dan de 14.22:1
+     op crème), dus de tekstregels uit §2 blijven onveranderd
+     gelden. Eén ding wordt wél zwakker: roze op wit is 1.40:1
+     tegenover 1.47:1 op crème. Decoratieve lijnen fluisteren op
+     een witte pagina dus nog zachter dan ze al deden. */
 
   --white:    #FFFFFF;   /* Paginagrond                  255,255,255 */
 
@@ -102,14 +107,35 @@
   --on-void-2: var(--sage);   /*  8.45:1 */
 
 
-  /* ---- 6. Accent ------------------------------------------- */
-  /* Magenta haalt nergens 4.5:1 — op crème blijft het op 4.46:1
-     steken. Het draagt daarom NOOIT lopende tekst. Wel: vlakken,
-     grote displaytekst (>=24px, of >=18.7px bold), randen en
-     markeringen. De primaire CTA is donkerrood, niet magenta. */
+  /* ---- 6. Accent en actie ---------------------------------- */
+  /* Twee verschillende dingen die vroeger één token waren.
 
-  --accent:    var(--magenta);
-  --accent-on: var(--cream);
+     ACCENT is decoratief: scheidingslijnen, sectieranden, het
+     streepje voor een bovenkopje, de rand van een badge. Dat is
+     ROZE. Roze op wit haalt 1.40:1 en op crème 1.47:1 — genoeg om
+     een vlak af te bakenen, te weinig om iets te roepen. Precies
+     wat een decoratieve lijn moet doen.
+
+     CTA is magenta, en magenta is NERGENS anders. Eén kleur die
+     alleen op "hier klik je" staat, blijft dat betekenen; dezelfde
+     kleur op koppen, prijzen, vinkjes en sectielijnen betekent
+     niets meer. De hele site draait op crème en roze, en magenta
+     is het enige punt waar dat wordt doorbroken.
+
+     Let op de tekstkleur die bij magenta hoort: WIT, niet crème.
+     Crème op magenta is 4.46:1 en zakt daarmee onder de 4.5:1 die
+     lopende tekst nodig heeft — een knoplabel van 13px valt daar
+     precies buiten. Wit op magenta is 4.76:1 en haalt het wel.
+     Dat verschil van 0.3 is de reden dat --on-cta bestaat.
+
+     Roze draagt zelf nooit tekst, dus wat op een roze vlak staat
+     is donkerrood (9.69:1). Vandaar --accent-on. */
+
+  --accent:    var(--pink);
+  --accent-on: var(--ink);     /* donkerrood op roze,  9.69:1 */
+
+  --cta:       var(--magenta); /* uitsluitend knoppen en CTA-randen */
+  --on-cta:    var(--white);   /* wit op magenta,      4.76:1 */
 
 
   /* ---- 7. Legacy-aliassen ---------------------------------- */

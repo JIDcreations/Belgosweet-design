@@ -84,39 +84,56 @@ input,select,textarea{ font-family:inherit; }
 
 h1,h2,h3{
   color:var(--ink);
-  font-weight:700;
-  line-height:1.05;
-  letter-spacing:-0.025em;
+  font-weight:200;
+  line-height:1.1;
+  letter-spacing:-0.015em;
   text-wrap:balance;
   margin:0;
 }
 
-/* Extra light vraagt meer formaat en strakkere spatiëring dan een
-   vette kop: de letters moeten elkaar vasthouden. */
+/* De uitzondering hangt aan het ELEMENT, niet aan de klasse: h1.display is
+   vet, .display op wat dan ook is extra light. Dat is met opzet, want
+   .display staat op drie plekken en maar twee daarvan zijn een H1 — de
+   afsluiter op de home gebruikt dezelfde maat voor een H2. Zou het vet aan
+   de klasse hangen, dan is die afsluiter net zo zwaar als de hero en heb je
+   twee zware elementen op één pagina. Eén zwaar element werkt; twee maken
+   er een wedstrijd van.
+
+   Let op de spatiëring: die gaat bij 200 juist OMHOOG (minder negatief).
+   Bij een vette kop mogen letters tegen elkaar aan omdat de stokken dik
+   genoeg zijn om zich te onderscheiden; bij extra light lopen dunne
+   stokken op krappe afstand optisch in elkaar over. Vandaar -0.042em op de
+   vette H1 en -0.022em op dezelfde maat in extra light. */
 .display{
   font-size:clamp(2.7rem, 6.6vw, 5.6rem);
+  font-weight:200;
+  line-height:1.0;
+  letter-spacing:-0.022em;
+}
+h1.display{
   font-weight:700;
   line-height:0.96;
   letter-spacing:-0.042em;
 }
 .h-lg{
   font-size:clamp(2rem, 3.6vw, 3.1rem);
-  font-weight:700; letter-spacing:-0.032em; line-height:1.04;
+  font-weight:200; letter-spacing:-0.018em; line-height:1.1;
 }
-/* Sectiekoppen op de home in magenta. Dit is de ENIGE tekstsoort die de
-   kleur mag dragen (BRANDING.md §2.3: grote displaytekst vanaf 24px) —
-   deze koppen zijn 32-50px vet, en magenta haalt 4,46:1 op wit, ruim
-   boven de 3:1 die voor die maat geldt. Op over-ons blijft de kop
-   donkerrood: die pagina is een verhaal, geen etalage. */
-body[data-page="home"] .h-lg{ color:var(--accent); }
+/* Sectiekoppen stonden hier in magenta. Ze staan nu donkerrood, net als
+   op elke andere pagina: magenta is voorbehouden aan de CTA. Een kop is
+   geen actie, en een kop die dezelfde kleur draagt als de knop ernaast
+   maakt de knop onvindbaar. De rangorde op de home loopt dus via maat en
+   gewicht — 32-50px vet tegenover 15px lopende tekst — precies zoals
+   colors.css §2 het voorschrijft voor de rest van de site. */
 .h-md{
   font-size:clamp(1.5rem, 2.2vw, 2.1rem);
-  font-weight:600; letter-spacing:-0.026em;
+  font-weight:200; letter-spacing:-0.015em;
 }
 
 .lede{
   /* Extra light kan hier, maar alleen omdat de ondergrens op 1.15rem
-     (18.4px) ligt. Zakt dit onder ± 18px, dan moet het terug naar 300. */
+     (18.4px) ligt. Zakt dit onder ± 18px, dan moet het terug naar 300.
+     Dit is de grens die bepaalt wat wél en niet op 200 mag. */
   font-size:clamp(1.15rem, 1.4vw, 1.35rem);
   font-weight:200;
   line-height:1.6;
@@ -150,7 +167,7 @@ p:last-child{ margin-bottom:0; }
   font-size:0.875rem; padding-bottom:3px;
 }
 .ulink::after{
-  background:var(--accent);
+  background:var(--ink);
   content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
   background:currentColor; transform-origin:left;
   transition:transform .5s var(--ease);
@@ -214,7 +231,7 @@ p:last-child{ margin-bottom:0; }
 }
 .nav-left a::after{
   content:""; position:absolute; left:0; bottom:0; width:100%; height:2px;
-  background:var(--accent); transform:scaleX(0); transform-origin:left;
+  background:var(--ink); transform:scaleX(0); transform-origin:left;
   transition:transform .45s var(--ease);
 }
 .nav-left a:hover::after,
@@ -269,14 +286,14 @@ p:last-child{ margin-bottom:0; }
 }
 .mega > div{ overflow:hidden; }
 
-/* Seizoensregel bovenaan het paneel. Magenta rand, want dit is dezelfde
-   soort melding als een promo-badge: hier is iets aan de hand dat een
-   datum heeft. De tekst blijft donkerrood. */
+/* Seizoensregel bovenaan het paneel. Dit is een link, dus een bedienbaar
+   element, en dan moet de rand 3:1 halen — roze doet 1,40:1. Donkerrood
+   dus, net als bij de andere bedienbare randen. */
 .mega-season{
   display:flex; align-items:center; gap:16px; flex-wrap:wrap;
   margin-top:clamp(22px, 2.4vw, 34px);
   padding:16px 20px;
-  border:1.5px solid var(--accent);
+  border:1.5px solid var(--control);
   color:var(--ink);
   transition:background .3s var(--ease);
 }
@@ -338,23 +355,30 @@ p:last-child{ margin-bottom:0; }
 
 /* Vaste offerte-CTA. Blijft altijd actief ogen, ook bij lege lijst —
    dit was expliciet een UX-probleem op de huidige site. */
-/* De rand is magenta, de tekst donkerrood. Die verdeling loopt door de
-   hele site: het accent trekt de vorm, de inkt draagt het woord. Magenta
-   op wit is 4,46:1 — ruim boven de 3:1 die voor de rand van een
-   bedienbaar element geldt, en ver onder de 4,5:1 die het nodig zou
-   hebben om zelf tekst te dragen. Vandaar. */
+/* Dit is de enige plek op de site waar magenta staat, en daarom staat het
+   hier ook vol. De secundaire knop is de omtrek — magenta op wit is
+   4,46:1, ruim boven de 3:1 die voor de rand van een bedienbaar element
+   geldt — met het woord in donkerrood. De primaire knop is het volle
+   vlak, en dan draagt het label WIT en geen crème: op 13px geldt de
+   4,5:1-grens voor lopende tekst, crème blijft daar met 4,46:1 net onder
+   en wit haalt 4,76:1. Zie colors.css §6.
+
+   De omkering bij hover is met opzet dezelfde beweging in beide
+   richtingen: de omtrek loopt vol, het volle vlak wordt donkerrood. Zo
+   bevestigt de knop de aanwijzing zonder dat er een tweede tint magenta
+   nodig is — die bestaat niet en mag niet gemengd worden. */
 .cta-btn{
   display:inline-flex; align-items:center; justify-content:center; gap:9px;
-  border:1.5px solid var(--accent); background:transparent; color:var(--ink);
+  border:1.5px solid var(--cta); background:transparent; color:var(--ink);
   padding:14px 26px; font-size:0.8125rem; font-weight:500;
   letter-spacing:0.05em; text-transform:uppercase;
   white-space:nowrap; text-align:center; border-radius:100px;
   transition:background .4s var(--ease), color .4s var(--ease),
              border-color .4s var(--ease), opacity .3s var(--ease);
 }
-.cta-btn:hover{ background:var(--ink); color:var(--paper); }
-.cta-btn.primary{ background:var(--ink); color:var(--paper); }
-.cta-btn.primary:hover{ background:var(--green); }
+.cta-btn:hover{ background:var(--cta); color:var(--on-cta); border-color:var(--cta); }
+.cta-btn.primary{ background:var(--cta); color:var(--on-cta); border-color:var(--cta); }
+.cta-btn.primary:hover{ background:var(--ink); color:var(--on-cta); border-color:var(--ink); }
 .cta-btn.small{ padding:9px 18px; font-size:0.75rem; }
 .cta-btn[disabled]{ opacity:.45; pointer-events:none; }
 
@@ -408,23 +432,24 @@ p:last-child{ margin-bottom:0; }
   display:flex; align-items:flex-end; justify-content:space-between;
   gap:24px; flex-wrap:wrap;
 }
-/* Het streepje ervoor is de kleinste plek waar het accent terugkomt, en
-   het staat boven vrijwel elke sectiekop op de site. */
+/* Het streepje ervoor stond in magenta en staat nu donkerrood: magenta is
+   voorbehouden aan de CTA, en roze zou op wit (1,40:1) wegvallen. Het is
+   twee pixels hoog, dus donkerrood roept hier niets — het markeert. */
 .eyebrow{
   display:flex; align-items:center; gap:10px;
   font-size:0.6875rem; text-transform:uppercase; letter-spacing:.16em;
   font-weight:600; color:var(--ink); margin:0 0 14px;
 }
 .eyebrow::before{
-  content:""; flex:0 0 auto; width:22px; height:2px; background:var(--accent);
+  content:""; flex:0 0 auto; width:22px; height:2px; background:var(--ink);
 }
 .section-title{
-  font-size:clamp(1.8rem, 3vw, 2.6rem); font-weight:700;
-  margin:0; letter-spacing:-.032em; line-height:1.06;
+  font-size:clamp(1.8rem, 3vw, 2.6rem); font-weight:200;
+  margin:0; letter-spacing:-.018em; line-height:1.1;
 }
 .page-title{
-  font-size:clamp(2.5rem, 5.4vw, 4.4rem); font-weight:700;
-  margin:0; letter-spacing:-.04em; line-height:1.0;
+  font-size:clamp(2.5rem, 5.4vw, 4.4rem); font-weight:200;
+  margin:0; letter-spacing:-.022em; line-height:1.04;
 }
 .section-sub{
   font-size:1rem; font-weight:300; line-height:1.62; color:var(--ink);
@@ -671,7 +696,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .hero-full .lede{
   color:var(--on-void); margin-top:clamp(18px, 2.4vh, 28px);
   font-size:clamp(1.05rem, 1.25vw, 1.2rem);
-  font-weight:400; max-width:44ch;
+  font-weight:300; max-width:44ch;
 }
 
 .hero-bar{
@@ -729,10 +754,12 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   border-top:2px solid var(--accent);
   padding-top:14px; margin:16px 0 6px;
 }
+/* 15-18px is te klein voor 200. Van 700 naar 400 haalt het gewicht er
+   wel uit zonder de naam te laten verdwijnen. */
 .fam-name{
   font-size:clamp(0.95rem, 1.2vw, 1.1rem);
-  font-weight:700;
-  letter-spacing:-0.01em; color:var(--ink);
+  font-weight:400;
+  letter-spacing:0; color:var(--ink);
 }
 .fam-total{
   font-size:0.75rem; color:var(--ink-3);
@@ -797,14 +824,20 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 /* Niet elke tegel dezelfde grond: een raster van louter roze leest als één
    vlak. Periode 4 op drie kolommen spreidt diagonaal i.p.v. per kolom. */
-/* De afwisseling roze/salie is er om een raster van LEGE vlakken op te
-   breken. Zodra er een foto in zit doet ze het omgekeerde — dan zie je
-   gekleurde kadertjes in plaats van producten — dus ze geldt alleen nog
-   voor vlakken zonder beeld. */
-.cc-slide:nth-child(even) .ph:not(.has-img){ background-color:var(--band-sage); }
-.tile:nth-child(even) .ph:not(.has-img){ background-color:var(--band-sage); }
+/* De afwisseling is er om een raster van LEGE vlakken op te breken. Zodra
+   er een foto in zit doet ze het omgekeerde — dan zie je gekleurde
+   kadertjes in plaats van producten — dus ze geldt alleen voor vlakken
+   zonder beeld.
+
+   Crème/roze, niet crème/salie. Salie was hier de laatste plek op de site
+   waar die kleur nog stond, en één kleur die verder nergens terugkomt leest
+   als een vergissing in plaats van als systeem. Het verschil tussen crème
+   en roze is kleiner dan tussen crème en salie, maar groot genoeg om het
+   raster op te breken — en dat is alles wat deze regel moet doen. */
+.cc-slide:nth-child(even) .ph:not(.has-img){ background-color:var(--band-pink); }
+.tile:nth-child(even) .ph:not(.has-img){ background-color:var(--band-pink); }
 .catalog-grid .card:nth-child(4n+2) .ph:not(.has-img),
-.grid-editorial .card:nth-child(4n+2) .ph:not(.has-img){ background-color:var(--band-sage); }
+.grid-editorial .card:nth-child(4n+2) .ph:not(.has-img){ background-color:var(--band-pink); }
 .cc-slide .ph{
   aspect-ratio:3/4; min-height:0; border:none;
   transition:transform .8s var(--ease);
@@ -830,7 +863,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   transition:opacity .35s var(--ease), background .35s var(--ease);
 }
 .cc-nav svg{ width:17px; height:17px; }
-.cc-nav:hover{ background:var(--paper-2); border-color:var(--accent); border-width:1.5px; }
+.cc-nav:hover{ background:var(--paper-2); border-color:var(--control); border-width:1.5px; }
 .cc-nav[disabled]{ opacity:0; pointer-events:none; }
 .cc-prev{ left:calc(var(--gutter) - 23px); }
 .cc-next{ right:calc(var(--gutter) - 23px); }
@@ -864,7 +897,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 /* linkerrand van de pagina af */
 .season-media{ margin-left:calc(-1 * var(--gutter)); }
-.season-media .ph{ height:100%; min-height:460px; border:none; background-color:var(--band-sage); }
+.season-media .ph{ height:100%; min-height:460px; border:none; background-color:var(--band-pink); }
 
 .season-text{ display:flex; flex-direction:column; }
 .season-text .h-lg{ margin-bottom:14px; }
@@ -894,51 +927,172 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    ============================================================ */
 
 /* ============================================================
-   USP-banner + één testimonial
+   Bewijsband — cijfers + één klant
    ------------------------------------------------------------
-   Eén zin die zegt wat Belgosweet doet, en daaronder één klant
-   die het bevestigt. Verder niets.
+   Drie cijfers die zeggen wat Belgosweet is, en één klant die
+   het bevestigt. In één blok, want het is één argument.
    ============================================================ */
-/* Het enige echt grote magenta vlak. Mag hier omdat de tekst
-   clamp(1.5rem, 3.2vw, 2.75rem) op gewicht 700 is: vanaf 24px vet geldt
-   de grens van 3:1 en crème op magenta haalt 4,46:1. Zet je deze band
-   ooit kleiner, dan moet de kleur terug naar donkerrood. */
-.usp-banner{
-  background:var(--accent);
-  padding:clamp(76px, 8.5vw, 148px) 0;
+/* --- Het streeppatroon als gedeeld vlak -------------------------------
+   Twee secties op de home dragen het (de USP-band en de afsluiter), dus het
+   staat één keer beschreven en niet twee keer bijna hetzelfde.
+
+   Opgebouwd in CSS, niet als SVG: scherper, lichter, en de kleur blijft
+   aanwijsbaar uit het palet. De baanbreedte staat op --stripe, dus de hele
+   look van het patroon verandert met één getal. Op 40px is de periode 80px:
+   brede banen die als inpakpapier lezen, niet als fijne streping.
+
+   Twee kleuren: crème en donkerrood, met donkerrood op 15% dekking. Dat
+   getal is laag met opzet en is beproefd: op 100% wordt de band het zwaarste
+   beeldelement van de pagina en trekt hij de aandacht weg van het enige wat
+   hier telt — het blok met de knop erop. Op 30% is het een taupe die nog
+   steeds aandringt. Op 15% zakt het naar een bleke warme greige en doet het
+   patroon wat een patroon hoort te doen: de bladspiegel breken zonder zelf
+   gelezen te worden.
+
+   Donkerrood is bijna zwart (L* ≈ 15) en rekent daardoor veel sneller aan dan
+   roze of salie. Dat is de reden dat de dekking hier zoveel lager ligt dan de
+   55% van roze: kleur en dekking horen bij elkaar, en wie de kleur wisselt
+   zonder de dekking mee te nemen krijgt geen patroon maar een gordijn.
+
+   De dekking zit op de LAAG en niet in de kleurwaarde. Dat is de ene
+   uitzondering die BRANDING.md §2.4 toestaat: in de CSS staat gewoon
+   var(--ink), alleen de weergave is lichter. De kleur blijft dus aanwijsbaar
+   een van de zes.
+
+   Kleur, breedte en dekking staan als variabele op de BAND en niet in
+   ::before, zodat een sectie ze met één regel kan omzetten. */
+.pattern-band{
+  position:relative;
+  background:var(--cream);
+  --stripe:40px;
+  --stripe-color:var(--ink);
+  --stripe-fade:.15;
 }
-.usp-banner p{
-  margin:0; text-align:center;
-  font-size:clamp(1.5rem, 3.2vw, 2.75rem);
-  font-weight:700;
-  line-height:1.22; letter-spacing:-0.028em; color:var(--on-void);
-  text-wrap:balance; max-width:22ch; margin-inline:auto;
+.pattern-band::before{
+  content:""; position:absolute; inset:0;
+  background:repeating-linear-gradient(90deg,
+    var(--stripe-color) 0 var(--stripe),
+    transparent var(--stripe) calc(var(--stripe) * 2));
+  opacity:var(--stripe-fade);
+}
+/* Positioneren is genoeg om boven het patroon te komen: allebei zijn ze
+   gepositioneerd zonder z-index, dus de DOM-volgorde beslist en de inhoud
+   staat na ::before. Geen z-index nodig. */
+.pattern-band > *{ position:relative; }
+
+/* --- Bewijsband: cijfers + klant --------------------------------------
+   Was twee secties (een USP-band en een losse roze testimonial). Achter
+   elkaar leverden die vier vlakken op rij in de staart van de pagina —
+   patroon, roze, wit, patroon — en dat leest als rommel. Ze zeggen bovendien
+   hetzelfde: hier zit je goed. Nu één band, één blok, twee kolommen.
+
+   Het blok loopt over de volle breedte. Bij een blok van 560px bleef er
+   rechts een strook patroon over die met niets in verband stond; over de
+   volle breedte is de band een rustig vlak met een rand patroon erboven en
+   eronder, en dat is precies zo veel patroon als een pagina nodig heeft.
+
+   Het blok is VOL roze op banen van roze-op-55%, dus het is merkbaar
+   donkerder dan zowel de baan als de tussenruimte en leest als een vlak.
+   Donkerrood erop haalt 9,69:1 — ruim boven de norm, ongeacht de maat. */
+/* Geen eigen streepinstelling meer: deze band en de afsluiter delen precies
+   hetzelfde veld uit .pattern-band. Ze staan pal op elkaar ("Laatst bekeken"
+   ertussen verdwijnt bij een eerste bezoek), en toen ze elk een eigen
+   streepkleur hadden botsten er twee verschillende patronen tegen elkaar.
+   Eén veld, twee blokken erop — eerst roze, dan crème. Het onderscheid zit
+   in het BLOK, niet in de achtergrond. */
+.proof-band{ padding:clamp(76px, 8.5vw, 148px) 0; }
+.proof-block{
+  background:var(--band-pink); color:var(--accent-on);
+  padding:clamp(38px, 4.6vw, 66px) clamp(32px, 4.2vw, 62px);
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+  gap:clamp(34px, 5vw, 76px);
+  align-items:stretch;
+}
+/* Dezelfde haarlijn als tussen de feiten, nu verticaal: de twee kolommen
+   horen bij elkaar maar zijn niet hetzelfde soort bewijs.
+
+   align-items:stretch op het raster, niet center — anders is de kolom net zo
+   hoog als het citaat en hangt de lijn als een los streepje halverwege het
+   blok. Nu loopt hij van boven naar beneden mee, en wordt het citaat zelf
+   gecentreerd binnen zijn eigen kolom. */
+.proof-quote{
+  margin:0;
+  padding-left:clamp(34px, 5vw, 76px);
+  border-left:1px solid var(--ink);
+  display:flex; flex-direction:column; justify-content:center;
+}
+/* "Waarom Belgosweet" was 11px en verdween daarmee naast getallen van 60px.
+   Op 15-20px met ruime spatiëring is het een ondertitel in plaats van een
+   voetnoot. Gewicht 400 en niet 600: op deze maat heeft kapitaal geen extra
+   gewicht meer nodig, en licht past bij de rest van de schaal. */
+.usp-eyebrow{
+  margin:0 0 clamp(24px, 2.8vw, 38px);
+  font-size:clamp(0.95rem, 1.5vw, 1.25rem);
+  text-transform:uppercase; letter-spacing:.18em;
+  font-weight:400; color:var(--accent-on); line-height:1.3;
+}
+/* Twee kolommen die over alle drie de rijen gelijk lopen, zodat de
+   bijschriften op één lijn beginnen. max-content meet de BREEDSTE van de
+   drie getallen en geeft die maat aan elke rij — met een vaste ch-breedte
+   zou "500+" ofwel afgeknepen worden ofwel een gat achter "27" laten staan.
+
+   De rij is zelf een raster met subgrid: hij neemt de kolombreedtes van de
+   ouder over, maar blijft één element. Dat laatste is het punt — de haarlijn
+   staat op de RIJ en loopt dus in één keer door. Zet je de cellen zelf in het
+   raster (display:contents), dan moet elke cel zijn eigen lijn tekenen, en
+   omdat het getal veel hoger is dan het bijschrift beginnen die twee lijnen
+   op verschillende hoogtes: een trapje in plaats van een lijn.
+
+   De regel hieronder staat er twee keer met opzet: een browser zonder
+   subgrid negeert de tweede en houdt max-content per rij over. De lijn klopt
+   dan nog steeds; alleen de uitlijning tussen de rijen valt weg. */
+.usp-facts{
+  margin:0;
+  display:grid; grid-template-columns:max-content 1fr;
+}
+.usp-fact{
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:max-content 1fr;
+  grid-template-columns:subgrid;
+  column-gap:clamp(16px, 2vw, 26px);
+  align-items:baseline;
+  padding:clamp(13px, 1.5vw, 18px) 0;
+  border-top:1px solid var(--ink);
+}
+.usp-fact:first-child{ border-top:none; padding-top:0; }
+.usp-fact:last-child{ padding-bottom:0; }
+.usp-fact > dt,
+.usp-fact > dd{ margin:0; }
+.usp-n{
+  font-size:clamp(2.6rem, 5vw, 4.1rem);
+  font-weight:300; letter-spacing:-0.05em; line-height:0.86;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+/* "één" is een woord op de plek van een getal. Het krijgt dezelfde maat maar
+   iets meer gewicht, anders valt het in deze lichte snit uit elkaar. */
+.usp-fact:last-child .usp-n{ font-weight:400; letter-spacing:-0.035em; }
+.usp-plus{ font-size:0.55em; font-weight:400; vertical-align:0.5em; margin-left:0.04em; }
+.usp-l{
+  margin:0; font-size:0.6875rem; text-transform:uppercase;
+  letter-spacing:.13em; font-weight:600; line-height:1.3;
 }
 
-.testimonial-simple{ padding:var(--section-y) 0; background:var(--band-pink); }
-/* De fotocirkel is zelf roze (--surface); op een roze band verdwijnt hij.
-   Hier crème met een donkerrode rand, zodat het een vorm blijft. */
-.testimonial-simple .ts-photo{
-  background:var(--cream);
-  border:1px solid var(--ink);
+/* Het citaat staat nu in de bewijsband en niet meer in een eigen sectie.
+   De fotocirkel is vervallen — op een roze vlak was hij een lege vorm die
+   alleen maar meedeed aan de drukte. */
+.proof-quote blockquote{
+  margin:0; font-size:clamp(1.15rem, 1.7vw, 1.5rem);
+  font-weight:300;
+  line-height:1.5; letter-spacing:-0.006em; color:var(--accent-on);
+  text-wrap:pretty;
 }
-.ts-inner{
-  display:flex; align-items:center; gap:clamp(20px, 3vw, 40px);
-  max-width:780px; margin:0 auto;
-}
-.ts-photo{
-  flex:0 0 auto; width:clamp(72px, 8vw, 104px); aspect-ratio:1;
-  border-radius:50%; background:var(--surface);
-  display:flex; align-items:center; justify-content:center;
-  font-size:0.5625rem; letter-spacing:0.12em; text-transform:uppercase;
-  color:var(--ink-3); text-align:center;
-}
-.ts-body blockquote{
-  margin:0; font-size:clamp(1.05rem, 1.5vw, 1.35rem);
-  line-height:1.45; letter-spacing:-0.012em; color:var(--ink); text-wrap:pretty;
-}
-.ts-attr{ margin-top:14px; font-size:0.8125rem; color:var(--ink-3); }
-.ts-attr b{ color:var(--ink); font-weight:500; }
+/* --ink-3 wijst naar donkerrood, net als --ink; op roze is er geen zachtere
+   trap, dus het onderscheid tussen citaat en naamregel loopt via maat. */
+.ts-attr{ margin-top:18px; font-size:0.8125rem; color:var(--accent-on); }
+.ts-attr b{ color:var(--accent-on); font-weight:500; }
 
 /* ============================================================
    HOME — argumentatie + bewijs
@@ -964,44 +1118,58 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .brand-band-inner a:first-child{ border-left:none; }
 .brand-band-inner a:hover{
   background:var(--pink); color:var(--ink);
-  box-shadow:inset 0 -3px 0 var(--accent);
+  box-shadow:inset 0 -3px 0 var(--ink);
 }
 
-/* --- De afsluiter is een volle magenta sectie ---
-   Dat mag sinds BRANDING.md §2.6 herschreven is. De voorwaarde die dáár
-   staat is wat dit blok stuurt: crème op magenta is 4,46:1, en dat haalt
-   de norm alleen voor displaytekst. Dus:
+/* --- De afsluiter is een roze sectie ---
+   Was een vol magenta vlak; magenta staat nu alleen nog op de knop erin.
+   Dat pakt hier beter uit dan het klonk, want het oude blok moest om de
+   contrastregels heen ontworpen worden: crème op magenta is 4,46:1 en
+   haalt de norm alleen voor displaytekst, dus de knoppen konden er niet
+   als omlijnde vorm op staan en werden allebei een volvlak.
 
-     kop      43-90px       ruim boven de 24px-grens          → crème
-     tussenzin 24px          precies op de grens, gewicht 400  → crème
-     knoppen   13px          haalt het nooit                   → eigen vlak
+   Op roze vervalt die hele beperking. Donkerrood op roze is 9,69:1, dus
+   kop, tussenzin én knoplabel mogen er gewoon op — ongeacht de maat. De
+   knoppen kunnen daardoor precies zijn wat ze overal elders op de site
+   zijn: de primaire vol magenta met wit, de secundaire de magenta omtrek.
+   Die omtrek haalt op roze 3,04:1 en blijft daarmee boven de 3:1 voor de
+   rand van een bedienbaar element.
 
-   De knoppen staan daarom niet als omlijnde vorm op het magenta maar als
-   volvlak erop: crème met donkerrode tekst (14,22:1) en donkerrood met
-   crème tekst (15,30:1). Twee volle knoppen naast elkaar is zwaarder dan
-   een knop plus een omlijning, maar een omlijnde knop zou hier 13px crème
-   rechtstreeks op magenta zetten en dat is 4,46:1 — te weinig. */
-.closer{
-  background:var(--accent);
-  padding:clamp(80px, 11vw, 168px) 0; text-align:center;
+   Er staan hier dus geen .closer-uitzonderingen meer op .cta-btn. Dat is
+   het punt van magenta terugbrengen tot de CTA: de knop ziet er overal
+   hetzelfde uit, dus je herkent hem overal. */
+/* --- Afsluiter ---------------------------------------------------------
+   Zelfde streepband als de bewijsband, maar het volvlak is crème en het
+   staat gecentreerd. Crème in plaats van roze omdat de bewijsband hierboven
+   al een roze vlak is en "Laatst bekeken" ertussen bij een eerste bezoek
+   verdwijnt — twee roze vlakken op rij verbiedt BRANDING.md §2.6. En
+   gecentreerd omdat dit de laatste actie van de pagina is; die hoort in het
+   midden, niet in een hoek.
+
+   Crème is exact de tussenruimte van het patroon, dus het blok voegt geen
+   kleur toe: de banen stoppen gewoon. Dat is het beeld van een etiket op
+   inpakpapier — voor een merk dat geschenken inpakt precies het juiste
+   plaatje, en het maakt het blok scherper dan een rand zou doen.
+
+   Er staan hier geen .closer-uitzonderingen op .cta-btn: op crème gelden
+   dezelfde verhoudingen als op wit, dus de knop is overal dezelfde knop. */
+/* Ook hier geen eigen streepinstelling: zelfde veld als de bewijsband.
+   Het crème blok is exact de tussenruimte van het patroon, dus de banen
+   stoppen gewoon waar het blok begint. Tegen donkerrood op volle sterkte is
+   dat een scherpe snede — het etiket-op-inpakpapier leest hier sterker dan
+   in welke zachte variant ook. */
+.closer{ padding:clamp(80px, 11vw, 168px) 0; text-align:center; }
+.closer-block{
+  background:var(--cream);
+  padding:clamp(52px, 6vw, 92px) clamp(32px, 5vw, 80px);
+  max-width:min(760px, 100%); margin:0 auto;
 }
-.closer .display{ color:var(--accent-on); margin:0 auto; max-width:14ch; }
+.closer .display{ color:var(--ink); margin:0 auto; max-width:14ch; }
 .closer .lede{
-  color:var(--accent-on); margin:24px auto 0; text-align:center;
-  font-size:clamp(1.5rem, 1.7vw, 1.6rem); font-weight:400; max-width:40ch;
+  color:var(--ink); margin:24px auto 0; text-align:center;
+  font-size:clamp(1.5rem, 1.7vw, 1.6rem); font-weight:200; max-width:40ch;
 }
 .closer .hero-actions{ justify-content:center; margin-top:38px; }
-
-/* Knoppen op een accentvlak: allebei een volvlak, geen omlijning. */
-.closer .cta-btn{
-  background:var(--accent-on); color:var(--ink);
-  border-color:var(--accent-on);
-}
-.closer .cta-btn:hover{ background:var(--ink); color:var(--accent-on); border-color:var(--ink); }
-.closer .cta-btn.primary{
-  background:var(--ink); color:var(--accent-on); border-color:var(--ink);
-}
-.closer .cta-btn.primary:hover{ background:var(--accent-on); color:var(--ink); border-color:var(--accent-on); }
 
 /* ============================================================
    OVER ONS
@@ -1052,8 +1220,8 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .ab-statement p{
   margin:0; max-width:24ch;
   font-size:clamp(1.6rem, 3.6vw, 3rem);
-  font-weight:700;
-  line-height:1.15; letter-spacing:-.03em; color:var(--ink);
+  font-weight:200;
+  line-height:1.22; letter-spacing:-.018em; color:var(--ink);
   text-wrap:balance;
 }
 
@@ -1088,10 +1256,12 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   gap:clamp(24px, 3.5vw, 56px);
   padding:clamp(22px, 2.8vw, 38px) 0;
 }
+/* 19-26px zit op de grens: 200 wordt hier al ijl, 300 houdt het jaartal
+   herkenbaar zonder terug te vallen op vet. */
 .tl-year{
   font-size:clamp(1.2rem, 1.9vw, 1.6rem);
-  font-weight:700;
-  letter-spacing:-.02em; color:var(--ink);
+  font-weight:300;
+  letter-spacing:-.01em; color:var(--ink);
   font-variant-numeric:tabular-nums; line-height:1.2;
 }
 .tl-dot{
@@ -1102,7 +1272,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   transition:background .4s var(--ease), border-color .4s var(--ease);
 }
 .tl-item.passed .tl-dot{ background:var(--ink); border-color:var(--ink); }
-.tl-text h3{ font-size:clamp(1.05rem, 1.4vw, 1.25rem); margin-bottom:7px; }
+.tl-text h3{ font-size:clamp(1.05rem, 1.4vw, 1.25rem); font-weight:500; margin-bottom:7px; }
 .tl-text p{ font-size:0.9375rem; color:var(--ink-2); max-width:54ch; margin:0; }
 
 /* --- Team ---
@@ -1215,7 +1385,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   text-underline-offset:4px;
   transition:text-decoration-color .45s var(--ease);
 }
-.card:hover .card-title{ text-decoration-color:var(--accent); }
+.card:hover .card-title{ text-decoration-color:var(--ink); }
 
 .card-meta{ font-size:0.8125rem; font-weight:300; color:var(--ink); margin-top:5px; }
 .card-price{ font-size:0.8125rem; color:var(--ink); margin-top:9px; }
@@ -1245,7 +1415,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   font-size:0.625rem; text-transform:uppercase; letter-spacing:.1em;
   font-weight:600; padding:4px 8px;
 }
-.mk-promo{ border:1.5px solid var(--accent); padding:3px 7px; }
+.mk-promo{ border:1.5px solid var(--ink); padding:3px 7px; }
 
 /* ============================================================
    Het aantallenregister
@@ -1271,13 +1441,15 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   border-top:1px solid var(--accent);
   margin-top:14px; padding-top:11px;
 }
-/* Het getal is 30-40px en telt daarmee als grote tekst, waar de grens op
-   3:1 ligt; magenta haalt er 4,46:1. Het gewicht gaat van 200 naar 300:
-   op die maat blijft extra-light in magenta te dun oplichten tegen wit. */
+/* Het getal stond in magenta en staat nu donkerrood — een minimumaantal
+   is informatie, geen actie. Het gewicht blijft op 300: die keuze kwam
+   voort uit de dunheid van magenta op wit, maar op deze maat leest 300
+   ook in donkerrood rustiger dan 200, en het getal moet het raster niet
+   overstemmen. */
 .ledger-n{
   font-size:clamp(1.9rem, 2.6vw, 2.5rem);
   font-weight:300; letter-spacing:-0.045em; line-height:0.85;
-  font-variant-numeric:tabular-nums; color:var(--accent);
+  font-variant-numeric:tabular-nums; color:var(--ink);
 }
 .ledger-u{
   font-size:0.6875rem; text-transform:uppercase; letter-spacing:.13em;
@@ -1310,7 +1482,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .badge.solid{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
 .badge.promo{
   background:none; color:var(--ink);
-  border:1.5px solid var(--accent); font-weight:600;
+  border:1.5px solid var(--ink); font-weight:600;
 }
 
 /* categorie-tegel */
@@ -1384,9 +1556,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   color:var(--ink-3); margin:0 0 12px;
 }
 .cat-hero-title{
-  font-size:clamp(2.5rem, 5.4vw, 4.4rem); line-height:1.0;
-  letter-spacing:-.04em; margin:0;
-  font-weight:700; color:var(--accent);
+  font-size:clamp(2.5rem, 5.4vw, 4.4rem); line-height:1.04;
+  letter-spacing:-.022em; margin:0;
+  font-weight:200; color:var(--ink);
 }
 
 /* Wat een aankoper als eerste wil weten. De minimumafname verschilt
@@ -1497,7 +1669,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    Magenta draagt hier geen tekst (BRANDING.md §6): het is een markering,
    en crème op magenta haalt 4,46:1 — ruim boven de 3:1 die voor
    niet-tekstuele elementen geldt. */
-.filter-opt input:checked{ background:var(--accent); border-color:var(--accent); }
+.filter-opt input:checked{ background:var(--control); border-color:var(--control); }
 .filter-opt input:checked::before{ transform:scale(1); }
 /* Kleur is nooit het enige signaal: de aangevinkte regel wordt ook zwaarder. */
 .filter-opt.is-on{ font-weight:600; }
@@ -1513,7 +1685,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .filter-sub{ font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3); margin:10px 0 4px; }
 .filter-more{ font-size:12px; color:var(--ink-soft); border-bottom:1px solid var(--line); margin-top:6px; display:inline-block; background:none; border-top:none; border-left:none; border-right:none; padding:2px 0; }
 .filters-toggle{ display:none; width:100%; margin-bottom:16px; }
-.filters-clear{ font-size:11px; color:var(--ink); background:none; border:none; border-bottom:1px solid var(--accent); padding:1px 0; }
+.filters-clear{ font-size:11px; color:var(--ink); background:none; border:none; border-bottom:1px solid var(--control); padding:1px 0; }
 .filters-clear:hover{ border-bottom-width:2px; }
 
 .toolbar{
@@ -1522,7 +1694,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .sort-select{
   appearance:none; -webkit-appearance:none;
-  border:1.5px solid var(--accent); background:var(--paper);
+  border:1.5px solid var(--control); background:var(--paper);
   padding:9px 34px 9px 13px; font-size:0.8125rem; color:var(--ink);
   cursor:pointer; border-radius:0;
   /* Eigen pijltje: SVG als data-URI, in donkerrood uit het palet. */
@@ -1533,11 +1705,12 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 
 .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
-/* Chips zijn de actieve filters, dus ze dragen hetzelfde accent als het
-   vinkje waar ze uit voortkomen — een magenta rand, geen tekst in magenta. */
+/* Chips zijn de actieve filters en je klikt ze weg, dus het zijn bedienbare
+   elementen: de rand moet 3:1 halen. Ze dragen daarom dezelfde donkerrode
+   rand als het vinkje waar ze uit voortkomen. */
 .chip{
   display:inline-flex; align-items:center; gap:8px;
-  border:1.5px solid var(--accent); padding:5px 10px; font-size:11px; color:var(--ink);
+  border:1.5px solid var(--control); padding:5px 10px; font-size:11px; color:var(--ink);
   background:var(--paper);
   transition:background .25s var(--ease);
 }
@@ -1573,7 +1746,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .pagination button{
   border:1px solid var(--line-soft); background:var(--paper); padding:7px 13px; color:var(--ink-soft);
 }
-.pagination button.active{ border-color:var(--accent); border-width:1.5px; color:var(--ink); font-weight:600; }
+.pagination button.active{ border-color:var(--control); border-width:1.5px; color:var(--ink); font-weight:600; }
 .pagination button:hover:not([disabled]){ border-color:var(--ink); color:var(--ink); }
 .pagination button[disabled]{ opacity:.35; cursor:default; }
 .pagination .dots{ color:var(--ink-3); padding:0 2px; }
@@ -1596,11 +1769,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 /* .ph heeft `border:none`, dus border-color deed hier niets. Een outline
    legt de markering bovenop het beeld in plaats van ernaast, en verandert
    de maat van de duim niet. */
-.pdp-thumbs .ph.active{ outline:2px solid var(--accent); outline-offset:-2px; }
+.pdp-thumbs .ph.active{ outline:2px solid var(--control); outline-offset:-2px; }
 
 .pdp-title{
-  font-size:clamp(1.9rem, 3vw, 2.7rem); font-weight:700;
-  margin:0 0 8px; letter-spacing:-.032em; line-height:1.05;
+  font-size:clamp(1.9rem, 3vw, 2.7rem); font-weight:200;
+  margin:0 0 8px; letter-spacing:-.018em; line-height:1.1;
 }
 .pdp-sku{ font-size:0.8125rem; font-weight:300; color:var(--ink); margin-bottom:22px; }
 .pdp-price-k{
@@ -1617,10 +1790,10 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 /* Op de productpagina is magenta de accentkleur, niet roze. Het zit
    uitsluitend in LIJNEN, RANDEN en MARKERINGEN — nooit als vlak onder
-   kleine tekst: donkerrood op magenta haalt 3,15:1 en crème 4,46:1, en
-   allebei blijven daarmee onder de 4,5:1 die lopende tekst vraagt. Als
-   rand van een bedienbaar element is 4,46:1 wél ruim genoeg (die grens
-   ligt op 3:1). Roze blijft dus de VLAKKEN doen, magenta de lijnen. */
+   kleine tekst. Sinds magenta is teruggebracht tot de CTA doet roze
+   allebei: de vlakken én de decoratieve lijnen. Wat gezien MOET worden om
+   te werken — een onderstreping, een badge, de rand van een bedienbaar
+   element — staat in donkerrood. */
 .pdp-price{
   margin-bottom:26px; padding-bottom:26px;
   border-bottom:2px solid var(--accent);
@@ -1635,11 +1808,11 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .variant-options{ display:flex; gap:8px; flex-wrap:wrap; }
 .variant-opt{ border:1px solid var(--control); padding:8px 14px; font-size:13px; background:var(--paper); }
 .variant-opt:hover{ border-color:var(--ink); }
-.variant-opt.active{ border-color:var(--accent); border-width:1.5px; background:var(--bg-alt); font-weight:600; }
+.variant-opt.active{ border-color:var(--control); border-width:1.5px; background:var(--bg-alt); font-weight:600; }
 
 .qty-row{ display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; margin:20px 0 6px; }
 .qty-field label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:6px; }
-.qty-input{ display:flex; border:1.5px solid var(--accent); width:130px; }
+.qty-input{ display:flex; border:1.5px solid var(--control); width:130px; }
 .qty-input button{ width:34px; border:none; background:var(--bg-alt); color:var(--ink); font-size:15px; }
 .qty-input input{ width:100%; border:none; text-align:center; font-size:14px; padding:8px 0; -moz-appearance:textfield; }
 .qty-input input::-webkit-outer-spin-button,
@@ -1690,7 +1863,7 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .quote-remove:hover{ color:var(--ink); }
 
 .quote-side{ border:1px solid var(--line-soft); padding:20px; position:sticky; top:calc(var(--header-h) + 20px); }
-.quote-side h3{ font-size:13px; text-transform:uppercase; letter-spacing:.05em; margin:0 0 14px; }
+.quote-side h3{ font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; margin:0 0 14px; }
 .quote-side .row{ display:flex; justify-content:space-between; font-size:13px; padding:7px 0; border-bottom:1px solid var(--line-soft); }
 .quote-side .cta-btn{ width:100%; margin-top:16px; }
 
@@ -1803,10 +1976,22 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
    Footer
    ============================================================ */
 
-/* De footer is het tweede grote kleurvlak van de pagina. Donkergroen sluit
-   de pagina af zoals de USP-band hem in het midden verankert. */
+/* De footer is een roze vlak. Dat heeft één gevolg dat door de hele footer
+   loopt: op donkergroen bestond er een tweede tekstkleur (salie, 8,45:1) en
+   op roze bestaat die niet. Donkerrood haalt er 9,69:1 en is de enige kleur
+   die de norm haalt — zie colors.css §2.
+
+   Alles wat hieronder vroeger --on-void-2 was, is dus gewoon donkerrood. De
+   rangorde komt van maat, gewicht en spatiëring: een kolomkop is 11px in
+   kapitalen met 0.14em spatiëring, een link is 15px in normale zetting. Dat
+   is precies de aanpak die BRANDING.md §2.4 voorschrijft voor lichte vlakken,
+   en die nu ook hier geldt in plaats van een kleurtrapje.
+
+   Het ritme klopt ook: de bewijsband is roze, de afsluiter is de streepband
+   met een crème blok, en dan pas komt de footer. Twee roze vlakken raken
+   elkaar nergens. */
 .site-footer{
-  background:var(--void); color:var(--on-void);
+  background:var(--band-pink); color:var(--ink);
   padding:clamp(56px, 6.5vw, 96px) 0 34px;
 }
 .site-footer .footer-brand img{ filter:none; }
@@ -1815,22 +2000,28 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   gap:clamp(24px, 3vw, 48px); margin-bottom:clamp(40px, 5vw, 68px);
 }
 .footer-col-title{
-  font-size:0.6875rem; font-weight:500; text-transform:uppercase;
-  letter-spacing:0.14em; color:var(--on-void-2); margin-bottom:18px;
+  font-size:0.6875rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:0.14em; color:var(--ink); margin-bottom:18px;
 }
-.footer-col a{ display:block; font-size:0.9375rem; color:var(--on-void); margin-bottom:11px; }
-.footer-col a:hover{ color:var(--on-void-2); }
-.footer-col p{ font-size:0.9375rem; color:var(--on-void); margin:0 0 12px; line-height:1.7; }
-/* De taalschakelaar erft de kleuren van de header; in de donkere footer
-   moeten die omkeren. */
-.site-footer .lang-switch{ color:var(--on-void-2); }
-.site-footer .lang-switch a{ color:var(--on-void-2); }
-.site-footer .lang-switch a.active{ color:var(--on-void); font-weight:600; }
+.footer-col a{ display:block; font-size:0.9375rem; color:var(--ink); margin-bottom:11px; }
+/* Hover kan hier niet van kleur veranderen — er is geen tweede kleur. Een
+   onderstreping is het alternatief; dekking op tekst is uitdrukkelijk
+   verboden (BRANDING.md §2.4) omdat je dan contrast verliest zonder dat het
+   aan de kleurwaarde te zien is. */
+.footer-col a:hover{ text-decoration:underline; text-underline-offset:4px; }
+.footer-col p{ font-size:0.9375rem; color:var(--ink); margin:0 0 12px; line-height:1.7; }
+/* De taalschakelaar erft de kleuren van de header. Die staan al op
+   donkerrood, dus alleen het actieve gewicht hoeft hier bevestigd. */
+.site-footer .lang-switch{ color:var(--ink); }
+.site-footer .lang-switch a{ color:var(--ink); }
+.site-footer .lang-switch a.active{ color:var(--ink); font-weight:600; }
 
+/* Roze op roze is niets, dus de scheidingslijn is hier donkerrood — dezelfde
+   haarlijn als tussen de feiten in de USP-band, op hetzelfde soort vlak. */
 .footer-bottom{
-  border-top:1px solid var(--accent); padding-top:22px;
+  border-top:1px solid var(--ink); padding-top:22px;
   display:flex; justify-content:space-between; align-items:center; gap:16px;
-  font-size:0.8125rem; color:var(--on-void-2); flex-wrap:wrap;
+  font-size:0.8125rem; color:var(--ink); flex-wrap:wrap;
 }
 
 /* ============================================================
@@ -1914,7 +2105,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   .footer-cols{ grid-template-columns:repeat(2,1fr); }
   .form-grid{ grid-template-columns:1fr; }
   /* Foto boven de quote i.p.v. ernaast, zodat de tekst breed blijft. */
-  .ts-inner{ flex-direction:column; align-items:flex-start; gap:20px; }
+  .proof-block{ grid-template-columns:1fr; gap:clamp(30px, 6vw, 44px); }
+  .proof-quote{ padding-left:0; padding-top:clamp(30px, 6vw, 44px);
+                border-left:none; border-top:1px solid var(--ink); }
 
   /* hero stapelt: beeld boven, tekst eronder */
   /* Gestapeld: beeld boven, kop eronder. Nog lager, want op mobiel
