@@ -1188,7 +1188,10 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 .brand-band-inner a{
   display:flex; align-items:center; justify-content:center;
-  padding:clamp(24px, 3vw, 40px) 10px;
+  /* Vaste celhoogte, zodat de rij niet golft naar het hoogste logo toe.
+     Ademt mee met de breedte, zoals de padding daarvoor deed. */
+  min-height:clamp(84px, 8vw, 116px);
+  padding:14px clamp(12px, 1.6vw, 22px);
   border-left:1px solid var(--accent);
   font-size:var(--fs-xs); letter-spacing:var(--tr-ui); color:var(--ink);
   text-align:center;
@@ -1198,6 +1201,40 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .brand-band-inner a:hover{
   background:var(--pink); color:var(--ink);
   box-shadow:inset 0 -3px 0 var(--ink);
+}
+
+/* --- Merklogo's ---
+   Aangeleverde logo's komen in alle vormen: brede woordmerken, vierkante
+   merktekens, een enkel vol vlak. Ze krijgen daarom niet één maat maar één
+   *optische* maat: dezelfde basishoogte, per logo bijgeregeld met
+   --logo-scale uit data.js. Breed loopt vanzelf tegen de celbreedte aan,
+   vierkant mag hoger worden om even zwaar te wegen.
+
+   mix-blend-mode:multiply veegt het witte kader weg dat in een paar
+   aangeleverde bestanden zit (Galler, Jules Destrooper hebben geen
+   transparantie). Wit vermenigvuldigd met de ondergrond ís de ondergrond,
+   dus het logo staat op wit én op het roze hovervlak zonder wit blokje
+   eromheen. Donkere merkkleuren blijven ongemoeid.
+
+   Merklogo's vallen buiten de contrastregels van BRANDING.md §2: het zijn
+   andermans merktekens, geen tekst van ons. De naam staat als alt-tekst in
+   de link, dus de betekenis hangt niet aan de kleur. */
+.brand-logo{
+  --logo-h:clamp(26px, 2.4vw, 34px);
+  /* max-width houdt de brede woordmerken van de scheidingslijn af; zonder
+     die rem lopen Mentos en Jules Destrooper tot tegen de rand van hun cel. */
+  width:auto; max-width:78%;
+  height:calc(var(--logo-h) * var(--logo-scale, 1));
+  object-fit:contain; object-position:center;
+  mix-blend-mode:multiply;
+}
+/* Op een gekleurde hover blijft multiply kloppen, maar Safari valt terug op
+   normal zodra het element zelf een blendcontext krijgt; expliciet herhalen
+   houdt het gedrag gelijk. */
+.brand-band-inner a:hover .brand-logo{ mix-blend-mode:multiply; }
+
+@media (prefers-reduced-transparency: reduce){
+  .brand-logo{ mix-blend-mode:normal; }
 }
 
 /* --- De afsluiter is een roze sectie ---
@@ -2133,6 +2170,9 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   .brand-band-inner{ grid-template-columns:repeat(2,1fr); }
   .brand-band-inner a:nth-child(2n+1){ border-left:none; }
   .brand-band-inner a:nth-child(n+3){ border-top:1px solid var(--rule); }
+  /* Twee kolommen op telefoon: de cel is nu breed genoeg om het logo
+     wat groter te zetten dan op de krappe kolommen daarboven. */
+  .brand-logo{ --logo-h:32px; }
   .promo-strip a{ gap:12px; }
 }
 

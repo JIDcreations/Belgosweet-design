@@ -82,14 +82,33 @@ const BS_DATA = (() => {
     { slug: "geschenk", name: "Geschenken & non-food", cats: ["adventskalenders", "gourmet-geschenkmand", "drinkflessen", "paraplus"] }
   ];
 
+  // ── Merken ──
+  // `logo` is optioneel. Staat er geen logo, dan zet de merkenband de naam
+  // als tekst — zo blijft een merk zichtbaar zonder dat er een bestand voor is.
+  //
+  // `logoScale` corrigeert de optische maat, niet de echte maat. Alle logo's
+  // krijgen dezelfde hoogte, maar een vierkant merkteken (Galler, Tic Tac)
+  // oogt op diezelfde hoogte veel kleiner dan een breed woordmerk dat de cel
+  // vult (Jules Destrooper, Mentos). Het cijfer is een vermenigvuldiger op de
+  // basishoogte in styles.css; 1 = geen correctie. Met het oog afgeregeld,
+  // niet berekend — bijstellen mag.
+  //
+  // De bestanden in assets/img/merken/ zijn bijgesneden versies van wat de
+  // merken aanleveren: de witruimte rond het merkteken is eraf, anders valt
+  // het logo binnen zijn eigen kader in het niet. De aangeleverde bestanden
+  // staan onaangeroerd in assets/img/merken/_bron/.
   const BRANDS = [
-    { slug: "galler",           name: "Galler" },
-    { slug: "jules-destrooper", name: "Jules Destrooper" },
-    { slug: "leonidas",         name: "Leonidas" },
-    { slug: "mentos",           name: "Mentos" },
-    { slug: "tic-tac",          name: "Tic Tac" },
+    { slug: "galler",           name: "Galler",           logo: "galler.png",           logoScale: 2 },
+    { slug: "jules-destrooper", name: "Jules Destrooper", logo: "jules-destrooper.png", logoScale: 1    },
+    // Aangeleverd als vol donkerblauw vlak, niet als vrijstaand merkteken:
+    // dit blok blijft in de band een gekleurd tegeltje tussen losse logo's.
+    // Vraag Leonidas om een versie met transparante achtergrond.
+    { slug: "leonidas",         name: "Leonidas",         logo: "leonidas.png",         logoScale: 1.9 },
+    { slug: "mentos",           name: "Mentos",           logo: "mentos.png",           logoScale: 1    },
+    { slug: "tic-tac",          name: "Tic Tac",          logo: "tic-tac.png",          logoScale: 1.9 },
+    // Nog geen bruikbaar logo aangeleverd — valt terug op de naam in tekst.
     { slug: "generous",         name: "Generous" },
-    { slug: "joris",            name: "Joris" },
+    { slug: "joris",            name: "Joris",            logo: "joris.png",            logoScale: 1.75 },
     { slug: "huismerk",         name: "Zonder merk / huismerk" }
   ];
 

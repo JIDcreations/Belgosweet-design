@@ -894,9 +894,31 @@ ${renderBar(list.length, from, to)}
       P.filter((p) => p.bestseller).slice(0, 4).map(productCardQuiet).join("")
     }</div>`);
 
-    /* --- Merken --- */
-    mount("#home-brands", D.BRANDS.filter((b) => b.slug !== "huismerk").map((b) =>
-      `<a href="shop.html?brand=${b.slug}">${esc(b.name)}</a>`).join(""));
+    /* --- Merken ---
+       Elke cel linkt naar de shop, gefilterd op dat merk. Is er een logo,
+       dan staat het merkteken er; zo niet, dan de naam in tekst. De naam
+       gaat in beide gevallen mee als alt-tekst, dus een schermlezer leest
+       dezelfde rij merken voor als wat er te zien is.
+
+       logoScale komt uit data.js en gaat als custom property mee naar CSS;
+       styles.css rekent daar de hoogte van dit ene logo mee uit. */
+    mount("#home-brands", D.BRANDS.filter((b) => b.slug !== "huismerk").map((b) => {
+      const inner = b.logo
+        // Geen width/height-attributen: elk logo heeft zijn eigen verhouding
+        // en een verkeerd paar zou de plaatsing juist verschuiven. De cel
+        // heeft een vaste min-height, dus er springt niets bij het laden.
+        //
+        // Bewust niet loading="lazy". De band staat één scherm onder de hero
+        // en weegt samen nog geen 80 kB, dus er valt niets te winnen — en
+        // omdat de breedte uit het bestand komt (height staat vast, width is
+        // auto) is een nog niet geladen logo 0 px breed. Chrome laat zo'n
+        // vlak dan links liggen en de band blijft leeg.
+        ? `<img class="brand-logo" src="assets/img/merken/${b.logo}" alt="${esc(b.name)}"
+                decoding="async"
+                style="--logo-scale:${b.logoScale || 1}">`
+        : esc(b.name);
+      return `<a href="shop.html?brand=${b.slug}">${inner}</a>`;
+    }).join(""));
 
     /* --- Laatst bekeken: echte state, conditioneel --- */
     const rec = recent.list();
