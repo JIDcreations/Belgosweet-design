@@ -158,7 +158,7 @@ const BS = (() => {
       <!-- Seizoen staat bóven de families, niet ertussen: wie in september
            een eindejaarsgeschenk zoekt, zoekt niet op productsoort. -->
       <a class="mega-season" href="shop.html?occ=kerst">
-        <span class="mega-season-k">Rond deze periode</span>
+        <span class="mega-season-k">Dit seizoen</span>
         <span class="mega-season-v">Adventskalenders en eindejaarsgeschenken — vastleggen vóór 30 september</span>
         ${ICON.arrow}
       </a>

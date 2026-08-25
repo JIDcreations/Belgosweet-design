@@ -394,6 +394,14 @@ p:last-child{ margin-bottom:0; }
 .cta-btn.small{ padding:9px 18px; font-size:var(--fs-xs); }
 .cta-btn[disabled]{ opacity:.45; pointer-events:none; }
 
+/* Twee knoppen naast elkaar — de hero en de afsluiter gebruiken dit allebei.
+   Er stond alleen `.closer .hero-actions{ justify-content:center }`, en dat
+   deed niets: zonder display:flex heeft justify-content geen betekenis. De
+   knoppen in de afsluiter stonden gecentreerd door de text-align van .closer,
+   met een spatie ertussen in plaats van een gap. Nu klopt de declaratie die
+   er al stond, en is de tussenruimte een gemeten waarde. */
+.hero-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+
 .quote-count{
   display:inline-block; min-width:18px; padding:0 5px; margin-left:7px;
   border:1px solid currentColor; font-size:var(--fs-micro); line-height:15px; text-align:center;
@@ -716,6 +724,37 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 .hero-full .lede{
   color:var(--on-void); margin-top:clamp(18px, 2.4vh, 28px);
   font-weight:300; max-width:44ch;
+}
+
+/* --- De knoppen op donkergroen ---
+   Dit is de enige plek op de site waar de CTA op een donker vlak staat, en
+   daarmee de enige plek die een uitzondering op .cta-btn nodig heeft. Twee
+   dingen kloppen hier niet vanzelf:
+
+   Het label van de secundaire knop staat standaard op --ink. Donkerrood op
+   donkergroen is 1,04:1 — twee bijna-zwarte kleuren, dus het woord is
+   letterlijk onzichtbaar. Crème haalt er 14,83:1.
+
+   En de primaire knop gaat bij hover naar --ink. Diezelfde 1,04:1 laat de
+   knop dan in de achtergrond zakken op het moment dat hij juist moet
+   bevestigen. Crème met een donkerrood label is het spiegelbeeld daarvan:
+   14,83:1 voor het vlak tegen de band, 14,22:1 voor het woord erop. Het is
+   dezelfde omkering als overal elders — alleen het eindpunt verschilt, want
+   op donker is donkerrood geen eindpunt.
+
+   De secundaire knop heeft dat niet nodig: die loopt bij hover vol magenta
+   met wit (4,76:1), precies zoals op elke andere pagina. De regel hieronder
+   herstelt dat alleen, omdat de crème hierboven het anders zou overschrijven.
+
+   Let op de volgorde: deze vier regels staan ná .cta-btn in het bestand en
+   winnen daarmee bij gelijke specificiteit. .hero-full .cta-btn.primary:hover
+   (0,3,0) staat als laatste en wint dus van .hero-full .cta-btn:hover. */
+.hero-full .hero-actions{ margin-top:clamp(26px, 3.2vh, 40px); }
+.hero-full .cta-btn{ color:var(--on-void); }
+.hero-full .cta-btn:hover{ color:var(--on-cta); }
+.hero-full .cta-btn.primary{ color:var(--on-cta); }
+.hero-full .cta-btn.primary:hover{
+  background:var(--on-void); color:var(--ink); border-color:var(--on-void);
 }
 
 .hero-bar{
@@ -1110,8 +1149,29 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
 }
 /* --ink-3 wijst naar donkerrood, net als --ink; op roze is er geen zachtere
    trap, dus het onderscheid tussen citaat en naamregel loopt via maat. */
-.ts-attr{ margin-top:18px; font-size:var(--fs-xs); color:var(--accent-on); }
+.ts-attr{
+  margin-top:22px; font-size:var(--fs-xs); color:var(--accent-on);
+  display:flex; align-items:center; gap:14px;
+}
 .ts-attr b{ color:var(--accent-on); font-weight:500; }
+/* Het portret hoort bij de naam, niet naast het citaat: het staat op dezelfde
+   regel en deelt er de verticale as mee, zodat het de ondertekening is en niet
+   een tweede beeldelement in het blok.
+
+   56px is klein genoeg om de naam niet te overstemmen en groot genoeg om een
+   gezicht te zijn. Vierkant en niet rond: elk beeldvlak op deze pagina is een
+   rechthoek, en één cirkel maakt daar een uitzondering van — precies de losse
+   vorm die hier eerder is weggehaald.
+
+   Crème op roze bakent het vlak af zonder dat er een rand bij hoeft. `.short`
+   haalt het merkteken weg: op 56px is dat te klein om iets voor te stellen.
+   Zodra er een portret is aangeleverd komt er een <img> in met has-img erbij,
+   net als bij elk ander beeldvlak. */
+.ts-photo{
+  flex:0 0 56px; width:56px; height:56px;
+  min-height:0; padding:0;
+  background-color:var(--surface);
+}
 
 /* ============================================================
    HOME — argumentatie + bewijs

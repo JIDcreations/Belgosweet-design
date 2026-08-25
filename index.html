@@ -44,6 +44,26 @@
           Belgische chocolade, koekjes en snoep met je logo. Vanaf 250 stuks,
           prijs op maat van je oplage.
         </p>
+
+        <!-- Twee CTA's. De hero had er geen: de gedachte was dat het beeld en
+             de belofte genoeg waren en dat de eerste actie verderop mocht
+             komen. Dat klopt niet voor dit publiek — een aankoper die met een
+             deadline binnenkomt wil meteen een weg, niet eerst een sfeerbeeld.
+
+             Bewust niet "Offerte aanvragen" als primaire: dat is de laatste
+             stap en die staat in de afsluiter. Wie hier binnenkomt wil eerst
+             zien wat er is.
+
+             Magenta mag hier: de knopvorm haalt op donkergroen 3,32:1 en dat
+             is boven de 3:1 die voor de rand van een bedienbaar element geldt
+             (BRANDING.md §2.3). Het label op het volle vlak is wit — 4,76:1,
+             waar crème op 4,46:1 blijft steken. -->
+        <div class="hero-actions reveal" style="--d:320ms">
+          <a class="cta-btn primary" href="shop.html">Naar de shop</a>
+          <!-- Nog geen PDF aangeleverd; wijst voorlopig naar de offertepagina,
+               net als dezelfde knop in de afsluiter en de link in de footer. -->
+          <a class="cta-btn" href="offerte.html">Catalogus downloaden</a>
+        </div>
       </div>
     </div>
   </section>
@@ -58,7 +78,7 @@
     <div class="wrap-wide">
       <div class="carousel-head">
         <div>
-          <h2 class="h-lg">De catalogus</h2>
+          <h2 class="h-lg">Een greep uit ons aanbod</h2>
           <p class="lede">
             Zestien categorieën, van pralines tot adventskalenders. Merken, gelegenheden
             en HoReCa-toepassingen zitten eronder als filter.
@@ -88,7 +108,7 @@
         </div>
 
         <div class="season-text">
-          <h2 class="h-lg">Rond deze periode</h2>
+          <h2 class="h-lg">Dit seizoen</h2>
           <p class="lede">
             Adventskalenders en eindejaarsgeschenken worden in september vastgelegd.
             Wie in november belt, kiest uit wat er nog staat.
@@ -129,8 +149,12 @@
 
        Ze horen inhoudelijk bij elkaar — allebei zijn het bewijs dat je hier
        goed zit: de cijfers zeggen het zelf, de klant bevestigt het. Eén band,
-       één blok, twee kolommen met een haarlijn ertussen. De losse fotocirkel
-       is eruit: weer een vorm minder in een stuk pagina dat er te veel had. -->
+       één blok, twee kolommen met een haarlijn ertussen.
+
+       De fotocirkel die hier los naast het citaat stond is toen weggehaald —
+       weer een vorm in een stuk pagina dat er te veel had. Het portret is nu
+       terug, maar niet als losse vorm: het staat op de naamregel, ingebouwd
+       in de ondertekening. Zie de toelichting bij de figcaption. -->
   <section class="proof-band pattern-band">
     <div class="wrap-wide">
       <div class="proof-block">
@@ -153,8 +177,17 @@
         </div>
         <figure class="proof-quote">
           <blockquote>“Ze weten wat we vorig jaar bestelden. Dat scheelt ons elke december een week werk.”</blockquote>
+          <!-- Het portret stond hier eerder als losse cirkel naast het citaat en
+               is er toen uit gehaald: weer een vorm in een staart die er al te
+               veel had. Het komt terug, maar niet als los element — het staat
+               óp de naamregel, als onderdeel van de ondertekening. Zo is het
+               geen extra vorm maar de vorm die de naam al was.
+
+               Nog geen portret aangeleverd; tot dan is het een gewoon
+               beeldvlak met het merkteken, net als elders op de site. -->
           <figcaption class="ts-attr">
-            <b>Naam, office manager</b> — Bedrijfsnaam
+            <div class="ts-photo ph short" aria-hidden="true"></div>
+            <div><b>Naam, office manager</b> — Bedrijfsnaam</div>
           </figcaption>
         </figure>
       </div>
