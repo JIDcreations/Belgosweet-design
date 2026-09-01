@@ -82,3 +82,34 @@
   --tr-ui:0.05em;         /* kapitalen 12px+: knoppen, velden    */
   --tr-label:0.14em;      /* kapitalen 11px en kleiner           */
 }
+
+/* ============================================================
+   Telefoon — alleen het register
+   ------------------------------------------------------------
+   De koppen hierboven zakken op een smal scherm netjes naar hun
+   ondergrens: --fs-display komt op 43px uit en dat is precies
+   goed voor een hero van 390px breed. Aan die stappen hoeft
+   niets te gebeuren.
+
+   Bij de twee registergetallen klopt de ondergrens niet, en dat
+   komt doordat ze niet in een kolom staan maar in een TEGEL. Op
+   de laptop staat --fs-num van 30px in een tegel van 300px; op
+   de telefoon staat diezelfde 30px in een tegel van 165px. Het
+   getal is dan bijna een vijfde van de tegelbreedte, en bij
+   "500 stuks min." naast "1 stuks min." krijg je twee tegels
+   naast elkaar waarvan de ene regel drie keer zo breed is als
+   de andere. Het register moet de rangorde dragen (§3.3), niet
+   de tegel overstemmen.
+
+   Alleen de ondergrens zakt; de curve en de bovengrens blijven
+   staan, dus vanaf de tablet verandert er niets. De ondergrens
+   van --fs-num blijft ruim boven die van --fs-sub, dus de
+   rangorde-via-grootte blijft intact.
+   ============================================================ */
+
+@media (max-width: 620px){
+  :root{
+    --fs-num:clamp(1.5rem, 2.6vw, 2.5rem);      /* 30 -> 24 px */
+    --fs-num-lg:clamp(2.05rem, 5vw, 4.1rem);    /* 42 -> 33 px */
+  }
+}

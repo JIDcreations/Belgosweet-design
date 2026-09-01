@@ -431,8 +431,39 @@ p:last-child{ margin-bottom:0; }
   font-size:var(--fs-lede); font-weight:600; color:var(--ink);
   letter-spacing:var(--tr-tight);
 }
+/* De pijl kreeg nergens een maat. ICON.arrow (app.js) draagt alleen een
+   viewBox en géén width/height — bewust, want in de mega en op de
+   carrouselknop zet styles.css de maat zelf (.mega-season svg,
+   .cc-nav svg). Alleen hier ontbrak die regel, en dan valt de svg terug
+   op de enige die er wél was: `img,svg{ max-width:100% }` bovenaan dit
+   bestand. In een flexregel met space-between betekent dat: neem alle
+   ruimte die het label overlaat. De pijl werd zo ruim 400 px breed en
+   duwde "Shop" tot een voetnoot ernaast — het lade-menu was daarmee het
+   meest rommelige scherm van de hele site.
+
+   16px, gelijk aan de pijl in de mega. flex:0 0 auto zodat de pijl ook
+   niet meer meerekt als een label over twee regels breekt ("Over ons"). */
+.mobile-drawer a svg{ width:16px; height:16px; flex:0 0 auto; }
 .mobile-drawer .drawer-foot{ padding:28px 0; display:flex; flex-direction:column; gap:16px; }
 .mobile-drawer .cta-btn{ width:100%; }
+/* `.mobile-drawer a` hierboven is bedoeld voor de menuregels, maar raakt
+   élke link in de lade — dus ook de drie taalkeuzes onderin. Die kregen
+   daardoor de maat van een menuregel (--fs-lede, 600) én een eigen
+   onderlijn: drie losse roze streepjes onder NL / FR / EN, die nergens
+   op sloegen omdat ze niet de breedte van een regel hadden maar van een
+   woord van twee letters.
+
+   De taalkeuze is geen menuregel maar één regeltje tekst, en staat er
+   dus weer als het schakelaartje dat hij in de header ook is. */
+.mobile-drawer .lang-switch a{
+  /* padding, niet grootte: de twee letters blijven een regeltje tekst,
+     maar het raakvlak komt boven de 24px die WCAG 2.2 (2.5.8) als
+     ondergrens aanhoudt. In de header is dit een muisdoel, hier een
+     duimdoel. */
+  display:inline-block; padding:4px 5px; border-bottom:none;
+  font-size:inherit; font-weight:400; letter-spacing:var(--tr-ui);
+}
+.mobile-drawer .lang-switch a.active{ font-weight:600; }
 
 /* ============================================================
    Breadcrumb — bestond nergens op de huidige site
@@ -684,6 +715,23 @@ body.wm-dock.wm-docked .site-header .lang-switch .div,
 body.wm-dock .site-header:has(.mega.open) .nav-left a,
 body.wm-dock .site-header:has(.search-panel.open) .nav-left a{ color:var(--ink); }
 body.wm-dock.wm-docked .site-header .icon-btn .count{ background:var(--ink); color:var(--paper); }
+
+/* De lade hoorde in de regelgroep hierboven maar stond er niet in. Het
+   vlak eronder werd wél omgezet (de balk krijgt --paper in de groep bij
+   `background`) en het woordmerk ook (hieronder), maar de twee knoppen
+   niet: die bleven op --on-void staan. Crème op crème — het kruisje om
+   de lade te sluiten en de offertetas waren zo goed als onzichtbaar,
+   precies op het moment dat je ze nodig hebt.
+
+   Alleen op de home, want alleen daar staat de header op wm-dock, en
+   alleen op telefoon en tablet, want daar bestaat de lade. Dat is ook
+   waarom het niet eerder opviel: op de laptop nemen .mega en
+   .search-panel deze rol over, en die stáán in de groep. */
+body.wm-dock:has(.mobile-drawer.open) .site-header .nav-toggle,
+body.wm-dock:has(.mobile-drawer.open) .site-header .icon-btn{ color:var(--ink); }
+body.wm-dock:has(.mobile-drawer.open) .site-header .icon-btn .count{
+  background:var(--ink); color:var(--paper);
+}
 
 /* Paneel open terwijl het logo nog niet gedokt is: dan moet het
    headerlogo er wél staan, anders is het een lege witte balk. */
@@ -3009,6 +3057,158 @@ body.wm-dock:has(.mobile-drawer.open) .site-header .wordmark{ opacity:1; }
   /* op telefoon blijft het grid 2-koloms: 1 kolom maakt de lijst eindeloos */
   .grid-editorial, .grid-editorial.wide,
   .catalog-grid, .catalog-grid.wide{ grid-template-columns:repeat(2,1fr); }
+}
+
+/* ============================================================
+   Telefoon — de maatvoering, niet de opbouw
+   ------------------------------------------------------------
+   De blokken hierboven regelen WAT er op een smal scherm anders
+   staat: wat stapelt, wat uit het raster valt, wat verdwijnt.
+   Die keuzes klopten. Wat niet klopte was de MAAT waarin dat
+   gebeurde.
+
+   De oorzaak zit in de vorm van de curves zelf. Bijna elke
+   afstand op deze site is een clamp(min, vw, max), en die zijn
+   uitgemeten op een breed scherm: de bovengrens is bewust
+   gekozen, de ondergrens is meestal gewoon "de waarde die het
+   op een laptop was". Op 390 px levert de vw-term overal veel
+   te weinig op, dus valt élke curve terug op zijn ondergrens —
+   allemaal tegelijk. Het scherm krijgt daardoor niet één te
+   ruime afstand maar een hele reeks, en die staan onderling
+   niet meer in verhouding.
+
+   Het duidelijkst bij --section-y: clamp(96px, 11vw, 190px).
+   11vw is hier 43 px, dus wint de ondergrens van 96. Met 96
+   boven én onder staat er 192 px tussen twee secties, op een
+   scherm van 844 px hoog. Bijna een kwart scherm leeg, acht
+   keer op een pagina. Dat is wat "chaotisch" en "los" maakt:
+   niet dat de onderdelen fout staan, maar dat ze zo ver uit
+   elkaar liggen dat je ze niet meer als één pagina leest — en
+   dat er intussen binnen een blok (kop op lede) wél weinig
+   ruimte staat. De verhouding klopt niet meer.
+
+   Daarom zit hier geen nieuwe opbouw maar een herijking van de
+   tokens. Eén blok, op de breekpunt-waarde die dit bestand al
+   voor "telefoon" gebruikt (620px) — géén zesde breekpunt erbij,
+   want de wildgroei aan breekpunten is zelf een deel van de
+   onrust.
+   ============================================================ */
+
+@media (max-width: 620px){
+
+  :root{
+    /* 56 boven + 56 onder = 112 px tussen twee secties in plaats
+       van 192. Ruim genoeg om de secties te scheiden — dat is de
+       enige taak die deze afstand heeft, want de secties wisselen
+       hier ook van achtergrond — en niet meer zo ruim dat de
+       pagina uit elkaar valt. De vw-term staat op 13 zodat een
+       grote telefoon (430px) op ~56 blijft en de tablet netjes
+       naar de waarde hierboven doorloopt. */
+    --section-y:clamp(56px, 13vw, 84px);
+
+    /* Volgt mee. 24px tussen twee tegels van 165px is naar
+       verhouding meer lucht dan 24px tussen twee tegels van
+       300px op de laptop. */
+    --gap:16px;
+  }
+
+  /* --- De merkenband ---
+     Zeven merken (huismerk valt weg in app.js) in twee kolommen:
+     dat is vier rijen, en de laatste heeft een gat. Een gat in
+     een raster leest als een fout, en met een celhoogte van 84px
+     werd de band bovendien 396px hoog — een halve telefoon voor
+     wat op de laptop één rustige regel onder de hero is.
+
+     Geen raster meer maar een omlopende, gecentreerde rij: drie
+     per regel, en de laatste regel centreert zichzelf. Zo is er
+     geen gat meer — er is gewoon een kortere laatste regel, en
+     dat leest als een band in plaats van als een kapot raster. */
+  .brand-band-inner{
+    display:flex; flex-wrap:wrap; justify-content:center;
+  }
+  .brand-band-inner a{
+    flex:0 1 calc(100% / 3);
+    min-height:66px;
+    padding:10px 8px;
+  }
+  /* Op een derde telefoonbreedte is de cel ~117px; het logo mag
+     daar iets kleiner in staan dan de 32px van de twee-koloms
+     opzet hierboven. */
+  .brand-logo{ --logo-h:26px; }
+
+  /* --- De twee hero-knoppen ---
+     Ze stonden naast elkaar in een flexregel die omsloeg, en
+     kregen daardoor allebei hun eigen breedte: een korte knop
+     boven een lange. Twee verschillende breedtes onder elkaar
+     lezen als twee losse dingen. Onder elkaar én even breed
+     lezen ze als één keuze met twee uitgangen. */
+  .hero-actions{ display:grid; grid-template-columns:1fr; gap:10px; }
+  .hero-actions .cta-btn{ width:100%; }
+
+  /* --- De rustige tegels op één lijn ---
+     .season-cards staat op élke breedte in twee kolommen, ook op de
+     laptop. Daar valt niet op wat hier wel opvalt: in een kolom van
+     165px breekt "Chocolade batons 375 g" over twee regels en
+     "Pralinedoos 12 st" niet, en dan zakt het minimumaantal van de ene
+     tegel een regel lager dan dat van de andere. Twee registergetallen
+     naast elkaar op verschillende hoogte lezen als scheefstand — juist
+     omdat het getal het zwaarste element van de tegel is.
+
+     De tegels in een rasterrij zijn al even hoog (align-items:stretch
+     staat aan by default), dus het volstaat om het register naar de
+     ONDERrand te duwen in plaats van het achter de naam aan te laten
+     lopen. Werkt bij elk aantal regels, en telt geen tegels. */
+  .card.quiet{ display:flex; flex-direction:column; }
+  .card.quiet .ledger{ margin-top:auto; padding-top:16px; }
+
+  /* --- De twee secties met een eigen curve ---
+     De bewijsband en de afsluiter hangen niet aan --section-y
+     maar aan een eigen clamp (76px en 72px). Op de laptop is dat
+     terecht: allebei zijn het een gekleurd vlak in de pagina en
+     die mogen iets meer lucht om zich heen dan een gewone sectie.
+
+     Alleen: met --section-y hierboven op 56 zijn zij nu de twee
+     enige secties die uit de pas lopen, en dan is het verschil
+     geen accent meer maar een oneffenheid. Ze gaan mee, met de
+     verhouding intact — ruim een tiende meer dan de rest, net als
+     op de laptop, maar op deze schaal uitgerekend. */
+  .proof-band{ padding:64px 0; }
+  .closer{ padding:64px 0; }
+
+  /* --- De enige echte zijwaartse overloop op de site ---
+     account.html schoof op een telefoon 14px opzij. De oorzaak zit in
+     een regel van .reorder-item: beeld (56px) + naam + knop
+     "Toevoegen" naast elkaar. De naam mag krimpen (min-width:0), maar
+     het beeld en de knop niet, en samen met de tussenruimtes vragen
+     die al 307px. In het paneel blijft na 2x28px binnenruimte maar
+     294px over.
+
+     Dat verschil verdwijnt niet met overflow of een schaalregel: een
+     1fr-kolom heeft een automatische ondergrens die gelijk is aan de
+     min-content van zijn inhoud, dus de KOLOM werd 383px breed — in
+     een bladspiegel van 350. Vandaar dat de hele pagina meeschoof en
+     niet alleen dit blok.
+
+     Twee ingrepen, want beide oorzaken tellen. De kolom krijgt een
+     ondergrens van 0 zodat inhoud hem nooit meer kan oprekken (de
+     bewijsband gebruikt dezelfde minmax-vorm), en de regel mag
+     afbreken zodat de knop onder de naam zakt in plaats van ernaast
+     te blijven staan. Op deze breedte is dat ook gewoon de betere
+     regel: naam en herkomst lezen over de volle kolom. */
+  .account-layout,
+  .split, .pdp, .quote-layout, .doc-layout, .sent-layout{
+    grid-template-columns:minmax(0, 1fr);
+  }
+  .reorder-item{ flex-wrap:wrap; }
+  .reorder-item .meta{ flex:1 1 auto; }
+  .reorder-item .cta-btn{ flex:0 0 auto; margin-left:70px; }
+
+  /* --- Raakvlakken ---
+     34px is te klein om met een duim te raken. De knop krijgt
+     44px zonder dat het merkteken erin meegroeit; de negatieve
+     marge houdt de header op dezelfde hoogte, zodat er visueel
+     niets verschuift. */
+  .icon-btn{ width:44px; height:44px; margin:-6px -11px; }
 }
 
 /* ============================================================
